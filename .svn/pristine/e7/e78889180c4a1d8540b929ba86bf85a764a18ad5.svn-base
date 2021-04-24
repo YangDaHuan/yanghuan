@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="shortcut icon" type="image/x-icon" href="zebone.ico" />
+<link rel="stylesheet" type="text/css" href="themes/default/main.css" />
+<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/easyui-ext.js"></script>
+<style type="text/css">
+html, body {
+	height: auto;
+}
+</style>
+<script type="text/javascript">
+$(function(){
+	$('#tt').tree({
+		url: 'tree_data1.json',
+		parentField:"pid",
+		onClick:function(node){
+			alert(node.attributes.url);
+		}
+	});
+	
+});
+</script>
+</head>
+<body class="easyui-layout">
+	<!--left-->
+	<div data-options="region:'west',border:false" style="width: 215px;">
+		<!--左侧-->
+		<div class="j-panel j-panel-radius j-panel-nohead"
+			style="height: 98%; margin: 0 5px;">
+			<ul id="tt"></ul>
+		</div>
+	</div>
+	<!--right-->
+	<div data-options="region:'center',border:false">
+		<iframe id="iframe" src="sys-permission-list.html"
+			name="dict_right_iframe" class="iframeApp" frameborder="0"
+			SCROLLING="no" marginwidth="0" marginheight="0"
+			style="width: 100%; height: 100%;"></iframe>
+	</div>
+</body>
+</html>

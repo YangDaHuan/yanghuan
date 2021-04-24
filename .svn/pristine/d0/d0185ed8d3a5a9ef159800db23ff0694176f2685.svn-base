@@ -1,0 +1,1 @@
+define("events/eventdatafactory",function(){function a(a,b){return{id:a,ref:b}}return{createInstance:a}})

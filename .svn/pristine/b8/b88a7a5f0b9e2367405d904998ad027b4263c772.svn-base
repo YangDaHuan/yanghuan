@@ -1,0 +1,1333 @@
+@charset "UTF-8";
+div.dynaDialog {
+	font-size:11pt;
+}
+div.dynaScrollPos {
+	overflow:hidden;
+	visibility:hidden;
+	position:absolute;
+	top:0px;
+	left:0px;
+	width:0px;
+	height:0px;
+}
+input.dynaPass {
+	padding:0pt;
+	position:absolute;
+	top:0px;
+	left:0px;
+	overflow:visible;
+	border:none;
+	vertical-align:middle;
+	font-family:inherit;
+	font-size:inherit;
+	background-color:transparent;
+	font-size:inherit;
+	visibility:hidden;
+}
+div.dynaRow {
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaColumn {
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaTable {
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaCell {
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaCheckbox {
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaRadio {
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaRadio input:not(:disabled) + label{
+	cursor: pointer;
+}
+div.dynaButton {
+	background-color: transparent;
+	overflow:hidden;
+}
+div.dynaSwitch {
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaMenu {
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+	text-align: left;
+	background-color: transparent;
+	vertical-align: middle;
+	cursor: pointer;
+}
+div.dynaText {
+	position:relative;
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaImage {
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaChart {
+   background-color:transparent;
+   overflow:hidden;
+}
+div.dynaVertHier {
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaHoriHier {
+	background-color:transparent;
+	overflow:hidden;
+}
+div.dynaHierMenu {
+	background-color:transparent;
+	overflow:hidden;
+}
+.unselectable {
+	-moz-user-select:none;
+	-webkit-user-select:none;
+	-webkit-touch-callout: none;
+	user-select:none;
+	resize: none;
+}
+img.dynaChart {
+	border-style:none;
+}
+table.dynaTable {
+}
+table.dynaTable tbody
+{
+	margin:0px;
+	color:inherit;
+	background-color:  inherit;
+	font-family:  inherit;
+	font-weight: inherit;
+	font-size: inherit;
+	text-indent: inherit;
+	font-style:  inherit;
+	font-variant:  inherit;
+}
+table.dynaTable tr
+{
+	padding-top:0pt;
+	padding-bottom:0pt;
+	color:inherit;
+	background-color:  inherit;
+	font-family:  inherit;
+	font-weight: inherit;
+	font-size: inherit;
+	text-indent: inherit;
+	font-variant:  inherit;
+	font-style:  inherit;
+	vertical-align:middle;
+}
+table.dynaTable td
+{
+	margin: 0;
+	padding-left:0px;
+	padding-top:0px;
+	padding-bottom:0px;
+	padding-right:0px;
+	border-left-width:0px;
+	border-top-width:0px;
+	border-style:solid;
+	border-color:#e0e0e0;
+	color:inherit;
+	background-color:  inherit;
+	font-family:  inherit;
+	font-weight: inherit;
+	font-size: inherit;
+	text-indent: inherit;
+	font-style:  inherit;
+	font-variant:  inherit;
+	vertical-align:middle;
+	overflow:hidden;
+}
+table.dynaCheckbox
+{
+	border-style:none;
+}
+table.dynaCheckbox tr
+{
+	padding-top:0pt;
+	padding-bottom:0pt;
+	vertical-align:middle;
+}
+table.dynaCheckbox td
+{
+	padding-top:0pt;
+	padding-bottom:0pt;
+	padding-right:0pt;
+	border-bottom-width:1px;
+	border-right-width:1px;
+	border-left-width:0px;
+	border-top-width:0px;
+	border-style:solid;
+	border-color:#e0e0e0;
+	vertical-align:middle;
+	overflow:hidden;
+}
+table.dynaCheckbox input
+{
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 1px;
+	padding: 0px;
+	vertical-align: middle;
+	cursor: pointer;
+}
+textarea.dynaText
+{
+	overflow:hidden;
+	color:inherit;
+	border-style:none;
+	background-color:transparent;
+	font-family:  inherit;
+	font-weight: inherit;
+	font-size: inherit;
+	font-style:  inherit;
+	font-variant:  inherit;
+	text-indent: inherit;
+}
+table.dynaMenu
+{
+	border-collapse:collapse;
+	left: 0px;
+	position: absolute;
+	top: 0px;
+	visibility:hidden;
+	background-color:white;
+	color:Black;
+	border:2px outset lightgray;
+	font-family:arial;
+	font-size:10pt;
+	cursor:pointer;
+}
+table.dynaMenu td
+{
+	padding-top:2pt;
+	padding-bottom:2pt;
+	padding-left:5pt;
+	padding-right:5pt;
+}
+td.dynaMenuI
+{
+	color:white;
+	background-color:#3399FF;
+}
+select.dynaMenu
+{
+	margin:0px;
+	padding:0px;
+	cursor:pointer;
+	overflow: hidden;
+	border-top-style: none;
+	border-right-style: none;
+	border-bottom-style: none;
+	border-left-style: none;
+	text-align: left;
+	background-color: transparent;
+	vertical-align:middle;
+}
+button.dynaButton
+{
+	cursor:inherit;
+	padding:0px;
+	border: none;
+}
+table.dynaButton {
+	margin:0px;
+	padding:0px;
+	border-collapse: collapse;
+	border:none;
+}
+tr.dynaButton {
+	border:none;
+	margin:0px;
+	padding:0px;
+	vertical-align:middle;
+}
+td.dynaButton {
+	border:none;
+	margin:0px;
+	padding:0px;
+	vertical-align:middle;
+	background-color: transparent;
+}
+.loginField {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #bbb;
+  margin: 2px 0px;
+  height: 24px;
+}
+.loginFieldShort {
+  width: 20%;
+}
+.loginFieldMedium {
+  width: 50%;
+}
+.loginFieldLong {
+  width: 95%;
+}
+.loginFieldInColumn 
+{
+	width: 90%;
+}
+.arcUserOptionRow 
+{
+	line-height:30px;
+}
+.arcUserOptionInput
+{
+	margin-left:5px;
+}
+.arcUserOptionLabel 
+{
+	margin-left:3px;
+	margin-right:15px;
+}
+.arcMsgBox 
+{
+    color: #fff;
+    font-family: "Segoe UI", Tahoma, Arial;
+	font-size: 13px;
+	font-weight: normal;
+}
+.arcMsgBox-banner 
+{
+    max-height: 1000px;
+    background-color: #009bdc;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 1s ease-out 0s;
+}
+.arcMsgBox-centerContent 
+{
+    margin: 0 auto;
+    max-width: 330px;
+    text-align: left;
+}
+.arcMsgBox-contentPanel
+{
+    min-height: 100px;
+    padding: 15px 0;
+}
+.arcMsgBox-contentPanel-openLink
+{
+	margin: 0 auto;
+    max-width: 330px;
+    text-align: center;
+    margin-top: 25px;
+}
+.arcMsgBox-caption
+{
+    font-size: 24px;
+    line-height: 24px;
+    margin-bottom: 6px;
+    margin-top: 0;
+    padding: 0;
+}
+.arcMsgBox-content 
+{
+    display: block;
+    padding: 5px 0px;
+    vertical-align: top;
+}
+.arcWordBreak 
+{
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto; 
+    text-align: left;
+}
+.arcMsgBox-buttonLine 
+{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+.arcMsgBox-button 
+{
+    background-color: #666;
+    border: 2px solid #fff;
+    color: #fff;
+    cursor: pointer;
+    min-width: 80px;
+    outline: 0 none;
+    padding: 3px 5px;
+    margin-left: 3px;
+    margin-right: 3px;
+    text-align: center;
+    vertical-align: middle;
+}
+.arcMsgBox-button:focus
+{
+	background-color:#CB6F0C;
+}
+.arcToolbarMargin
+{
+    margin-bottom: 15px;
+}
+.arcMsgBox-buttonHeight 
+{
+    height: 28px;
+    line-height: 18px;
+}
+.arcHier li > input
+{
+	position: absolute;
+	opacity: 0;
+	z-index: 1;
+}
+.arcHier li > input:not(:disabled)
+{
+	cursor: pointer;
+}
+.arcHier ul,
+.arcHier li
+{
+	padding: 0;
+	margin: 0;
+	list-style-type: none;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.arcHier ol
+{
+	display: inline-block;
+	list-style-type: none;
+	-webkit-padding-start: 0px; 
+	padding: 0;
+	margin: 0;
+	vertical-align: top;
+}
+.arcHier label > span::before
+{
+	margin-top: -2px;
+	margin-left: -16px;
+	width: 16px;
+	height: 10px;
+	content: "";
+	background-color: transparent;
+	white-space: nowrap;
+	vertical-align: top;
+	display: inline-block;
+	position: relative;
+}
+.arcHier input:checked + label > span::before
+{
+	background-image: url(../img/minus.png);
+	background-repeat: no-repeat;
+	background-position: 0px center;
+}
+.arcHier input:not(checked) + label > span::before
+{
+	background-image: url(../img/plus.png);
+	background-repeat: no-repeat;
+	background-position: 0px center;
+}
+.arcHier div {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}
+.arcHier label
+{
+	white-space: nowrap;
+	vertical-align: top;
+}
+.arcHier a
+{
+	color: inherit;
+	text-decoration: none;
+	white-space: nowrap;
+	overflow: visible;
+	display: inline-block;
+	vertical-align: top;
+}
+.arcHier label::before
+{
+	content: "";
+	width: 16px;
+	overflow: visible;
+	display: inline-block;
+	white-space: nowrap;
+}
+.arcHier span
+{
+	margin-right: 0px;
+	margin-bottom: 0px;
+	width: 0px;
+	height: 7px;
+	vertical-align: top;
+	background-color: #ffff00;
+	border-color: #000000;
+	border-width: 0px;
+	border-style: solid;
+	display: inline-block;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+	resize: none;
+	z-index: 0;
+}
+.arcHier ol > li ol li span
+{
+	background-color: #00ff00;
+}
+.arcHier ol > li ol ol li span
+{
+	background-color: #0000ff;
+}
+.arcHier ol > li ol ol ol li span
+{
+	background-color: #ff0000;
+}
+div.arcVert ul,
+div.arcVert ol
+{
+	width: 100%;
+}
+div.arcVert ul > li,
+div.arcVert ol > li
+{
+	padding-left: 3px;
+	width: 100%;
+}
+.arcVert input + label + ul,
+.arcVert input + label + ol + ul
+{
+	margin: 0 0 0 9px; 
+}
+.arcVert input ~ ul
+{
+	display: none;
+}
+.arcVertNoExp input ~ ul 
+{
+    display: block;
+}
+.arcVert a + ul,
+.arcVert a + ol + ul
+{
+	margin: 0 0 0 9px; 
+}
+.arcVert input:checked ~ ul
+{
+	display: block;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0)
+{
+	.arcVert 
+	{
+		-webkit-animation: webkit-adjacent-element-selector-bugfix infinite 1s;
+	}
+	
+	@-webkit-keyframes webkit-adjacent-element-selector-bugfix 
+	{
+		from 
+		{ 
+			padding: 0;
+		} 
+		to 
+		{ 
+			padding: 0;
+		}
+	}
+}
+.arcVert a::before
+{
+	content: "";
+	width: 16px;
+	float: left;
+	vertical-align: middle;
+}
+.arcHori ul {
+	height: 100%;
+	list-style-type: none;
+	position: relative;
+	text-align: left;
+}
+.arcHori ul li{
+	float: left;
+	list-style-type: none;
+	position: relative;
+	white-space: nowrap;
+	height: 100%;
+}
+.arcHori ol {
+	display: block;
+}
+.arcHori ol li {
+	float: left;
+	list-style-type: none;
+	position: relative;
+	white-space: nowrap;
+	height: 100%;
+}
+.arcHori ul li a,
+.arcHori ul li label {
+	margin-left: 0px;
+	margin-top: 0px;
+	text-decoration: none;
+}
+.arcHori ul li a 
+{
+	padding-left: 4px;
+}
+.arcHori label::before
+{
+	margin: 0 0px 0 0; 
+}
+.arcBox 
+{
+	border-color: inherit;
+}
+.arcBox label::before {
+	margin: 0 0px 0 0;  
+}
+.arcBox label
+{
+	background-color: rgba(255, 255, 255, 0);
+}
+.arcBox a::before
+{
+	margin: 0 0 0 0px;  
+	background: transparent;
+	width: 4px; 
+	float: left;
+	vertical-align: middle;
+}
+.arcVertBeside input:checked ~ ul 
+{
+	display: inline-block;
+}
+.arcLine li
+{
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-left-style: solid;
+	border-left-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-width: 0px;
+	border-right-style: solid;
+	border-right-width: 0px;
+}
+label.arcHier-selected,
+a.arcHier-selected
+{
+	background-color: #3399ff;
+	color: #ffffff;
+	display: inline-block;
+	padding-right: 200px;
+}
+div.arcHierPopupContent 
+{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	visibility: hidden;
+	overflow: hidden;
+	border-top: 1px solid #ddd;
+	border-left: 1px solid #ddd;
+	border-right: 1px solid #ddd;
+	-moz-user-select : none;
+	-khtml-user-select : none;
+	-webkit-user-select : none;
+	-o-user-select : none;
+	user-select : none;
+	display:none;
+	text-align:left;
+}
+.arcHierPopupContent ol
+{
+	display: block;
+}
+.arcHierPopupInnerDiv 
+{
+	margin-right:30px;
+}
+.arcHierPopupContent li > input:not(.arcHpCbox)
+{
+	position: relative;
+	left: 19px;
+	margin-top: -4px;
+	opacity: 0;
+}
+.arcHierPopupContent li > a
+{
+	left: 17px;
+	margin-right: 17px;
+	position: relative;
+}
+.arcHierPopupContent .arcHier label {
+	padding-right:17px;
+}
+.arcHierPopupContent label::before
+{
+	content: "";
+	margin-left: 4px;
+	width: 16px;
+	vertical-align: middle;
+}
+input.arcHpCbox:not(:checked) {
+	position: absolute;
+	left: 3px;
+	margin-top: 3px;
+	opacity: 0.3;	
+}
+input.arcHpCbox:checked {
+	position: absolute;
+	left: 3px;
+	margin-top: 3px;
+	opacity: 1;
+}
+div.arcHierPopup 
+{
+	background-color: transparent;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width:inherit;
+	height:inherit;
+	display: block;
+	padding-top: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-left: 0px;
+	background-image: url(../img/thumbsinglesel.png);
+	background-repeat: no-repeat;
+	background-position: right center;
+	overflow: hidden;
+}
+div.arcHierPopupMultisel
+{
+	background-image: url(../img/thumbmultisel.png);
+}
+div.arcHierPopupSelection 
+{
+	background-color: transparent;
+	position: relative;	
+	display: table-cell;
+	vertical-align: middle;	
+	padding-top: 0px;
+	padding-left: 0px;
+	margin-top: 0px;
+	margin-left: 0px;
+	width:inherit;
+	height:inherit;
+}
+div.arcHierPopupSelectionOverflowContainer 
+{
+	position: absolute;
+	overflow: hidden;
+	height:inherit;
+}
+input.arcHiddenSubtreeSelected:checked
+{
+	opacity: 0.5;	
+}
+input.arcHiddenSelected:checked
+{
+	opacity: 0;
+}
+.arcHierPopupDlgContainer {
+	border-style: none;
+	background-image: none;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 3px;
+}
+div.arcHierPopupDlg
+{
+	height: 30px;
+	width: 165px;
+	overflow: hidden;
+	margin-left:auto;
+}
+div.arcHierPopupDlg input[type="button"]
+{
+	-webkit-appearance: none;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	background-color: #f0f0f0;
+	border: 2px solid #9f9f9f;
+	color: #333;
+	cursor: pointer;
+	min-width: 70px;
+	outline: 0 none;
+	padding: 3px 5px;
+	margin-top: 3px;
+	margin-bottom: 5px;
+	margin-left: 3px;
+	margin-right: 3px;
+	text-align: center;
+	vertical-align: middle;
+	outline: 0px;
+	float: right;
+}
+div.arcHierPopupDlg input[type="button"]:disabled
+{
+	color: #a0a0a0;
+	border: 2px solid #bfbfbf;
+	background-color: #e0e0e0;
+	cursor: no-drop;
+}
+div.arcpopup 
+{
+	overflow: visible;
+	position: absolute;
+}
+div.arcpopup .arcHierPopupContent
+{
+	width: 100%;
+	display: block;
+	overflow-y: auto;
+	overflow-x: hidden;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	background-color: #FBFBFB;
+	color: #000000;
+	border: 1px solid #aaaaaa;
+}
+div.arcpopup li 
+{
+	font-family: 'Arial';
+	font-size: 10pt;
+	vertical-align: middle;
+}
+	
+div.arcpopup li:hover {
+	color: #FDFDFD;
+	background-color: #3399FF;
+}
+div.dynaMenu .arcHierPopupContent {
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.arcMenu {
+	line-height:30px;
+	width:100%;
+	text-align:left;
+}
+.arcMenuItem {
+	color: Black;
+	background-color:White;
+	white-space:nowrap;
+	cursor:pointer;
+	overflow: hidden; 
+}
+.arcPopupLine,
+.arcMenuItem:hover {
+	background-color:#3399FF;
+	color:#FFFFFF;
+}
+.arcMenu li > input {
+	cursor: pointer;
+}
+.arcMenu ul,
+.arcMenu li
+{
+	margin:0px;
+	padding: 0px;
+	list-style-type: none;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.arcMenuItem > div {
+	display:inline-block;
+}
+.arcMenuItem > div  span {
+	display:inline-block;
+}
+.arcMenuSelectionDiv {
+	width:24px;
+	margin-right:3px;
+}
+.arcMenuSelectionDiv input {
+	margin-left: 5px;
+	vertical-align: middle;
+}
+.arcMenuItemText {
+	padding-right: 17px;
+}
+.arcMenuSeparator 
+{
+	cursor: default;
+}
+.arcMenuSeparator:hover {
+	background-color: White;
+}
+li.arcMenuSeparator  {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+div.arcMenuSeparator {
+	margin-bottom: 4px;
+	border-top-color: black;
+	border-top-style: solid;
+	border-top-width: 1px;
+	width: 80%;
+	display: inline-block;
+}
+#arcFilterPanel {
+	background-color: #D3D3D3;
+	position: absolute;
+	height: 100%;
+	-webkit-transition: box-shadow 0.5s ease-out, margin-left 0.5s ease-out;
+	-moz-transition: box-shadow 0.5s ease-out, margin-left 0.5s ease-out;
+	-o-transition: box-shadow 0.5s ease-out, margin-left 0.5s ease-out;
+	transition: box-shadow 0.5s ease-out, margin-left 0.5s ease-out;
+	overflow-y:auto;
+}
+.arcFilterPanelNotPinned 
+{
+	box-shadow: 0px 0px 8px 4px RGBA(0,0,0,0.4);
+}
+.arcFilterPanelNotPinned .arcFilterPanel-pinImage 
+{
+	background-position-y: 0px;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);	
+}
+.arcFilterPanel-slidingLeftMargin {
+	-webkit-transition: margin-left 0.5s;
+	-moz-transition: margin-left 0.5s;
+	-o-transition: margin-left 0.5s;
+	transition: margin-left 0.5s;
+}
+.arcFilterPanel-button {
+	width: 30px;
+	height: 30px;
+	background-size: 90%;
+	background-position: center;
+	background-repeat: no-repeat;
+	outline:0px;
+	background-color: transparent;
+	border: 0;
+}
+.arcFilterPanel-toolbar {
+	width: 30px;
+	margin-right: 10px;
+	float: right;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 30px;
+}
+.arcFilterPanel-closeImage {
+	background-image: url(../img/filterPanel/close.svg);	
+}
+.arcFilterPanel-pinImage {
+	background-image: url(../img/filterPanel/pin.svg);
+	-webkit-transition: background-position-y 0.5s ease-out, -webkit-transform 0.5s ease-out;
+	-moz-transition: background-position-y 0.5s ease-out, -moz-transform 0.5s ease-out;
+	-o-transition: background-position-y 0.5s ease-out, -o-transform 0.5s ease-out;
+	-ms-transition: background-position-y 0.5s ease-out, -ms-transform 0.5s ease-out;
+	transition: background-position-y 0.5s ease-out, transform 0.5s ease-out;	
+	background-position-y: 6px;	
+}
+.arcFilterPanel-saveImage {
+	background-image: url(../img/filterPanel/save.svg);	
+}
+.disabled-image {
+	opacity: 0.4
+}
+.arcHide-scrollbar-vert ::-webkit-scrollbar:vertical {
+	width: 17px;
+}
+.arcHide-scrollbar-hori ::-webkit-scrollbar:horizontal {
+	width: 17px;
+}
+div.arcContainer {
+	z-index: 1;
+	background-color:transparent;
+	position: absolute;
+	width:100%;
+	height:100%;
+	left:0px;
+	top:0px;
+}
+#arcSplashScreen 
+{
+	z-index: 2;
+	background-color: inherit;
+	position: absolute;
+	display: table;
+}
+#arcSplashScreenImage
+{
+	display: table-cell;
+	background-image: url("../img/splashscreen2.png");
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	text-align: left;
+	color: White;
+	font-family: "Arial";
+	font-size: 13px;
+}
+#arcSplashScreenText
+{
+	display:none;	
+}
+#arcPopupObject
+{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+#arcPopupObject li 
+{
+	line-height: 30px;
+}
+div.objContainer {
+	position:absolute;
+	background-color:transparent;
+}
+div.objContainer div 
+{
+	
+	-ms-touch-action: pinch-zoom;
+}
+div.arcTdInnerDiv 
+{
+	display: inline;
+	text-align: inherit;
+	vertical-align: middle;
+	overflow: hidden;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+div.arcTdInnerDivFixedHeight
+{
+	display: block;
+	text-align: inherit;
+	overflow: hidden;
+	padding-left: 1px;
+	padding-right: 1px;
+}
+div.arcTdSingleLine
+{
+	white-space: nowrap;
+	display: block;
+}
+img.arcWaiting {
+	position:absolute;
+	left:47%;
+	top:47%;
+	width:6%;
+	visibility:hidden;
+	z-index: 100001;
+}
+div.arcWaiting 
+{
+	cursor: wait;
+}
+.arcRadioContent input 
+{ 
+	margin: 0px;
+	padding: 0px;
+	display: table-cell;
+	vertical-align: middle;
+	width: 17px;
+	overflow: visible;
+}
+.arcRadioContent label {
+	display: table-cell;
+	vertical-align: middle;
+	white-space: normal;
+}
+.arcRadioContent div {
+	display: table;
+	padding-left: 1px;
+	padding-top: 1px;
+	margin-bottom: 0.2em;
+	background-color: transparent;
+	overflow: visible;
+}
+.arcRadioContent div > div {
+	display: table-cell;
+	vertical-align: middle;
+}
+.arcRadioContent div > div + div {
+	display: table-cell;
+	position: relative;
+	top: 1px;
+	vertical-align: middle;
+	overflow: visible;
+}
+table.arcRadioHoriContent tr {
+	height: inherit;	
+}
+table.arcRadioHoriContent tr td {
+	line-height: 1.5em;
+	padding-bottom: 0.3em;
+	vertical-align: middle;
+	height: 100%;
+}
+table.arcRadioHoriContent tr td nobr 
+{
+	vertical-align: middle;
+}
+table.arcRadioHoriContent tr td input 
+{
+	display: inline;
+	vertical-align: middle;
+	margin: 0px;
+	padding: 0px;
+	overflow: visible;
+}
+table.arcRadioHoriContent tr td label 
+{
+	display: inline;
+	position: relative;
+	top: 1px;
+	padding-left: 3px;
+	padding-right: 2px;
+	display: inline;
+	white-space: nowrap;
+}
+table.arcHideHoriGrid td 
+{
+	border-bottom-width:0px;
+	margin-bottom:1px;
+}
+table.arcShowHoriGrid td 
+{
+	border-bottom-width:1px;
+	margin-bottom:0px;
+}
+table.arcHideVertGrid td 
+{
+	border-right-width:0px;
+	padding-right: 1px;
+}
+table.arcShowVertGrid td 
+{
+	border-right-width:1px;
+	margin-right:0px;
+}
+#arcError {
+	background-color: #ffffff;
+	border-style: solid;
+	border-width: 1px;
+	margin: 5px;
+	padding: 5px;
+	position: absolute;
+	z-index: 100002;
+}
+.arcClickable label {
+	cursor: pointer;
+}
+.arcClickable {
+	cursor: pointer;
+}
+@keyframes arcClickedAnimation {
+	50% { transform: translate(1px) scale(0.99)}
+	100% { transform: translate(0px) scale(1)}
+}
+@-moz-keyframes arcClickedAnimation {
+	50% { -moz-transform: translate(1px) scale(0.99)}
+	100% { -moz-transform: translate(0px) scale(1)}
+}
+@-webkit-keyframes arcClickedAnimation {
+	50% { -webkit-transform: translate(1px) scale(0.99) }
+	100% { -webkit-transform: translate(0px) scale(1) }
+}
+.arcClicked
+{
+	-webkit-animation: arcClickedAnimation 0.5s 1 ease-in-out;
+	-moz-animation: arcClickedAnimation 0.5s 1 ease-in-out;
+	animation: arcClickedAnimation 0.5s 1 ease-in-out;
+	background-color: #F0F0F0 !important;
+	color: #666666 !important;
+	opacity: 0.5 !important;
+	-moz-box-shadow: 0 0 6px #888888, 0 0 10px #888888 inset;
+	-webkit-box-shadow: 0 0 6px #888888, 0 0 10px #888888 inset;
+	box-shadow: 0 0 6px #888888, 0 0 10px #888888 inset;
+	visibility: visible !important;
+}
+input.arcClicked
+{
+	opacity: 0 !important;
+}
+input.arcClicked + label > span::before
+{
+	-webkit-animation: arcClickedAnimation 0.5s 1 ease-in-out;
+	-moz-animation: arcClickedAnimation 0.5s 1 ease-in-out;
+	animation: arcClickedAnimation 0.5s 1 ease-in-out;
+	-moz-box-shadow: 0 0 6px #888888, 0 0 10px #888888 inset;
+	-webkit-box-shadow: 0 0 6px #888888, 0 0 10px #888888 inset;
+	box-shadow: 0 0 6px #888888, 0 0 10px #888888 inset;
+	border-radius: 4px;
+}
+#arcContainer div {
+	-webkit-tap-highlight-color: rgba(255, 255, 255, 0); 
+}
+#arcContainer  input {
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0.3); 
+}
+#arcTextInput {
+	position: absolute;
+	z-index: 89000;
+	margin: 0px;
+	padding: 0px;
+	border: 1px solid #CB6F0C;
+}
+#arcContainer option {
+	height: 1.9em;
+}
+#scroller {
+	position:absolute;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	padding: 0;
+	-webkit-transition-property: -webkit-transform;
+	-webkit-transform-origin-x: 0px;
+	-webkit-transform-origin-y: 0px;
+	-webkit-transform: translate3d(0px, 0px, 0px);
+	-webkit-transition-duration: 0ms;
+}
+#wrapper {
+	position:absolute;
+	overflow:auto;
+}
+#arcLoadingContainer 
+{
+	width: 60px;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: url("../img/t50.png");
+	background-repeat: repeat;
+	border: 4px solid #eee;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-o-border-radius: 15px;
+	-ms-border-radius: 15px;
+	padding: 15px;
+}
+.arcLoadingImage {
+	width: 60px;
+	height: 60px;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: 60px 60px;
+	background-image: url("../img/loading.gif");
+}
+div.arcDialogDoc-overlay 
+{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	display: block;
+	width: 100%;
+	height: 100%;
+	opacity: 0.4;
+	background-color: #000000;
+}
+input.arcPassword
+{
+	width: 100%;
+	height: 100%;    
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    background-color: inherit;
+    text-decoration: inherit;
+	border: none;
+}
+.arcOuterDocContainerForWidgetHosting
+{
+	position: absolute;
+	height: 100%;
+	width:100%;
+	display:table;
+}
+.arcVerticalCenteredForWidgetHosting
+{
+	display:table-cell; 
+	vertical-align:middle
+}
+.arcInnerDocContainerForWidgetHosting
+{
+	position: relative;
+	margin-left: auto;
+	margin-right:auto;
+	overflow:hidden;
+}
+#arcDialogCenter {
+	position:absolute;
+	width:100%;
+	height:100%;
+	left:0px;
+	top:0px;
+}
+div.arcDialogCenterOuter {
+	position:relative;
+	display: table;
+	width: 100%;
+	height:100%;
+}
+.arcVerticalCentered
+{
+	display:table-cell; 
+	vertical-align:middle
+}
+.arcHorizontalCentered
+{
+	position: relative;
+	margin-left: auto;
+	margin-right:auto;
+}
+select.arcPopupContent 
+{
+	position:absolute;
+	opacity:0;
+}
+img.arcLinkImage
+{
+	display:block;
+	margin-left: auto;
+	margin-right:auto;
+	border:0;
+}
+.arcIETransparentBackgroundFix
+{
+	background-color:#ffffff;
+	opacity:0.01;
+	filter:alpha(opacity=1);
+	width:100%;
+	height:100%;
+	position:absolute;
+	left:0px;
+	top:0px;
+}
+.arcNoUserSelect {
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+}

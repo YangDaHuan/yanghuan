@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.solidextend.sys.moduleFun.dao.ModuleFunMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.moduleFun.vo.ModuleFun">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="FUN_CODE" property="funCode" jdbcType="VARCHAR" />
+		<result column="FUN_NAME" property="funName" jdbcType="VARCHAR" />
+		<result column="FUN_GROUP_CODE" property="funGroupCode"
+			jdbcType="VARCHAR" />
+		<result column="DICT_CODE" property="dictCode" jdbcType="VARCHAR" />
+		<result column="ORDER_NO" property="orderNo" jdbcType="DECIMAL" />
+	</resultMap>
+
+	<select id="selectModuleFunListByGroupCode" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT * FROM SYS_MODULE_FUN WHERE FUN_GROUP_CODE = #{id,jdbcType=VARCHAR}
+		ORDER BY ORDER_NO
+	</select>
+	<select id="selectModuleFunByCode" resultMap="BaseResultMap">
+
+		SELECT *
+		FROM SYS_MODULE_FUN
+		WHERE
+		<if test="id != null and id!=''">
+	  	<![CDATA[
+	  		ID <> #{id,jdbcType=VARCHAR} AND 
+	  	]]>
+		</if>
+		FUN_CODE = #{code,jdbcType=VARCHAR} ORDER BY ORDER_NO
+
+	</select>
+	<select id="selectModuleFunByName" resultMap="BaseResultMap">
+
+		SELECT *
+		FROM SYS_MODULE_FUN
+		WHERE
+		<if test="id != null and id!=''">
+	  	<![CDATA[
+	  		ID <> #{id,jdbcType=VARCHAR} AND 
+	  	]]>
+		</if>
+		FUN_NAME = #{name,jdbcType=VARCHAR} ORDER BY ORDER_NO
+
+	</select>
+
+	<insert id="insertModuleFun" parameterType="com.solidextend.sys.moduleFun.vo.ModuleFun">
+
+		INSERT INTO SYS_MODULE_FUN
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="funGroupCode != null">
+				Fun_Group_Code,
+			</if>
+			<if test="funCode != null">
+				Fun_Code,
+			</if>
+			<if test="funName != null">
+				FUN_NAME,
+			</if>
+			<if test="orderNo != null">
+				ORDER_NO,
+			</if>
+			<if test="dictCode != null">
+				DICT_CODE,
+			</if>
+
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="funGroupCode != null">
+				#{funGroupCode,jdbcType=VARCHAR},
+			</if>
+			<if test="funCode != null">
+				#{funCode,jdbcType=VARCHAR},
+			</if>
+			<if test="funName != null">
+				#{funName,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="dictCode != null">
+				#{dictCode,jdbcType=VARCHAR},
+			</if>
+
+		</trim>
+	</insert>
+
+	<update id="updateModuleFun" parameterType="com.solidextend.sys.moduleFun.vo.ModuleFun">
+
+		UPDATE SYS_MODULE_FUN
+		<set>
+			<if test="funCode != null">
+				Fun_Code=#{funCode,jdbcType=VARCHAR},
+			</if>
+			<if test="funName != null">
+				FUN_NAME=#{funName,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null">
+				ORDER_NO=#{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="dictCode != null">
+				DICT_CODE=#{dictCode,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE ID=#{id,jdbcType=VARCHAR}
+
+	</update>
+	<delete id="deleteModuleFunByCode" parameterType="String">
+		delete sys_module_fun where fun_code=#{funCode,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteModuleFunByGroupCode" parameterType="String">
+		delete sys_module_fun where fun_group_code=#{groupCode,jdbcType=VARCHAR}
+	</delete>
+</mapper>

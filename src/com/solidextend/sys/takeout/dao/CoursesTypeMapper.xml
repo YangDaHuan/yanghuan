@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.takeout.dao.CoursesTypeMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.takeout.vo.CoursesTypeVO">
+        <id column="COURSES_TYPE_ID" jdbcType="INTEGER" property="coursesTypeId"/>
+        <result column="COURSES_TYPE_NAME" jdbcType="VARCHAR" property="coursesTypeName"/>
+        <result column="COURSES_TYPE_DESC" jdbcType="VARCHAR" property="coursesTypeDesc"/>
+        <result column="USER_ID" jdbcType="INTEGER" property="userId"/>
+        <result column="CREATED_BY" jdbcType="INTEGER" property="createdBy"/>
+        <result column="CREATED_DATE" jdbcType="VARCHAR" property="createdDate"/>
+        <result column="LAST_UPDATE_BY" jdbcType="INTEGER" property="lastUpdateBy"/>
+        <result column="LAST_UPDATE_DATE" jdbcType="DATE" property="lastUpdateDate"/>
+    </resultMap>
+    <select id="getCoursesTypeById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_courses_type
+        WHERE            
+            COURSES_TYPE_ID = #{coursesTypeId,jdbcType=NUMERIC}
+    </select>
+    
+    <select id="findAllCoursesType" resultMap="BaseResultMap">
+          SELECT * FROM biz_courses_type 
+    </select>
+    
+     <select id="findByCoursesType" resultMap="BaseResultMap">
+          SELECT * FROM biz_courses_type 
+          where 1=1 
+          <if test="coursesTypeName != null and coursesTypeName != ''" >
+                AND COURSES_TYPE_NAME = #{coursesTypeName,jdbcType=VARCHAR}
+            </if>
+    </select>
+    
+      <select id="findByCoursesTypeCount" resultType="int" >
+          SELECT count(*) FROM biz_courses_type 
+          where 1=1 
+          <if test="coursesTypeName != null and coursesTypeName != ''" >
+                AND COURSES_TYPE_NAME = #{coursesTypeName,jdbcType=VARCHAR}
+            </if>
+    </select>
+
+    <delete id="deleteCoursesType">
+        DELETE
+        FROM
+             biz_courses_type
+        WHERE 
+            COURSES_TYPE_ID = #{coursesTypeId,jdbcType=NUMERIC}
+    </delete>
+
+    <insert id="saveCoursesType" parameterType="com.solidextend.sys.takeout.vo.CoursesTypeVO" >
+        INSERT INTO biz_courses_type(
+        	COURSES_TYPE_NAME,
+        	COURSES_TYPE_DESC,
+        	USER_ID,
+        	CREATED_BY,
+        	CREATED_DATE,
+        	LAST_UPDATE_BY,
+        	LAST_UPDATE_DATE
+        )values(
+        	#{coursesTypeName,jdbcType=VARCHAR},
+        	#{coursesTypeDesc,jdbcType=VARCHAR},
+        	#{userId,jdbcType=NUMERIC},
+        	#{userId,jdbcType=NUMERIC},
+        	NOW(),
+        	#{userId,jdbcType=NUMERIC},
+        	NOW()
+        )
+    </insert>
+
+    <update id="updateCoursesType" parameterType="com.solidextend.sys.takeout.vo.CoursesTypeVO" >
+        UPDATE biz_courses_type
+        set COURSES_TYPE_NAME = #{coursesTypeName,jdbcType=VARCHAR},
+        	COURSES_TYPE_DESC = #{coursesTypeDesc,jdbcType=VARCHAR},
+        	USER_ID = #{userId,jdbcType=VARCHAR},
+        	LAST_UPDATE_BY = #{userId,jdbcType=VARCHAR},
+        	LAST_UPDATE_DATE = NOW()
+        WHERE 
+            COURSES_TYPE_ID = #{coursesTypeId,jdbcType=NUMERIC}
+    </update>
+</mapper>

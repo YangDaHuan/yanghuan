@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.dashboard.dao.DashboardMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.dashboard.vo.Dashboard">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="LOGIN_NAME" jdbcType="VARCHAR" property="loginName" />
+		<collection column="WIDGETID" property="widgets" javaType="ArrayList"
+			ofType="com.solidextend.sys.dashboard.vo.Widget">
+			<id column="WIDGET_ID" jdbcType="VARCHAR" property="id" />
+			<result column="WIDGET_NAME" jdbcType="VARCHAR" property="name" />
+			<result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+			<result column="SOURCE" jdbcType="VARCHAR" property="source" />
+			<result column="TYPE" jdbcType="VARCHAR" property="type" />
+			<result column="WIDTH" jdbcType="INTEGER" property="width" />
+			<result column="HEIGHT" jdbcType="INTEGER" property="height" />
+			<result column="SORT" jdbcType="INTEGER" property="sort" />
+		</collection>
+	</resultMap>
+	<select id="getDashboardById" resultMap="BaseResultMap">
+
+		SELECT
+		D.ID,D.NAME,D.LOGIN_NAME,W.ID AS WIDGET_ID,W.NAME AS
+		WIDGET_NAME,W.GROUP_NAME,W.SOURCE,W.TYPE,W.WIDTH,W.HEIGHT
+		FROM
+		SYS_DASHBOARD D LEFT JOIN SYS_WIDGET W ON D.ID=W.DASHBOARD_ID
+		WHERE
+		D.ID = #{id,jdbcType=VARCHAR}
+		ORDER BY W.SORT
+	</select>
+
+	<select id="getDashboardByName" resultMap="BaseResultMap">
+		SELECT * FROM SYS_DASHBOARD
+		WHERE
+		NAME = #{name,jdbcType=VARCHAR} and
+		LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAllDashboard" resultMap="BaseResultMap">
+		SELECT * FROM SYS_DASHBOARD
+		WHERE
+		LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+		ORDER BY NAME
+	</select>
+
+	<delete id="deleteDashboard">
+		DELETE
+		FROM
+		SYS_DASHBOARD
+		WHERE
+		ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="saveDashboard" parameterType="com.solidextend.sys.dashboard.vo.Dashboard">
+		INSERT INTO SYS_DASHBOARD
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+			<if test="loginName != null">
+				LOGIN_NAME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="loginName != null">
+				#{loginName,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateDashboard" parameterType="com.solidextend.sys.dashboard.vo.Dashboard">
+		UPDATE SYS_DASHBOARD
+		<set>
+			<if test="id != null">
+				ID = #{id,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="loginName != null">
+				LOGIN_NAME = #{loginName,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE
+		ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="shortcut icon" type="image/x-icon" href="zebone.ico" />
+<link rel="stylesheet" type="text/css" href="themes/default/main.css" />
+<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="themes/icon.css" />
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/easyui-ext.js"></script>
+<style type="text/css">
+html, body {
+	height: auto;
+}
+</style>
+<script type="text/javascript">
+//新建
+var showForm=function(){
+	$('#dlg').dialog({
+	    title: '编辑',
+	    width: 500,
+	    height: 300,
+	    closed: false,
+	    cache: false,
+	    modal: true,
+	    onClose:function(){
+	    	$('#form').form('reset')
+	    },
+	    buttons:[{
+		text:'保存',
+			handler:function(){
+				$('#form').form('validate');
+				//$('#dlg').dialog('close');
+			}
+		},{
+			text:'取消',
+			handler:function(){
+				$('#dlg').dialog('close');
+			}
+		}]
+    });
+}
+//获取行号
+function getRowIndex(target){
+	var id = $(target).closest('tr.datagrid-row').find('td:first').find('input').val();
+	var index = $(target).closest('tr.datagrid-row').attr('datagrid-row-index');
+	return {id:id,index:index};
+}
+//修改
+var editRow=function(target){
+	var id=getRowIndex(target);
+	showForm();
+	//获取数据
+	//表单赋值
+	$('#form').form('load', 'form_data1.json');
+}
+//删除一行
+var deleteRow=function(target){
+	var id=getRowIndex(target);
+}
+//删除多行
+var deleteRows=function(){
+	var ids = [];
+    var rows = $('#dg').datagrid('getSelections');
+    if(rows.length==0){
+    	tip("请选择数据进行删除");return;
+    }
+    //获取datagrid选中行
+    for (var i = 0; i < rows.length; i++) {
+         //获取自定义table 的中的checkbox值
+         ids.push(rows[i].productid);
+    }
+    //执行删除
+    $.messager.confirm('警告','确认删除所选信息吗?',function(r){
+	    if (r){
+	        $.ajax({
+				url: 'aa',
+				type: 'post',
+				data: "id="+ids.join(','),
+				success:  function(res){
+					if(res=='ok') $.messager.alert('提示',"删除成功。");
+					else $.messager.alert('提示',"删除失败。");
+					$('#dg').datagrid("load");
+					$('#dictTree').tree("reload");						
+				}
+			});
+	    }
+	});
+}
+var formatter=function(val,row){
+    var s =  ' <a class="Edit_Button" href="javascript:void(0);" onclick="editRow(this)">编辑</a>';
+    s+=' <a class="Edit_Button" href="javascript:void(0);" onclick="deleteRow(this)">删除</a>';
+    return s;
+}
+//搜索
+var searchGrid=function(){
+	$('#dg').datagrid('load', {
+	    name: $('#name').val()
+	});
+}
+$(function(){
+	//tree
+	$('#tt').tree({
+		url: 'organ/tree.zb',
+		parentField:"pid",
+		onClick:function(node){
+			$('#dg').datagrid('load', {
+			    id: node.id
+			});
+		}
+	});
+	//grid初始化
+	$('#dg').datagrid({
+		height:$(this).height(),
+	    url:'datagrid_data1.json',
+	    idField: 'productid',
+	    pagination:true,
+		pageSize:10,
+		toolbar: '#tb',
+	    columns:[[
+	    	{halign:'center',field:'productid',title:'ID',checkbox:true},
+	        {halign:'center',field:'productname',title:'姓名',width:100},
+	        {halign:'center',field:'status',title:'性别',width:100},
+	        {halign:'center',field:'price',title:'职务',width:100,align:'right'},
+	        {halign:'center',field:'price',title:'手机',width:100,align:'right'},
+	        {halign:'center',field:'price',title:'email',width:100,align:'right'},
+	        {halign:'center',field:'itemid',title:'操作',width:80,checkbox:false,formatter:formatter,align:'center'},
+	    ]]
+	});
+});
+</script>
+</head>
+<body class="easyui-layout">
+	<!--left-->
+	<div data-options="region:'west',border:false" style="width: 215px;">
+		<div class="j-panel j-panel-radius j-panel-nohead"
+			style="height: 98%; margin: 0 5px;">
+			<ul id="tt"></ul>
+		</div>
+	</div>
+	<!--right-->
+	<div data-options="region:'center',border:false">
+		<!-- 按钮栏 -->
+		<div id="tb" style="height: auto">
+			<a href="javascript:void(0)" class="easyui-linkbutton"
+				data-options="iconCls:'icon-add',plain:true" onclick="showForm()">添加</a>
+			<a href="javascript:void(0)" class="easyui-linkbutton"
+				data-options="iconCls:'icon-del',plain:true" onclick="deleteRows()">删除</a>
+			<table style="float: right; margin-top: -2px;">
+				<tr>
+					<td>姓名</td>
+					<td><input type="text" id="name" name="name" /></td>
+					<td><a href="javascript:void(0)" class="easyui-linkbutton"
+						data-options="iconCls:'icon-search',plain:true"
+						onclick="searchGrid()">搜索</a></td>
+				</tr>
+			</table>
+		</div>
+		<table id="dg"></table>
+		<!-- 弹出窗口 -->
+		<div style="display: none;">
+			<div id="dlg">
+				<form id="form" action="">
+					<table style="margin: 0 auto;">
+						<tr>
+							<td>姓名：</td>
+							<td><input type="text" name="name"
+								data-options="required:true" class="easyui-validatebox" /></td>
+							<td>性别：</td>
+							<td><input type="radio" name="sex" value="1" checked />男 <input
+								type="radio" name="sex" value="0" />女</td>
+						</tr>
+						<tr>
+							<td>职务：</td>
+							<td><input type="text" name="" class="easyui-validatebox" /></td>
+							<td>所属机构：</td>
+							<td><input id="org" class="easyui-combotree" name="org"
+								data-options="url:'organ/tree.zb',method:'get',required:true"
+								style="width: 140px;"></td>
+						</tr>
+						<tr>
+							<td>电话：</td>
+							<td><input type="text" name="" class="easyui-validatebox" /></td>
+							<td>手机：</td>
+							<td><input type="text" name="" class="easyui-validatebox" /></td>
+
+						</tr>
+						<tr>
+							<td>email：</td>
+							<td><input type="text" name="" class="easyui-validatebox" /></td>
+							<td>出生日期：</td>
+							<td><input type="text" name="" class="easyui-validatebox" /></td>
+						</tr>
+						<tr>
+							<td>是否停用：</td>
+							<td colspan="3"><input type="radio" name="stop" value="1" />是
+								<input type="radio" name="stop" value="0" checked />否</td>
+						</tr>
+						<tr>
+							<td>备注：</td>
+							<td colspan="3"><textarea rows="4" cols="60"></textarea></td>
+						</tr>
+						<tr>
+							<td>备注2：</td>
+							<td colspan="3"><input type="checkbox" name="test" value="1"
+								class="easyui-validatebox" validType="checkbox['test','1','3']" />1
+								<input type="checkbox" name="test" value="2" />2 <input
+								type="checkbox" name="test" value="3" />3</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+
+	</div>
+</body>
+</html>

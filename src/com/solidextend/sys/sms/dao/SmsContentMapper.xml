@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.solidextend.sys.sms.dao.SmsContentMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.sms.vo.SmsContent">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="CONTENT" property="content" jdbcType="VARCHAR" />
+		<result column="SENDER_ID" property="senderId" jdbcType="VARCHAR" />
+		<result column="SENDER_NAME" property="senderName" jdbcType="VARCHAR" />
+		<result column="SMS_MODULE_ID" property="smsModuleId" jdbcType="VARCHAR" />
+		<result column="SMS_MODULE_NAME" property="smsModuleName"
+			jdbcType="VARCHAR" />
+		<result column="SEND_TIME" property="sendTime" jdbcType="VARCHAR" />
+		<result column="START_TIME" property="startTime" jdbcType="VARCHAR" />
+		<result column="END_TIME" property="endTime" jdbcType="VARCHAR" />
+		<result column="SMS_TYPE" property="smsType" jdbcType="CHAR" />
+		<result column="MOBILE_NUM" property="mobileNum" jdbcType="CLOB" />
+	</resultMap>
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select * from SYS_SMS_CONTENT where ID = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from SYS_SMS_CONTENT where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.solidextend.sys.sms.vo.SmsContent">
+		insert into SYS_SMS_CONTENT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="content != null">
+				CONTENT,
+			</if>
+			<if test="senderId != null">
+				SENDER_ID,
+			</if>
+			<if test="senderName != null">
+				SENDER_NAME,
+			</if>
+			<if test="smsModuleId != null">
+				SMS_MODULE_ID,
+			</if>
+			<if test="sendTime != null">
+				SEND_TIME,
+			</if>
+			<if test="smsType != null">
+				SMS_TYPE,
+			</if>
+			<if test="mobileNum != null">
+				MOBILE_NUM,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=VARCHAR},
+			</if>
+			<if test="senderId != null">
+				#{senderId,jdbcType=VARCHAR},
+			</if>
+			<if test="senderName != null">
+				#{senderName,jdbcType=VARCHAR},
+			</if>
+			<if test="smsModuleId != null">
+				#{smsModuleId,jdbcType=VARCHAR},
+			</if>
+			<if test="sendTime != null">
+				#{sendTime,jdbcType=VARCHAR},
+			</if>
+			<if test="smsType != null">
+				#{smsType,jdbcType=CHAR},
+			</if>
+			<if test="mobileNum != null">
+				#{mobileNum,jdbcType=CLOB},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateById" parameterType="com.solidextend.sys.sms.vo.SmsContent">
+		update SYS_SMS_CONTENT
+		<set>
+			<if test="content != null">
+				CONTENT = #{content,jdbcType=VARCHAR},
+			</if>
+			<if test="senderId != null">
+				SENDER_ID = #{senderId,jdbcType=VARCHAR},
+			</if>
+			<if test="senderName != null">
+				SENDER_NAME = #{senderName,jdbcType=VARCHAR},
+			</if>
+			<if test="smsModuleId != null">
+				SMS_MODULE_ID = #{smsModuleId,jdbcType=VARCHAR},
+			</if>
+			<if test="sendTime != null">
+				SEND_TIME = #{sendTime,jdbcType=VARCHAR},
+			</if>
+			<if test="smsType != null">
+				SMS_TYPE = #{smsType,jdbcType=CHAR},
+			</if>
+			<if test="mobileNum != null">
+				MOBILE_NUM = #{mobileNum,jdbcType=CLOB},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<select id="count" parameterType="com.solidextend.sys.sms.vo.SmsContent"
+		resultType="int">
+		SELECT COUNT(1) FROM SYS_SMS_CONTENT A LEFT OUTER JOIN SYS_DICT_ITEM B
+		ON A.SMS_MODULE_ID=B.ID
+		<where>
+			<if test="senderName != null and senderName != '' ">
+				A.SENDER_NAME LIKE #{senderName,jdbcType=VARCHAR}
+			</if>
+			<if test="smsModuleName != null and smsModuleName != '' ">
+				AND B.ITEM_NAME LIKE #{smsModuleName,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime != null and startTime != ''">
+      <![CDATA[
+      	AND SEND_TIME >= #{startTime,jdbcType=VARCHAR}
+      	]]>
+			</if>
+			<if test="endTime!=null and endTime!= '' ">
+      <![CDATA[
+      	AND SEND_TIME <= #{endTime,jdbcType=VARCHAR}
+      	]]>
+			</if>
+		</where>
+	</select>
+	<select id="select" parameterType="com.solidextend.sys.sms.vo.SmsContent"
+		resultMap="BaseResultMap">
+		SELECT A.ID, A.SEND_TIME, A.SENDER_NAME, B.ITEM_NAME AS
+		SMS_MODULE_NAME , A.MOBILE_NUM, A.CONTENT FROM SYS_SMS_CONTENT A
+		LEFT OUTER JOIN SYS_DICT_ITEM B ON A.SMS_MODULE_ID=B.ID
+		<where>
+			<if test="senderName != null and senderName != '' ">
+				A.SENDER_NAME LIKE #{senderName,jdbcType=VARCHAR}
+			</if>
+			<if test="smsModuleName != null and smsModuleName != '' ">
+				AND B.ITEM_NAME LIKE #{smsModuleName,jdbcType=VARCHAR}
+			</if>
+			<if test="startTime != null and startTime != ''">
+      <![CDATA[
+      	AND SEND_TIME >= #{startTime,jdbcType=VARCHAR}
+      	]]>
+			</if>
+			<if test="endTime!=null and endTime!= '' ">
+      <![CDATA[
+      	AND SEND_TIME <= #{endTime,jdbcType=VARCHAR}
+      	]]>
+			</if>
+		</where>
+		ORDER BY A.SEND_TIME DESC
+	</select>
+</mapper>

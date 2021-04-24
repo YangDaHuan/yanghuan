@@ -1,0 +1,99 @@
+package com.solidextend.sys.ticket.service;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+
+import com.solidextend.sys.ticket.vo.BizTicketDeploy;
+import com.solidextend.sys.ticket.vo.BizTicketDeployDetail;
+import com.solidextend.sys.ticket.vo.BizTicketOut;
+import com.solidextend.sys.ticket.vo.BizTicketOutDetail;
+import com.solidextend.sys.security.UserDetails;
+import com.solidextend.sys.ticket.dao.BizTicketDepolyDetailMapper;
+import com.solidextend.sys.ticket.dao.BizTicketOutDetailMapper;
+import com.solidextend.sys.ticket.dao.BizTicketOutMapper;
+import javax.annotation.Resource;
+
+import org.apache.shiro.SecurityUtils;
+import org.springframework.stereotype.Service;
+import com.solidextend.core.util.Identities;
+
+/**
+ * TODO
+ * @author 
+ */
+@Service
+public class BizTicketOutServiceImpl implements BizTicketOutService{   
+
+	@Resource
+	private BizTicketOutMapper bizTicketOutMapper;
+	@Resource
+	private BizTicketOutDetailMapper bizTicketOutDetailMapper;
+	
+	/**
+     * 根据主键查询
+     */
+    @Override
+    public BizTicketOut getBizTicketOutById(String outId){
+    	return bizTicketOutMapper.getBizTicketOutById(outId);
+    } 
+
+    /**
+     * 查询出所有记录
+     */
+    @Override
+    public List<BizTicketOut> findAllBizTicketOut(){
+    	return bizTicketOutMapper.findAllBizTicketOut();
+	}  
+    
+    /**
+     * 查询出所有符合条件的记录
+     */
+    @Override
+    public List<BizTicketOut> findByAttrBizTicketOut(BizTicketOut bizTicketOut){
+    	return bizTicketOutMapper.findByAttrBizTicketOut(bizTicketOut);
+    }    
+    
+    /**
+     * 保存
+     */
+    @Override
+    public boolean saveBizTicketOut(BizTicketOut bizTicketOut,boolean saveDetail){
+    	boolean isInsert=false;
+            if(bizTicketOut.getOutId()==null||"".equals(bizTicketOut.getOutId())){
+            	isInsert=true;
+            }
+        
+        if(isInsert){
+        	String setOutId=Identities.uuid();
+        	bizTicketOut.setOutId(setOutId);
+        	bizTicketOut.setOutDate(new Timestamp(new Date().getTime()));
+	    	UserDetails userDetails = (UserDetails) SecurityUtils.getSubject().getPrincipal();
+	    	bizTicketOut.setOperator(userDetails.getId());
+	    	bizTicketOutMapper.saveBizTicketOut(bizTicketOut);
+	    	List<BizTicketOutDetail> details=bizTicketOut.getDetails();
+	    	for(int i=0;i<details.size();i++){
+	    		BizTicketOutDetail bizTicketOutDetail=details.get(i);
+	    		bizTicketOutDetail.setOutDetailId(Identities.uuid());
+	    		bizTicketOutDetail.setOutId(setOutId);
+	    		bizTicketOutDetailMapper.saveBizTicketOutDetail(bizTicketOutDetail);
+	    	}
+        }else{
+        	bizTicketOutMapper.updateBizTicketOut(bizTicketOut);
+        }
+    	return true;
+    }
+    
+    /**
+     * 根据主键删除
+     */
+    @Override
+    public int deleteBizTicketOut(String[] outId){
+    	int i;
+    	for(i=0;i<outId.length;i++){
+    		bizTicketOutMapper.deleteBizTicketOut(outId[i]);
+    	}
+    	return i;
+    }
+}
+

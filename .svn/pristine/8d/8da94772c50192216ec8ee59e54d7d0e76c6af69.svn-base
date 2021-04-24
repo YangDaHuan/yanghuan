@@ -1,0 +1,75 @@
+package com.solidextend.sys.ticket.service;
+
+import java.util.List;
+import com.solidextend.sys.ticket.vo.BizTicketIn;
+import com.solidextend.sys.ticket.dao.BizTicketInMapper;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
+import com.solidextend.core.util.Identities;
+
+/**
+ * TODO
+ * @author 
+ */
+@Service
+public class BizTicketInServiceImpl implements BizTicketInService{   
+
+	@Resource
+	private BizTicketInMapper bizTicketInMapper;
+	
+	/**
+     * 根据主键查询
+     */
+    @Override
+    public BizTicketIn getBizTicketInById(String inId){
+    	return bizTicketInMapper.getBizTicketInById(inId);
+    } 
+
+    /**
+     * 查询出所有记录
+     */
+    @Override
+    public List<BizTicketIn> findAllBizTicketIn(){
+    	return bizTicketInMapper.findAllBizTicketIn();
+	}  
+    
+    /**
+     * 查询出所有符合条件的记录
+     */
+    @Override
+    public List<BizTicketIn> findByAttrBizTicketIn(BizTicketIn bizTicketIn){
+    	return bizTicketInMapper.findByAttrBizTicketIn(bizTicketIn);
+    }    
+    
+    /**
+     * 保存
+     */
+    @Override
+    public int saveBizTicketIn(BizTicketIn bizTicketIn){
+    	boolean isInsert=false;
+            if(bizTicketIn.getInId()==null||"".equals(bizTicketIn.getInId())){
+            	isInsert=true;
+            }
+        
+        if(isInsert){
+        	bizTicketIn.setInId(Identities.uuid());
+        	return bizTicketInMapper.saveBizTicketIn(bizTicketIn);
+        }else{
+        	return bizTicketInMapper.updateBizTicketIn(bizTicketIn);
+        }
+    	
+    }
+    
+    /**
+     * 根据主键删除
+     */
+    @Override
+    public int deleteBizTicketIn(String[] inId){
+    	int i;
+    	for(i=0;i<inId.length;i++){
+    		bizTicketInMapper.deleteBizTicketIn(inId[i]);
+    	}
+    	return i;
+    }
+}
+

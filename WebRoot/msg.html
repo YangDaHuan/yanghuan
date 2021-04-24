@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="themes/default/main.css" />
+<link rel="stylesheet" type="text/css" href="themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<style type="text/css">
+</style>
+</head>
+<body style="background: #fff;">
+	<!-- 查询表单 -->
+	<form style="margin-bottom: 5px;">
+		<fieldset class="j-fieldset j-line" id="fieldset">
+			<legend class="j-fieldset-header" id="fieldset-legend">
+				<div class="j-fieldset-header-text">查询</div>
+			</legend>
+			<div id="fieldset-body" class="j-fieldset-body ">
+				<ul>
+					<li style="width: 180px; float: left;">名称：<input name=""
+						type="text" class="j-form-text-line" style="width: 110px;"
+						maxlength="25" validate="string|0-25" />
+					</li>
+					<li style="width: 180px; float: left;">内容：<input name=""
+						type="text" class="j-form-text-line" style="width: 110px;"
+						maxlength="20" validate="string|0-20" />
+					</li>
+					<li style="width: 180px; float: left;">代码：<input name=""
+						type="text" class="j-form-text-line" style="width: 110px;"
+						maxlength="20" validate="string|0-20" />
+					</li>
+					<li style="width: 180px; float: left;">备注：<input name=""
+						type="text" class="j-form-text-line" style="width: 110px;"
+						maxlength="20" validate="string|0-20" />
+					</li>
+					<li style="width: 180px; float: left;">
+						<div>
+							<a href="javascript:;" onclick="" class="easyui-linkbutton"
+								data-options="iconCls:'icon-search'">查询</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</fieldset>
+	</form>
+	<!-- grid定义 -->
+	<table id="dg" class="easyui-datagrid" title=""
+		style="width: auto; height: auto;"
+		data-options="singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get',
+			rownumbers:false,
+			toolbar: '#tb',
+			pagination:true,
+			pageSize:10,
+			onBeforeEdit:function(index,row){
+				row.editing = true;
+				updateActions(index);
+			},
+			onAfterEdit:function(index,row){
+				row.editing = false;
+				updateActions(index);
+			},
+			onCancelEdit:function(index,row){
+				row.editing = false;
+				updateActions(index);
+			}">
+		<thead>
+			<tr>
+				<th
+					data-options="field:'productname',width:120,halign:'center',
+			editor:{
+				type:'validatebox',
+				options:{
+					required:true,
+					validType:'length[1,5]'
+				}
+			}">名称</th>
+				<th
+					data-options="field:'status',width:100,halign:'center',editor:{
+				type:'validatebox',
+				options:{
+					required:true,
+					validType:'minLength[5]'
+				}
+			}">内容</th>
+				<th
+					data-options="field:'listprice',width:80,align:'right',halign:'center',editor:'text'">代码</th>
+				<th
+					data-options="field:'listprice',width:80,align:'right',halign:'center',editor:'text'">备注</th>
+				<th
+					data-options="field:'type',width:80,align:'right',halign:'center',
+			formatter:function(value,row){
+				var a='公共';
+				if(value==1){
+					a='非公共';
+				}
+				return a;
+			},
+			editor:{
+				type:'combobox',
+				options:{
+					valueField:'id',
+					textField:'name',
+					url:'type.json',
+					required:true
+				}
+			}">类型</th>
+				<th
+					data-options="field:'productid',width:80,align:'center',formatter:formatter">操作</th>
+			</tr>
+		</thead>
+	</table>
+	<!-- 按钮栏 -->
+	<div id="tb" style="height: auto">
+		<a href="javascript:void(0)" class="easyui-linkbutton"
+			data-options="iconCls:'icon-add',plain:true" onclick="append()">添加</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton"
+			data-options="iconCls:'icon-search',plain:true"
+			onclick="getChanges()">GetChanges</a>
+	</div>
+	<div id="dlg"></div>
+	<script type="text/javascript">
+//自定义校验
+$.extend($.fn.validatebox.defaults.rules,{ 
+	minLength: { 
+		validator: function(value, param){ 
+		return value.length >= param[0]; 
+		}, 
+		message: '请至少输入{0}个字符.' 
+	} 
+}); 
+var editIndex = undefined;
+function endEditing(){
+	if (editIndex == undefined){return true}
+	if ($('#dg').datagrid('validateRow', editIndex)){
+		var ed = $('#dg').datagrid('getEditor', {index:editIndex,field:'type'});
+		var type = $(ed.target).combobox('getText');
+		$('#dg').datagrid('getRows')[editIndex]['type'] = type;//设置类型
+		$('#dg').datagrid('endEdit', editIndex);
+		editIndex = undefined;
+		return true;//编辑通过
+	} else {
+		return false;//编辑不通过
+	}
+}
+//编辑
+function editRow(target){
+	index=getRowIndex(target);
+	if (editIndex != index){
+		if (endEditing()){
+			$('#dg').datagrid('selectRow', index).datagrid('beginEdit', index);
+			editIndex = index;
+		} else {
+			$('#dg').datagrid('selectRow', editIndex);
+		}
+	}
+}
+//增加一行
+function append(){
+	if (endEditing()){
+		$('#dg').datagrid('appendRow',{type:'0'});//默认值
+		editIndex = $('#dg').datagrid('getRows').length-1;
+		$('#dg').datagrid('selectRow', editIndex).datagrid('beginEdit', editIndex);
+	}
+}
+//移除行
+function deleteRow(index){
+	$('#dg').datagrid('cancelEdit', index).datagrid('deleteRow', index);
+}
+//保存
+function saveRow(target){
+	$('#dg').datagrid('endEdit', getRowIndex(target));
+	editIndex = undefined;
+}
+//取消
+function cancelRow(target){
+	$('#dg').datagrid('cancelEdit', getRowIndex(target));
+	editIndex = undefined;
+}
+//获取行号
+function getRowIndex(target){
+	var tr = $(target).closest('tr.datagrid-row');
+	return parseInt(tr.attr('datagrid-row-index'));
+}
+function updateActions(index){
+	$('#dg').datagrid('updateRow',{
+		index: index,
+		row:{}
+	});
+}
+function formatter(val,row,index) {
+	if(row.editing){
+		var s=  '<a class="Edit_Button" href="javascript:void(0);" onclick="saveRow(this)" >保存</a>';
+       	var c=' <a class="Edit_Button" href="javascript:void(0);"  onclick="cancelRow(this)" >取消</a>';
+       	return s+c;
+		
+	}else{
+		var e =  '<a class="Edit_Button" href="javascript:void(0);"  onclick="editRow(this)" >修改</a>';
+      	var d=' <a class="Edit_Button" href="javascript:void(0);" onclick="deleteRow(this)" >删除</a>';
+      	return e+d;
+	}
+}
+</script>
+</body>
+</html>

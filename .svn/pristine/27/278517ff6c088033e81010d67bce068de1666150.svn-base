@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title></title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="themes/default/main.css" />
+<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<style type="text/css">
+html, body {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+</style>
+</head>
+<body style="background: #fff;">
+	<form style="margin-bottom: 5px;">
+		<fieldset class="j-fieldset j-line" id="fieldset">
+			<legend class="j-fieldset-header" id="fieldset-legend">
+				<div class="j-fieldset-header-text">角色授权</div>
+			</legend>
+			<div id="fieldset-body" class="j-fieldset-body ">
+				<table cellspacing="1" cellpadding="1" border="0" align="center"
+					style="float: left">
+					<tr>
+						<td align="right">角色名称：</td>
+						<td><input type="text" validate="string|0-25" maxlength="25"
+							style="width: 110px;" class="j-form-text-line" name="userAccount">
+						</td>
+						<td align="right" style="width: 80px;">机构名称：</td>
+						<td><input type="text" validate="string|0-20" maxlength="20"
+							style="width: 110px;" class="j-form-text-line" name="workerName"></td>
+
+						<td><a href="#" class="easyui-linkbutton"
+							data-options="iconCls:'icon-search'">查询</a></td>
+					</tr>
+				</table>
+			</div>
+		</fieldset>
+	</form>
+	<table class="easyui-datagrid" title=""
+		style="width: auto; height: auto;"
+		data-options="singleSelect:true,collapsible:true,url:'datagrid_data1.json',method:'get',
+			rownumbers:true,
+			pagination:true,
+			pageSize:10">
+		<thead>
+			<tr>
+				<th data-options="field:'productname',width:120">角色名称</th>
+				<th data-options="field:'status',width:100">备注</th>
+				<th data-options="field:'listprice',width:80,align:'right'">角色类型</th>
+				<th data-options="field:'listprice',width:80,align:'right'">角色类型</th>
+				<th
+					data-options="field:'productid',width:80,align:'center',formatter:formatter">操作</th>
+
+			</tr>
+		</thead>
+	</table>
+	<div id="dlg"></div>
+	<script type="text/javascript">
+        function search() {       
+            var key = mini.get("key").getValue();
+            grid.load({ key: key });
+        }
+        function onKeyEnter(e) {
+            search();
+        }
+
+        function addRow() {          
+            var newRow = { name: "New Row" };
+            grid.addRow(newRow, 0);
+        }
+        function removeRow() {
+            var rows = grid.getSelecteds();
+            if (rows.length > 0) {
+                grid.removeRows(rows, true);
+            }
+        }
+        function saveData() {
+            var data = grid.getChanges();
+            var json = mini.encode(data);
+            
+            grid.loading("保存中，请稍后......");
+            $.ajax({
+                url: "../data/AjaxService.aspx?method=SaveEmployees",
+                data: { data: json },
+                type: "post",
+                success: function (text) {
+                    grid.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert(jqXHR.responseText);
+                }
+            });
+        }
+		var view=function(){
+			var row = grid.getSelected();
+            if (row) {
+                mini.open({
+                    url: "系统管理-日志管理-详情.html",
+                    title: "查看详情", width: 600, height: 360,
+                    onload: function () {
+                        var iframe = this.getIFrameEl();
+                        var data = { action: "edit", id: row.id };
+                        iframe.contentWindow.SetData(data);
+                        
+                    },
+                    ondestroy: function (action) {
+                        grid.reload();
+                        
+                    }
+                });
+                
+            } else {
+                alert("请选中一条记录");
+            }
+		}
+		function editRow(row_uid) {
+            $('#dlg').dialog({
+            	title: '查看详情',
+			    width: 500,
+			    height: 300,
+			    closed: false,
+			    cache: false,
+			    href: 'sys-permission-admin.html',
+			    modal: true,
+			    buttons:[{
+				text:'保存',
+					handler:function(){
+						$('#dlg').dialog('close');
+					}
+				},{
+					text:'取消',
+					handler:function(){
+						$('#dlg').dialog('close');
+					}
+				}]
+            });
+        }
+		function formatter(val,row) {
+            var s =  ' <a class="Edit_Button" href="javascript:editRow(\'' + val + '\')" >授权</a>';
+            return s;
+        }
+    </script>
+</body>
+</html>

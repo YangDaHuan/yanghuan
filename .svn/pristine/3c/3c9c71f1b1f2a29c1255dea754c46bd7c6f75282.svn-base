@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.subway.dao.BizStationFluxCardinalWebMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.subway.vo.BizStationFluxCardinalWeb">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="station_name" jdbcType="VARCHAR" property="stationName"/>
+        <result column="station_entry_cardinal" jdbcType="INTEGER" property="stationEntryCardinal"/>
+        <result column="station_exit_cardinal" jdbcType="INTEGER" property="stationExitCardinal"/>
+        <result column="station_transfor_cardinal" jdbcType="INTEGER" property="stationTransforCardinal"/>
+        <result column="alart_cycle" jdbcType="INTEGER" property="alartCycle"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+    </resultMap>
+    <select id="getBizStationFluxCardinalWebById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_station_flux_cardinal_web
+        WHERE            
+            id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizStationFluxCardinalWeb" resultMap="BaseResultMap">
+          SELECT * FROM biz_station_flux_cardinal_web 
+    </select>
+    
+    <select id="findByAttrBizStationFluxCardinalWeb" resultMap="BaseResultMap" parameterType="com.solidextend.sys.subway.vo.BizStationFluxCardinalWeb">
+          SELECT * 
+          FROM 
+          biz_station_flux_cardinal_web 
+          WHERE 1=1 
+            <if test="id != null and id != ''" >
+                AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="stationName != null and stationName != ''" >
+                AND station_name = #{stationName,jdbcType=VARCHAR}
+            </if>
+            <if test="stationEntryCardinal != null and stationEntryCardinal != ''" >
+                AND station_entry_cardinal = #{stationEntryCardinal,jdbcType=INTEGER}
+            </if>
+            <if test="stationExitCardinal != null and stationExitCardinal != ''" >
+                AND station_exit_cardinal = #{stationExitCardinal,jdbcType=INTEGER}
+            </if>
+            <if test="stationTransforCardinal != null and stationTransforCardinal != ''" >
+                AND station_transfor_cardinal = #{stationTransforCardinal,jdbcType=INTEGER}
+            </if>
+            <if test="alartCycle != null and alartCycle != ''" >
+                AND alart_cycle = #{alartCycle,jdbcType=INTEGER}
+            </if>
+            <if test="updateTime != null and updateTime != ''" >
+                AND update_time = #{updateTime,jdbcType=DATE}
+            </if>
+    </select>
+
+    <delete id="deleteBizStationFluxCardinalWeb">
+        DELETE
+        FROM
+             biz_station_flux_cardinal_web
+        WHERE 
+            id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizStationFluxCardinalWeb" parameterType="com.solidextend.sys.subway.vo.BizStationFluxCardinalWeb" >
+        INSERT INTO biz_station_flux_cardinal_web
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="stationName != null" >
+                station_name,
+            </if>
+            <if test="stationEntryCardinal != null" >
+                station_entry_cardinal,
+            </if>
+            <if test="stationExitCardinal != null" >
+                station_exit_cardinal,
+            </if>
+            <if test="stationTransforCardinal != null" >
+                station_transfor_cardinal,
+            </if>
+            <if test="alartCycle != null" >
+                alart_cycle,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if> 
+            <if test="stationName != null" >
+                #{stationName,jdbcType=VARCHAR},
+            </if> 
+            <if test="stationEntryCardinal != null" >
+                #{stationEntryCardinal,jdbcType=INTEGER},
+            </if> 
+            <if test="stationExitCardinal != null" >
+                #{stationExitCardinal,jdbcType=INTEGER},
+            </if> 
+            <if test="stationTransforCardinal != null" >
+                #{stationTransforCardinal,jdbcType=INTEGER},
+            </if> 
+            <if test="alartCycle != null" >
+                #{alartCycle,jdbcType=INTEGER},
+            </if> 
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=DATE},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizStationFluxCardinalWeb" parameterType="com.solidextend.sys.subway.vo.BizStationFluxCardinalWeb" >
+        UPDATE biz_station_flux_cardinal_web
+        <set>
+            <if test="id != null" >
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="stationName != null" >
+                station_name = #{stationName,jdbcType=VARCHAR},
+            </if>
+            <if test="stationEntryCardinal != null" >
+                station_entry_cardinal = #{stationEntryCardinal,jdbcType=INTEGER},
+            </if>
+            <if test="stationExitCardinal != null" >
+                station_exit_cardinal = #{stationExitCardinal,jdbcType=INTEGER},
+            </if>
+            <if test="stationTransforCardinal != null" >
+                station_transfor_cardinal = #{stationTransforCardinal,jdbcType=INTEGER},
+            </if>
+            <if test="alartCycle != null" >
+                alart_cycle = #{alartCycle,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=DATE},
+            </if>
+        </set>
+        WHERE 
+            id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

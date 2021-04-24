@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>EsayUi可视化设计</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="themes/icon.css" />
+<link rel="stylesheet" href="css/zTreeStyle/zTreeStyle.css"
+	type="text/css">
+<link rel="stylesheet" media="screen"
+	href="css/jquery.handsontable.full.css">
+
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.handsontable.full.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/easyui-ext.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.extend.min.js"></script>
+<script type="text/javascript" src="js/datagrid-dnd.js"></script>
+<script type="text/javascript" src="js/jquery.ztree.all-3.5.min.js"></script>
+<script type="text/javascript" src="js/jquery.ztree.all-3.5.js"></script>
+<script data-jsfiddle="example">
+$(document).ready(function(){
+         
+
+          $('#reportCells').handsontable({
+            colHeaders: true,
+			rowHeaders: true,
+            contextMenu: true,
+			mergeCells: true,
+			afterSelectionEnd:function (r,c,r2,c2){
+				
+				$('#rowNumber').val(r);
+				$('#colNumber').val(c);
+				var lable=String.fromCharCode(c+65)+(r+1);
+				var exp=$('#reportCells').handsontable('getDataAtCell',r,c);
+				$('#cellLable').text(lable);
+				$('#cellExpression').textbox("setValue", exp);
+				
+				
+
+			}
+          });
+		
+});
+</script>
+
+</head>
+
+<body>
+
+	<input type="hidden" id="oldRowNumber">
+	<input type="hidden" id="oldColNumber">
+	<input type="hidden" id="rowNumber">
+	<input type="hidden" id="colNumber">
+	<lable id="cellLable"></lable>
+	:
+	<input class="easyui-textbox" id="cellExpression" style="width: 300px"
+		data-options="onChange:function(newValue, oldValue){
+																																	
+var r=parseInt($('#rowNumber').val());
+var c=parseInt($('#colNumber').val());
+var exp=$('#cellExpression').textbox('getValue');
+$('#reportCells').handsontable('setDataAtCell',r,c,exp);
+}">
+	<br>
+	<div id="reportCells"></div>
+</body>
+</html>

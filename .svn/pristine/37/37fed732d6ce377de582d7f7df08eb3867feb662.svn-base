@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.input.dao.SysInputTaskMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.input.vo.SysInputTask">
+        <id column="TASK_ID" jdbcType="VARCHAR" property="taskId"/>
+        <result column="TASK_NAME" jdbcType="VARCHAR" property="taskName"/>
+        <result column="TASK_DESCRIBE" jdbcType="VARCHAR" property="taskDescribe"/>
+        <result column="DISABLED" jdbcType="VARCHAR" property="disabled"/>
+        <result column="FORM_TYPE" jdbcType="INTEGER" property="formType"/>
+        <result column="FORM_ID" jdbcType="VARCHAR" property="formId"/>
+        <result column="INPUT_ROLE" jdbcType="VARCHAR" property="inputRole"/>
+        <result column="AUDIT_ROLE" jdbcType="VARCHAR" property="auditRole"/>
+        <result column="TASK_START_TIME" jdbcType="DATE" property="taskStartTime"/>
+        <result column="TASK_END_TIME" jdbcType="DATE" property="taskEndTime"/>
+        <result column="SORTNO" jdbcType="INTEGER" property="sortno"/>
+        <result column="TASK_AUTHOR" jdbcType="VARCHAR" property="taskAuthor"/>
+        <result column="CREATE_TIME" jdbcType="DATE" property="createTime"/>
+        <result column="LAST_UPDATE_TIME" jdbcType="DATE" property="lastUpdateTime"/>
+    </resultMap>
+    <select id="getSysInputTaskById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             sys_input_task
+        WHERE            
+            TASK_ID = #{taskId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllSysInputTask" resultMap="BaseResultMap">
+          SELECT * FROM sys_input_task 
+    </select>
+    
+    <select id="findByAttrSysInputTask" resultMap="BaseResultMap" parameterType="com.solidextend.sys.input.vo.SysInputTask">
+          SELECT * 
+          FROM 
+          sys_input_task 
+          WHERE 1=1 
+            <if test="taskId != null" >
+                AND TASK_ID = #{taskId,jdbcType=VARCHAR}
+            </if>
+            <if test="taskName != null" >
+                AND TASK_NAME = #{taskName,jdbcType=VARCHAR}
+            </if>
+            <if test="taskDescribe != null" >
+                AND TASK_DESCRIBE = #{taskDescribe,jdbcType=VARCHAR}
+            </if>
+            <if test="disabled != null" >
+                AND DISABLED = #{disabled,jdbcType=VARCHAR}
+            </if>
+            <if test="formType != null" >
+                AND FORM_TYPE = #{formType,jdbcType=INTEGER}
+            </if>
+            <if test="formId != null" >
+                AND FORM_ID = #{formId,jdbcType=VARCHAR}
+            </if>
+            <if test="inputRole != null" >
+                AND INPUT_ROLE = #{inputRole,jdbcType=VARCHAR}
+            </if>
+            <if test="auditRole != null" >
+                AND AUDIT_ROLE = #{auditRole,jdbcType=VARCHAR}
+            </if>
+            <if test="taskStartTime != null" >
+                AND TASK_START_TIME = #{taskStartTime,jdbcType=DATE}
+            </if>
+            <if test="taskEndTime != null" >
+                AND TASK_END_TIME = #{taskEndTime,jdbcType=DATE}
+            </if>
+            <if test="sortno != null" >
+                AND SORTNO = #{sortno,jdbcType=INTEGER}
+            </if>
+            <if test="taskAuthor != null" >
+                AND TASK_AUTHOR = #{taskAuthor,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null" >
+                AND CREATE_TIME = #{createTime,jdbcType=DATE}
+            </if>
+            <if test="lastUpdateTime != null" >
+                AND LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=DATE}
+            </if>
+    </select>
+
+    <delete id="deleteSysInputTask">
+        DELETE
+        FROM
+             sys_input_task
+        WHERE            
+            TASK_ID = #{taskId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveSysInputTask" parameterType="com.solidextend.sys.input.vo.SysInputTask" >
+        INSERT INTO sys_input_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskId != null" >
+                TASK_ID,
+            </if>
+            <if test="taskName != null" >
+                TASK_NAME,
+            </if>
+            <if test="taskDescribe != null" >
+                TASK_DESCRIBE,
+            </if>
+            <if test="disabled != null" >
+                DISABLED,
+            </if>
+            <if test="formType != null" >
+                FORM_TYPE,
+            </if>
+            <if test="formId != null" >
+                FORM_ID,
+            </if>
+            <if test="inputRole != null" >
+                INPUT_ROLE,
+            </if>
+            <if test="auditRole != null" >
+                AUDIT_ROLE,
+            </if>
+            <if test="taskStartTime != null" >
+                TASK_START_TIME,
+            </if>
+            <if test="taskEndTime != null" >
+                TASK_END_TIME,
+            </if>
+            <if test="sortno != null" >
+                SORTNO,
+            </if>
+            <if test="taskAuthor != null" >
+                TASK_AUTHOR,
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME,
+            </if>
+            <if test="lastUpdateTime != null" >
+                LAST_UPDATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskId != null" >
+                #{taskId,jdbcType=VARCHAR},
+            </if> 
+            <if test="taskName != null" >
+                #{taskName,jdbcType=VARCHAR},
+            </if> 
+            <if test="taskDescribe != null" >
+                #{taskDescribe,jdbcType=VARCHAR},
+            </if> 
+            <if test="disabled != null" >
+                #{disabled,jdbcType=VARCHAR},
+            </if> 
+            <if test="formType != null" >
+                #{formType,jdbcType=INTEGER},
+            </if> 
+            <if test="formId != null" >
+                #{formId,jdbcType=VARCHAR},
+            </if> 
+            <if test="inputRole != null" >
+                #{inputRole,jdbcType=VARCHAR},
+            </if> 
+            <if test="auditRole != null" >
+                #{auditRole,jdbcType=VARCHAR},
+            </if> 
+            <if test="taskStartTime != null" >
+                #{taskStartTime,jdbcType=DATE},
+            </if> 
+            <if test="taskEndTime != null" >
+                #{taskEndTime,jdbcType=DATE},
+            </if> 
+            <if test="sortno != null" >
+                #{sortno,jdbcType=INTEGER},
+            </if> 
+            <if test="taskAuthor != null" >
+                #{taskAuthor,jdbcType=VARCHAR},
+            </if> 
+            <if test="createTime != null" >
+                #{createTime,jdbcType=DATE},
+            </if> 
+            <if test="lastUpdateTime != null" >
+                #{lastUpdateTime,jdbcType=DATE},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateSysInputTask" parameterType="com.solidextend.sys.input.vo.SysInputTask" >
+        UPDATE sys_input_task
+        <set>
+            <if test="taskId != null" >
+                TASK_ID = #{taskId,jdbcType=VARCHAR},
+            </if>
+            <if test="taskName != null" >
+                TASK_NAME = #{taskName,jdbcType=VARCHAR},
+            </if>
+            <if test="taskDescribe != null" >
+                TASK_DESCRIBE = #{taskDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="disabled != null" >
+                DISABLED = #{disabled,jdbcType=VARCHAR},
+            </if>
+            <if test="formType != null" >
+                FORM_TYPE = #{formType,jdbcType=INTEGER},
+            </if>
+            <if test="formId != null" >
+                FORM_ID = #{formId,jdbcType=VARCHAR},
+            </if>
+            <if test="inputRole != null" >
+                INPUT_ROLE = #{inputRole,jdbcType=VARCHAR},
+            </if>
+            <if test="auditRole != null" >
+                AUDIT_ROLE = #{auditRole,jdbcType=VARCHAR},
+            </if>
+            <if test="taskStartTime != null" >
+                TASK_START_TIME = #{taskStartTime,jdbcType=DATE},
+            </if>
+            <if test="taskEndTime != null" >
+                TASK_END_TIME = #{taskEndTime,jdbcType=DATE},
+            </if>
+            <if test="sortno != null" >
+                SORTNO = #{sortno,jdbcType=INTEGER},
+            </if>
+            <if test="taskAuthor != null" >
+                TASK_AUTHOR = #{taskAuthor,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime,jdbcType=DATE},
+            </if>
+            <if test="lastUpdateTime != null" >
+                LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=DATE},
+            </if>
+        </set>
+        WHERE 
+            TASK_ID = #{taskId,jdbcType=VARCHAR}
+    </update>
+</mapper>

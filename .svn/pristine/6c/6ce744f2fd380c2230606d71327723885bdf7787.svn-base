@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.log.dao.SysJobLogMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.log.vo.SysJobLog">
+		<id column="LOG_ID" jdbcType="VARCHAR" property="logId" />
+		<result column="JOB_ID" jdbcType="VARCHAR" property="jobId" />
+		<result column="FIRE_TIME" jdbcType="TIMESTAMP" property="fireTime" />
+		<result column="FIRE_STATE" jdbcType="VARCHAR" property="fireState" />
+		<result column="LOG_INFO" jdbcType="VARCHAR" property="logInfo" />
+		<result column="TIME_LENGTH" jdbcType="INTEGER" property="timeLength" />
+		<result column="RETRY_COUNT" jdbcType="INTEGER" property="retryCount" />
+	</resultMap>
+	<select id="getSysJobLogById" resultMap="BaseResultMap">
+		SELECT
+		*
+		FROM
+		sys_job_log
+		WHERE
+		LOG_ID = #{logId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAllSysJobLogByJobId" resultMap="BaseResultMap">
+		SELECT * FROM sys_job_log
+		WHERE
+		JOB_ID = #{jobId,jdbcType=VARCHAR}
+	</select>
+	<select id="searchLog" resultMap="BaseResultMap"
+		parameterType="com.solidextend.sys.log.vo.SysJobLog">
+		SELECT LOG_ID,j.JOB_NAME as JOB_ID,FIRE_TIME,FIRE_STATE,'【双击查看】' as
+		LOG_INFO,TIME_LENGTH,l.RETRY_COUNT FROM sys_job_log l , sys_job j
+		WHERE
+		l.JOB_ID = j.JOB_ID
+		<if test="jobId != null and jobId != '' ">
+			AND l.JOB_ID= #{jobId,jdbcType=VARCHAR}
+		</if>
+		<if test="searchStartTime != null and searchStartTime != '' ">
+			AND FIRE_TIME &gt;= #{searchStartTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="searchEndTime != null and searchEndTime != '' ">
+			AND FIRE_TIME &lt;= #{searchEndTime,jdbcType=TIMESTAMP}
+		</if>
+		<if test="fireState != null and fireState != ''">
+			AND FIRE_STATE=#{fireState,jdbcType=VARCHAR}
+		</if>
+		<if test="timeLength != null and timeLength != ''">
+			AND TIME_LENGTH > #{timeLength,jdbcType=INTEGER}
+		</if>
+		ORDER BY FIRE_TIME desc
+	</select>
+	<delete id="deleteSysJobLog">
+		DELETE
+		FROM
+		sys_job_log
+		WHERE
+		LOG_ID = #{logId,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteSysJobLogByJobIdAndDate">
+		DELETE
+		FROM
+		sys_job_log
+		WHERE
+		JOB_ID = #{jobId,jdbcType=VARCHAR}
+		AND FIRE_TIME &lt; #{fireTime,jdbcType=TIMESTAMP}
+	</delete>
+	<insert id="saveSysJobLog" parameterType="com.solidextend.sys.log.vo.SysJobLog">
+		INSERT INTO sys_job_log
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="logId != null">
+				LOG_ID,
+			</if>
+			<if test="jobId != null">
+				JOB_ID,
+			</if>
+			<if test="fireTime != null">
+				FIRE_TIME,
+			</if>
+			<if test="fireState != null">
+				FIRE_STATE,
+			</if>
+			<if test="logInfo != null">
+				LOG_INFO,
+			</if>
+			<if test="timeLength != null">
+				TIME_LENGTH,
+			</if>
+			<if test="retryCount != null">
+				RETRY_COUNT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="logId != null">
+				#{logId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobId != null">
+				#{jobId,jdbcType=VARCHAR},
+			</if>
+			<if test="fireTime != null">
+				#{fireTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="fireState != null">
+				#{fireState,jdbcType=VARCHAR},
+			</if>
+			<if test="logInfo != null">
+				#{logInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="timeLength != null">
+				#{timeLength,jdbcType=INTEGER},
+			</if>
+			<if test="retryCount != null">
+				#{retryCount,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateSysJobLog" parameterType="com.solidextend.sys.log.vo.SysJobLog">
+		UPDATE sys_job_log
+		<set>
+			<if test="logId != null">
+				LOG_ID = #{logId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobId != null">
+				JOB_ID = #{jobId,jdbcType=VARCHAR},
+			</if>
+			<if test="fireTime != null">
+				FIRE_TIME = #{fireTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="fireState != null">
+				FIRE_STATE = #{fireState,jdbcType=VARCHAR},
+			</if>
+			<if test="logInfo != null">
+				LOG_INFO = #{logInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="timeLength != null">
+				TIME_LENGTH = #{timeLength,jdbcType=INTEGER},
+			</if>
+			<if test="retryCount != null">
+				RETRY_COUNT = #{retryCount,jdbcType=INTEGER},
+			</if>
+		</set>
+		WHERE
+		LOG_ID = #{logId,jdbcType=VARCHAR}
+	</update>
+</mapper>

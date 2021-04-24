@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="GBK"?>
+<dfxConfig>
+	<maxConcurrents>10</maxConcurrents>
+	<maxWaits>10</maxWaits>
+	<log></log>
+</dfxConfig>
+

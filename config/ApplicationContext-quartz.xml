@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<description>定时任务相关配置</description>
+	<!-- 要调用的工作类 -->
+	<bean id="sendMessage" class="com.solidextend.quartz.SendMessage">
+		<property name="sn">
+			<value>SDK-BBX-010-23598</value>
+		</property>
+		<property name="pwd">
+			<value>d2887@35</value>
+		</property>
+		<property name="mobile">
+			<value>13810032632</value>
+		</property>
+		<property name="report">
+			<value>\goodaa\test.rpx</value>
+		</property>
+		<property name="row">
+			<value>1</value>
+		</property>
+		<property name="col">
+			<value>3</value>
+		</property>
+	</bean>
+
+	<!-- 定义调用对象和调用对象的方法 -->
+	<bean id="sendMessageJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<!-- 调用的类 -->
+		<property name="targetObject">
+			<ref bean="sendMessage" />
+		</property>
+		<!-- 调用类中的方法 -->
+		<property name="targetMethod">
+			<value>execut</value>
+		</property>
+	</bean>
+	<!-- 定义触发时间 -->
+	<bean id="sendMessageTask" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail">
+			<ref bean="sendMessageJob" />
+		</property>
+		<!-- cron表达式 -->
+		<property name="cronExpression">
+			<value>0 * * * * ? </value>
+		</property>
+	</bean>
+
+	<!-- 邮件服务器配置类 -->
+	<!-- <bean id="simpleMail" class="com.solidextend.email.SimpleMail"> <property 
+		name="smtp"> <value>smtp.163.com</value> </property> <property name="username"> 
+		<value>snow78200@163.com</value> </property> <property name="password"> <value>19811023</value> 
+		</property> <property name="needAuth"> <value>true</value> </property> </bean> 
+		要调用的工作类 <bean id="sendEmail" class="com.solidextend.quartz.Send" init-method="init"> 
+		<property name="to"> <value>xiaoxue.chang@139.com</value> </property> <property 
+		name="subject"> <value>测试邮件</value> </property> <property name="body"> <value>你好，这是一个测试邮件</value> 
+		</property> <property name="reports"> <list> <value>\goodaa\test.rpx</value> 
+		</list> </property> <property name="fileNames"> <list> <value>测试</value> 
+		</list> </property> <property name="fileType"> <value>EXCEL</value> </property> 
+		</bean> 定义调用对象和调用对象的方法 <bean id="sendEmailJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+		调用的类 <property name="targetObject"> <ref bean="sendEmail"/> </property> 调用类中的方法 
+		<property name="targetMethod"> <value>execut</value> </property> </bean> 
+		定义触发时间 <bean id="sendEmailTask" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+		<property name="jobDetail"> <ref bean="sendEmailJob"/> </property> cron表达式 
+		<property name="cronExpression"> <value>0 * * * * ? </value> </property> 
+		</bean> -->
+
+
+	<!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->
+	<bean id="startQuertz" lazy-init="false" autowire="no"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="sendMessageTask" />
+			</list>
+		</property>
+	</bean>
+
+
+
+
+</beans>

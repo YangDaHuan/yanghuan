@@ -1,0 +1,8 @@
+[
+{"id":1,"text":"系统管理", "attributes":{ "url":"http://www.baidu.com"}},
+{"id":11,"text":"模块管理","pid":1,"attributes":{ "url":"http://www.baidu.com"}},
+{"id":12,"text":"角色管理","pid":1,"attributes":{ "url":"http://www.baidu.com"}},
+{"id":13,"text":"权限管理","pid":1,"attributes":{ "url":"http://www.baidu.com"}},
+{"id":14,"text":"用户管理","pid":1,"attributes":{ "url":"http://www.baidu.com"}},
+{"id":15,"text":"字典管理","pid":1,"attributes":{ "url":"http://www.baidu.com"}}
+]

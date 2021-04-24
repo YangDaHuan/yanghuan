@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.solidextend.sys.moduleFun.dao.ModuleFunGroupMapper">
+	<resultMap id="BaseResultMap"
+		type="com.solidextend.sys.moduleFun.vo.ModuleFunGroup">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="FUN_GROUP_CODE" property="funGroupCode"
+			jdbcType="VARCHAR" />
+		<result column="FUN_GROUP_NAME" property="funGroupName"
+			jdbcType="VARCHAR" />
+		<result column="ORDER_NO" property="orderNo" jdbcType="DECIMAL" />
+		<result column="IS_PUBLIC" property="isPublic" jdbcType="VARCHAR" />
+		<result column="DISABLED" property="disabled" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="selectModuleFunGroupList" resultMap="BaseResultMap">
+		SELECT * FROM SYS_MODULE_FUN_GROUP ORDER BY ORDER_NO
+	</select>
+	<select id="selectModuleFunGroupOptions" resultMap="BaseResultMap">
+		SELECT FUN_GROUP_CODE,FUN_GROUP_NAME FROM SYS_MODULE_FUN_GROUP WHERE
+		IS_PUBLIC='0' AND DISABLED='0' ORDER BY ORDER_NO
+	</select>
+	<select id="selectModuleFunGroupByCode" resultMap="BaseResultMap">
+
+		SELECT *
+		FROM SYS_MODULE_FUN_GROUP
+		WHERE
+		<if test="id != null and id!=''">
+	  	<![CDATA[
+	  		ID <> #{id,jdbcType=VARCHAR} AND 
+	  	]]>
+		</if>
+		FUN_GROUP_CODE = #{code,jdbcType=VARCHAR} ORDER BY ORDER_NO
+
+	</select>
+	<select id="selectModuleFunGroupByName" resultMap="BaseResultMap">
+
+		SELECT *
+		FROM SYS_MODULE_FUN_GROUP
+		WHERE
+		<if test="id != null and id!=''">
+	  	<![CDATA[
+	  		ID <> #{id,jdbcType=VARCHAR} AND 
+	  	]]>
+		</if>
+		FUN_GROUP_NAME = #{name,jdbcType=VARCHAR} ORDER BY ORDER_NO
+
+	</select>
+	<insert id="insertModuleFunGroup" parameterType="com.solidextend.sys.moduleFun.vo.ModuleFunGroup">
+
+		INSERT INTO SYS_MODULE_FUN_GROUP
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="funGroupCode != null">
+				Fun_Group_Code,
+			</if>
+			<if test="funGroupName != null">
+				FUN_GROUP_NAME,
+			</if>
+			<if test="orderNo != null">
+				ORDER_NO,
+			</if>
+			<if test="isPublic != null">
+				IS_PUBLIC,
+			</if>
+			<if test="disabled != null">
+				DISABLED,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="funGroupCode != null">
+				#{funGroupCode,jdbcType=VARCHAR},
+			</if>
+			<if test="funGroupName != null">
+				#{funGroupName,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="isPublic != null">
+				#{isPublic,jdbcType=VARCHAR},
+			</if>
+			<if test="disabled != null">
+				#{disabled,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateModuleFunGroup" parameterType="com.solidextend.sys.moduleFun.vo.ModuleFunGroup">
+
+		UPDATE SYS_MODULE_FUN_GROUP
+		<set>
+			<if test="funGroupCode != null">
+				Fun_Group_Code=#{funGroupCode,jdbcType=VARCHAR},
+			</if>
+			<if test="funGroupName != null">
+				FUN_GROUP_NAME=#{funGroupName,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null">
+				ORDER_NO=#{orderNo,jdbcType=VARCHAR},
+			</if>
+			<if test="isPublic != null">
+				IS_PUBLIC=#{isPublic,jdbcType=VARCHAR},
+			</if>
+			<if test="disabled != null">
+				DISABLED=#{disabled,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE ID=#{id,jdbcType=VARCHAR}
+
+	</update>
+	<delete id="deleteModuleFunGroupByCode" parameterType="String">
+		delete sys_module_fun_group where
+		fun_group_code=#{groupCode,jdbcType=VARCHAR}
+	</delete>
+</mapper>

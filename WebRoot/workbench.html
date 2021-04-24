@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title></title>
+<link rel="shortcut icon" type="image/x-icon" href="zebone.ico" />
+<link rel="stylesheet" type="text/css" href="themes/default/main.css" />
+<link rel="stylesheet" type="text/css" href="css/index.css" />
+<link href="themes/default/easyui.css" type="text/css" rel="stylesheet" />
+<style type="text/css">
+html, body {
+	height: 100%;
+	overflow: hidden;
+	background-color: #fff;
+}
+</style>
+<style type="">
+</style>
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/easyui-ext.js"></script>
+<script type="text/javascript" src="js/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript">
+var quickConfig=function(){
+	$("#dlg").dialog("open");
+}
+$(function(){
+	$('.module').click(function(){
+		var url=$(this).attr('href');
+		var window_id='w'+$(this).attr('id');
+		var title=$(this).attr('title');
+		if($('#'+window_id).length==0){
+			var windowDiv='<div id="'+window_id+'"><iframe src="'+url+'" frameborder="0" frameborder="0" marginwidth="0" marginheight="0" scrolling="auto" style="width:100%;height:100%;"></iframe></div>';
+			$(windowDiv).appendTo(document.body);
+		}
+		
+		$('#'+window_id).window({
+            width: 1000,
+            height: document.body.clientHeight,
+            modal: true,
+            title: title
+        });
+        return false;
+	});
+	$('#tt').tree({
+		url: "module/moduleList.zb",
+		parentField:"parentId",
+		textFiled:"moduleName",
+		idFiled:"id",
+		onClick:function(node){
+			//alert(node.attributes.url);
+			dict_right_iframe.loadData(node.id);
+		}
+	});
+});
+</script>
+</head>
+<body>
+	<div class="workbench_bg">
+		<ul class="workbench">
+			<li class="">
+				<div>
+					<div class="block_header">
+						<span class="block_name">日期时间</span>
+					</div>
+
+					<div class="block_body">
+						<div class="easyui-calendar" style="width: 180px; height: 180px;"></div>
+					</div>
+				</div>
+			</li>
+			<li class="">
+				<div>
+					<div class="block_header">
+						<span class="block_name">快捷通道</span> <span class="block_tools">
+							<a href="javascript:quickConfig();" title="快捷方式设置"
+							class="block_config"></a>
+						</span>
+					</div>
+
+					<div class="block_body">
+						<ul class="quick_links">
+							<li><a id="quick" class="module" title="快捷方式1"
+								href="module/index.zb"> <img
+									src="images/icons/app_mid_home.png"> <span>快捷方式1</span></a></li>
+							<li><a id="quick" class="module" title="快捷方式2"
+								href="module/index.zb"> <img
+									src="images/icons/app_mid_home.png"> <span>快捷方式2</span></a></li>
+						</ul>
+
+					</div>
+				</div>
+			</li>
+			<li class="">
+				<div>
+					<div class="block_header">
+						<span class="block_name">日期时间</span>
+					</div>
+					<div class="block_body"></div>
+				</div>
+			</li>
+			<li class="">
+				<div>
+					<div class="block_header">
+						<span class="block_name">代办事项</span>
+					</div>
+					<div class="block_body"></div>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<!-- 弹出窗口 -->
+	<div style="display: none;">
+		<div id="dlg" class="easyui-dialog" style="padding-top: 10px"
+			data-options="
+			title:'快捷通道配置',
+			width: 500,
+	    	height: 300,
+	    	closed: true,
+	    	cache: false,
+	    	modal: true,
+	    	buttons: '#dlgbtn'
+		">
+			<form id="form" action="">
+				<ul id="tt"></ul>
+			</form>
+			<div id="dlgbtn" style="text-align: center; padding: 5px">
+				<a class="easyui-linkbutton" onclick="saveUser()">提交</a> <a
+					class="easyui-linkbutton"
+					onclick="$('#dlg').dialog('close');$('#form').form('reset');">取消</a>
+			</div>
+		</div>
+	</div>
+	<!-- 快捷通道弹出窗口 -->
+	<div id="w"></div>
+</body>
+</html>

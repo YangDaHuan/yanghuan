@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.ticket.dao.BizTicketOutMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.ticket.vo.BizTicketOut">
+        <id column="OUT_ID" jdbcType="VARCHAR" property="outId"/>
+        <result column="DEPLOY_CODE" jdbcType="VARCHAR" property="deployCode"/>
+        <result column="OUT_TYPE" jdbcType="INTEGER" property="outType"/>
+        <result column="OUT_ORG" jdbcType="VARCHAR" property="outOrg"/>
+        <result column="TO_ORG" jdbcType="VARCHAR" property="toOrg"/>
+        <result column="OUT_DATE" jdbcType="DATE" property="outDate"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="OPERATOR" jdbcType="VARCHAR" property="operator"/>
+    </resultMap>
+    <select id="getBizTicketOutById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_ticket_out
+        WHERE            
+            OUT_ID = #{outId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizTicketOut" resultMap="BaseResultMap">
+          SELECT * FROM biz_ticket_out 
+    </select>
+    
+    <select id="findByAttrBizTicketOut" resultMap="BaseResultMap" parameterType="com.solidextend.sys.ticket.vo.BizTicketOut">
+          SELECT * 
+          FROM 
+          biz_ticket_out 
+          WHERE 1=1 
+            <if test="outId != null and outId != ''" >
+                AND OUT_ID = #{outId,jdbcType=VARCHAR}
+            </if>
+            <if test="deployCode != null and deployCode != ''" >
+                AND DEPLOY_CODE = #{deployCode,jdbcType=VARCHAR}
+            </if>
+            <if test="outType != null and outType != ''" >
+                AND OUT_TYPE = #{outType,jdbcType=INTEGER}
+            </if>
+            <if test="outOrg != null and outOrg != ''" >
+                AND OUT_ORG = #{outOrg,jdbcType=VARCHAR}
+            </if>
+            <if test="toOrg != null and toOrg != ''" >
+                AND TO_ORG = #{toOrg,jdbcType=VARCHAR}
+            </if>
+            <if test="outDate != null and outDate != ''" >
+                AND OUT_DATE = #{outDate,jdbcType=DATE}
+            </if>
+            <if test="description != null and description != ''" >
+                AND DESCRIPTION = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="operator != null and operator != ''" >
+                AND OPERATOR = #{operator,jdbcType=VARCHAR}
+            </if>
+    </select>
+
+    <delete id="deleteBizTicketOut">
+        DELETE
+        FROM
+             biz_ticket_out
+        WHERE 
+            OUT_ID = #{outId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizTicketOut" parameterType="com.solidextend.sys.ticket.vo.BizTicketOut" >
+        INSERT INTO biz_ticket_out
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="outId != null" >
+                OUT_ID,
+            </if>
+            <if test="deployCode != null" >
+                DEPLOY_CODE,
+            </if>
+            <if test="outType != null" >
+                OUT_TYPE,
+            </if>
+            <if test="outOrg != null" >
+                OUT_ORG,
+            </if>
+            <if test="toOrg != null" >
+                TO_ORG,
+            </if>
+            <if test="outDate != null" >
+                OUT_DATE,
+            </if>
+            <if test="description != null" >
+                DESCRIPTION,
+            </if>
+            <if test="operator != null" >
+                OPERATOR,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="outId != null" >
+                #{outId,jdbcType=VARCHAR},
+            </if> 
+            <if test="deployCode != null" >
+                #{deployCode,jdbcType=VARCHAR},
+            </if> 
+            <if test="outType != null" >
+                #{outType,jdbcType=INTEGER},
+            </if> 
+            <if test="outOrg != null" >
+                #{outOrg,jdbcType=VARCHAR},
+            </if> 
+            <if test="toOrg != null" >
+                #{toOrg,jdbcType=VARCHAR},
+            </if> 
+            <if test="outDate != null" >
+                #{outDate,jdbcType=DATE},
+            </if> 
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if> 
+            <if test="operator != null" >
+                #{operator,jdbcType=VARCHAR},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizTicketOut" parameterType="com.solidextend.sys.ticket.vo.BizTicketOut" >
+        UPDATE biz_ticket_out
+        <set>
+            <if test="outId != null" >
+                OUT_ID = #{outId,jdbcType=VARCHAR},
+            </if>
+            <if test="deployCode != null" >
+                DEPLOY_CODE = #{deployCode,jdbcType=VARCHAR},
+            </if>
+            <if test="outType != null" >
+                OUT_TYPE = #{outType,jdbcType=INTEGER},
+            </if>
+            <if test="outOrg != null" >
+                OUT_ORG = #{outOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="toOrg != null" >
+                TO_ORG = #{toOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="outDate != null" >
+                OUT_DATE = #{outDate,jdbcType=DATE},
+            </if>
+            <if test="description != null" >
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null" >
+                OPERATOR = #{operator,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE 
+            OUT_ID = #{outId,jdbcType=VARCHAR}
+    </update>
+</mapper>

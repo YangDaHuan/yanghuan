@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<log>
+	<!-- 程序会通过id+method作为获得日志节点的key，method可以为空 -->
+	<!-- 通过这个key同样可以在btplog.keywords.properties文件中定义每个操作的描述，系统会自动记录到数据库中（定义时增加在前面增加 
+		log. ） -->
+	<!-- class: 日志元素的根节点 id: 指定实现类的类名（包名+类名） method: 即哪个方法需要记录日志 modelId: 业务方法所属模块id 
+		opflag: 操作标识（1、新增 2、修改 3、删除 4、查询） paramIndex: 需要记录到数据库中若干属性所属对象所在方法参数的索引(即该参数是方法的第几个参数，从0计数)，默认值0，不必填 
+		serviceId: 标示业务id的字段名，通常是主键 updateBeanId： (修改专用，其他情况不必填)标示通过哪个spring的bean可以调用查询获得修改以前的值 
+		updateMethod： (修改专用，其他情况不必填)调用查询的方法名 -->
+	<!-- field: 需要记录信息的字段元素 name： 字段名 -->
+	<class id="com.solidextend.sys.dict.service.DictServiceImpl"
+		method="updateDictById" modelId="d2ef47f6845848c2af65da827e82d810"
+		opflag="2" paramIndex="0" serviceId="id" updateBeanId="dictServiceImpl"
+		updateMethod="getDictById">
+		<field name="dictCode" />
+		<field name="dictName" />
+		<field name="remark" />
+	</class>
+	<class id="com.solidextend.sys.dict.service.DictServiceImpl"
+		method="saveDict" modelId="d2ef47f6845848c2af65da827e82d810" opflag="1"
+		paramIndex="0" serviceId="id">
+		<field name="dictCode" />
+		<field name="dictName" />
+		<field name="remark" />
+	</class>
+	<class id="com.solidextend.sys.dict.service.DictServiceImpl"
+		method="removeDictById" modelId="d2ef47f6845848c2af65da827e82d810"
+		opflag="3" paramIndex="0" serviceId="id">
+		<field name="dictCode" />
+		<field name="dictName" />
+		<field name="remark" />
+	</class>
+</log>

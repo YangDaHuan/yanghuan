@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.solidextend.sys.quartz.dao.JobTypeParamMapper">
+
+
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.quartz.vo.JobTypeParam">
+		<id column="PARAM_ID" jdbcType="VARCHAR" property="paramId" />
+		<result column="JOB_TYPE_ID" jdbcType="VARCHAR" property="jobTypeId" />
+		<result column="PARAM_NAME" jdbcType="VARCHAR" property="paramName" />
+		<result column="DISCRIPTION" jdbcType="VARCHAR" property="discription" />
+		<result column="DEFAULT_VALUE" jdbcType="VARCHAR" property="defaultValue" />
+		<result column="PARAM_TYPE" jdbcType="VARCHAR" property="paramType" />
+		<result column="DATA_OPTION" jdbcType="VARCHAR" property="dataOption" />
+		<result column="STATE" jdbcType="INTEGER" property="state" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="LAST_UP_TIME" jdbcType="TIMESTAMP" property="lastUpTime" />
+		<result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+		<result column="SORT_NO" jdbcType="INTEGER" property="sortNo" />
+	</resultMap>
+
+
+
+
+
+	<insert id="insertJobTypeParam" parameterType="com.solidextend.sys.quartz.vo.JobTypeParam">
+		INSERT INTO sys_job_type_param
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="paramId != null">
+				PARAM_ID,
+			</if>
+			<if test="jobTypeId != null">
+				JOB_TYPE_ID,
+			</if>
+			<if test="paramName != null">
+				PARAM_NAME,
+			</if>
+			<if test="discription != null">
+				DISCRIPTION,
+			</if>
+			<if test="defaultValue != null">
+				DEFAULT_VALUE,
+			</if>
+			<if test="paramType != null">
+				PARAM_TYPE,
+			</if>
+			<if test="dataOption != null">
+				DATA_OPTION,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="lastUpTime != null">
+				LAST_UP_TIME,
+			</if>
+			<if test="userId != null">
+				USER_ID,
+			</if>
+			<if test="sortNo != null">
+				SORT_NO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="paramId != null">
+				#{paramId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobTypeId != null">
+				#{jobTypeId,jdbcType=VARCHAR},
+			</if>
+			<if test="paramName != null">
+				#{paramName,jdbcType=VARCHAR},
+			</if>
+			<if test="discription != null">
+				#{discription,jdbcType=VARCHAR},
+			</if>
+			<if test="defaultValue != null">
+				#{defaultValue,jdbcType=VARCHAR},
+			</if>
+			<if test="paramType != null">
+				#{paramType,jdbcType=VARCHAR},
+			</if>
+			<if test="dataOption != null">
+				#{dataOption,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpTime != null">
+				#{lastUpTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNo != null">
+				#{sortNo,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteJobTypeParamByTypeId" parameterType="java.lang.String">
+		DELETE FROM SYS_JOB_TYPE_PARAM WHERE JOB_TYPE_ID =
+		#{jobTypeId,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteJobTypeParam" parameterType="java.lang.String">
+		DELETE FROM SYS_JOB_TYPE_PARAM WHERE PARAM_ID = #{paramId,jdbcType=VARCHAR}
+	</delete>
+	<update id="updateJobTypeParam" parameterType="com.solidextend.sys.quartz.vo.JobTypeParam">
+		UPDATE SYS_JOB_TYPE_PARAM
+		<set>
+			<if test="paramId != null">
+				PARAM_ID = #{paramId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobTypeId != null">
+				JOB_TYPE_ID = #{jobTypeId,jdbcType=VARCHAR},
+			</if>
+			<if test="paramName != null">
+				PARAM_NAME = #{paramName,jdbcType=VARCHAR},
+			</if>
+			<if test="discription != null">
+				DISCRIPTION = #{discription,jdbcType=VARCHAR},
+			</if>
+			<if test="defaultValue != null">
+				DEFAULT_VALUE = #{defaultValue,jdbcType=VARCHAR},
+			</if>
+			<if test="paramType != null">
+				PARAM_TYPE = #{paramType,jdbcType=VARCHAR},
+			</if>
+			<if test="dataOption != null">
+				DATA_OPTION = #{dataOption,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpTime != null">
+				LAST_UP_TIME = #{lastUpTime,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				USER_ID = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNo != null">
+				SORT_NO = #{sortNo,jdbcType=VARCHAR},
+			</if>
+
+		</set>
+		WHERE PARAM_ID = #{paramId,jdbcType=VARCHAR}
+	</update>
+	<select id="getJobTypeParamList" resultMap="BaseResultMap">
+		SELECT * FROM SYS_JOB_TYPE_PARAM
+		WHERE JOB_TYPE_ID=#{jobTypeId,jdbcType=VARCHAR}
+		<if test="state != null">
+			AND STATE = #{state,jdbcType=INTEGER}
+		</if>
+		ORDER BY SORT_NO
+	</select>
+
+</mapper>

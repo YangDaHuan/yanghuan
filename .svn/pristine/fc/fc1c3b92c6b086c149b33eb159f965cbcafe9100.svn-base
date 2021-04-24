@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperTemplate PUBLIC "-//JasperReports//DTD Template//EN" "http://jasperreports.sourceforge.net/dtds/jaspertemplate.dtd">
+
+<jasperTemplate>
+	<style name="title" forecolor="#000000" hAlign="Center" vAlign="Middle" fontName="宋体" fontSize="26" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true">
+		<box>
+			<pen lineWidth="0.0"/>
+			<topPen lineWidth="0.0"/>
+			<leftPen lineWidth="0.0"/>
+			<bottomPen lineWidth="0.0"/>
+			<rightPen lineWidth="0.0"/>
+		</box>
+	</style>
+	<style name="columnHeader" mode="Opaque" backcolor="#CCFFFF" hAlign="Center" vAlign="Middle" fontName="宋体" fontSize="12" isBold="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true">
+		<box>
+			<pen lineWidth="0.5" lineColor="#66CCFF"/>
+			<topPen lineWidth="0.5" lineColor="#66CCFF"/>
+			<leftPen lineWidth="0.5" lineColor="#66CCFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#66CCFF"/>
+			<rightPen lineWidth="0.5" lineColor="#66CCFF"/>
+		</box>
+	</style>
+	<style name="detail" hAlign="Center" vAlign="Middle" fontName="宋体" fontSize="12" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true">
+		<box>
+			<pen lineWidth="0.5" lineColor="#66CCFF"/>
+			<topPen lineWidth="0.5" lineColor="#66CCFF"/>
+			<leftPen lineWidth="0.5" lineColor="#66CCFF"/>
+			<bottomPen lineWidth="0.5" lineColor="#66CCFF"/>
+			<rightPen lineWidth="0.5" lineColor="#66CCFF"/>
+		</box>
+	</style>
+	<style name="PDFStyle" isDefault="true" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H" isPdfEmbedded="true"/>
+</jasperTemplate>

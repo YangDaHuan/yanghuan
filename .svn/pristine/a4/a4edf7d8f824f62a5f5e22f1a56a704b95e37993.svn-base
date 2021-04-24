@@ -1,0 +1,216 @@
+html, body {
+	height: 100%;
+	overflow: hidden;
+	background-color: #fff;
+}
+
+* {
+	font-family: 'STHeiti', '微软雅黑';
+	font-size: 12px;
+}
+
+.login_bg_div {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.login_bg_img {
+	width: 100%;
+	height: 100%;
+}
+
+.login_box_outer {
+	width: 620px;
+	height: 400px;
+	margin: 200px auto;
+	position: relative;
+}
+
+.logo {
+	background: url("../images/login/login_logo2.png") no-repeat scroll 0 0
+		rgba(0, 0, 0, 0);
+	height: 122px;
+	left: 10px;
+	position: absolute;
+	top: -110px;
+	width: 600px;
+}
+
+.login_box {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	width: 600px;
+	height: 250px;
+	background: url("../images/login/login_box.png") no-repeat transparent;
+	display: none;
+	opacity: 0;
+	filter: alpha(opacity = 0);
+	filter: none\0;
+}
+
+.login_box_inner {
+	position: relative;
+}
+
+.username, .password, .username_bg, .password_bg {
+	position: absolute;
+	width: 180px;
+	height: 22px;
+	line-height: 22px;
+	background: url("") no-repeat;
+	border: none;
+}
+
+.username_bg, .password_bg {
+	background-color: transparent;
+}
+
+.username, .username_bg {
+	left: 233px;
+	top: 83px;
+}
+
+.password, .password_bg {
+	left: 233px;
+	top: 137px;
+}
+
+#usernameTip, #pwdTip {
+	position: absolute;
+	width: 150px;
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+}
+
+#usernameTip {
+	left: 233px;
+	top: 83px;
+}
+
+#pwdTip {
+	left: 233px;
+	top: 137px;
+}
+
+#loginBtn, #loginState {
+	width: 280px;
+	height: 50px;
+	display: block;
+	line-height: 22px;
+	position: absolute;
+	left: 173px;
+	top: 194px;
+	background: url("../images/login/login_btn.png") no-repeat transparent;
+	cursor: pointer;
+	text-align: center;
+}
+
+#loginBtn:hover {
+	background-image: url("../images/login/login_btn_hover.png");
+}
+
+#loginState {
+	display: none;
+	background: url("../images/login/login_state.png") no-repeat transparent;
+}
+
+#copyright {
+	position: absolute;
+	right: 208px;
+	bottom: 50px;
+	color: #fff;
+}
+
+.user_toolbar {
+	position: absolute;
+	right: 21px;
+	top: 32px;
+}
+
+.applist {
+	width: 100%;
+}
+
+.applist li {
+	width: 30%;
+	height: 204px;
+	float: left;
+	margin: 0 14px 14px 0;
+	position: relative;
+}
+
+.applist li a {
+	width: 100%;
+	height: 204px;
+	display: block;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+.applist li span {
+	position: absolute;
+	left: 32px;
+	top: 170px;
+	color: #fff;
+	font-size: 22px;
+}
+
+.app1 {
+	background: #032bae;
+}
+
+.app2 {
+	background: #1fc0ce;
+}
+
+.app3 {
+	background: #347eaf;
+}
+
+.app4 {
+	background: #1fc0ce;
+}
+
+.app5 {
+	background: #027475;
+}
+
+.app6 {
+	background: #1fc0ce;
+}
+
+.app1 a {
+	background: url("../images/icons/appicon_1.png") no-repeat center center
+		transparent;
+}
+
+.app2 a {
+	background: url("../images/icons/appicon_2.png") no-repeat center center
+		transparent;
+}
+
+.app3 a {
+	background: url("../images/icons/appicon_3.png") no-repeat center center
+		transparent;
+}
+
+.app4 a {
+	background: url("../images/icons/appicon_4.png") no-repeat center center
+		transparent;
+}
+
+.app5 a {
+	background: url("../images/icons/appicon_5.png") no-repeat center center
+		transparent;
+}
+
+.app6 a {
+	background: url("../images/icons/appicon_6.png") no-repeat center center
+		transparent;
+}

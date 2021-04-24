@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.ticket.dao.BizTicketApplyMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.ticket.vo.BizTicketApply">
+        <id column="APPLY_ID" jdbcType="VARCHAR" property="applyId"/>
+        <result column="APPLY_CODE" jdbcType="VARCHAR" property="applyCode"/>
+        <result column="APPLY_TYPE" jdbcType="INTEGER" property="applyType"/>
+        <result column="APPLY_ORG" jdbcType="VARCHAR" property="applyOrg"/>
+        <result column="APPLY_CONTACTS" jdbcType="VARCHAR" property="applyContacts"/>
+        <result column="APPLY_PHONE" jdbcType="VARCHAR" property="applyPhone"/>
+        <result column="TO_ORG" jdbcType="VARCHAR" property="toOrg"/>
+        <result column="APPLY_DATE" jdbcType="DATE" property="applyDate"/>
+        <result column="AUDITING_STATE" jdbcType="INTEGER" property="auditingState"/>
+        <result column="AUDITING_ORG" jdbcType="VARCHAR" property="auditingOrg"/>
+        <result column="AUDITING_USR" jdbcType="VARCHAR" property="auditingUsr"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="OPERATOR" jdbcType="VARCHAR" property="operator"/>
+        <result column="AUDITING_DATE" jdbcType="DATE" property="auditingDate"/>
+        <collection column="APPLY_DETAIL_ID" property="details" javaType="ArrayList" ofType="com.solidextend.sys.ticket.vo.BizTicketApplyDetail">
+			<id column="APPLY_DETAIL_ID" jdbcType="VARCHAR" property="applyDetailId"/>
+        	<result column="APPLY_ID" jdbcType="VARCHAR" property="applyId"/>
+        	<result column="TICKET_TYPE_ID" jdbcType="VARCHAR" property="ticketTypeId"/>
+        	<result column="TICKET_STATE_ID" jdbcType="VARCHAR" property="ticketStateId"/>
+        	<result column="TICKET_NUMBER" jdbcType="INTEGER" property="ticketNumber"/>
+        	<result column="TICKET_MONEY" jdbcType="REAL" property="ticketMoney"/>
+		</collection>
+    </resultMap>
+    
+    <update id="updateBizTicketStateApplyByCode">
+		UPDATE biz_ticket_apply
+		set
+		AUDITING_STATE = #{auditingState}
+		WHERE
+		APPLY_CODE = #{applyCode}
+	</update>
+    
+     <select id="findByOrgandGroupName" resultMap="BaseResultMap">
+    	select bta.*,btad.*
+    		from 
+    			biz_ticket_apply bta LEFT JOIN biz_ticket_apply_detail btad ON bta.APPLY_ID=btad.APPLY_ID 
+    		where 1=1 
+    			<if test="org != null and org != ''" >
+                AND bta.TO_ORG = #{org,jdbcType=VARCHAR}
+            	</if>
+    			<if test="applyType != null and applyType != ''" >
+                AND bta.APPLY_TYPE = #{applyType,jdbcType=INTEGER} 
+            	</if>
+            	<if test="auditingState != null and auditingState != ''" >
+                AND bta.AUDITING_STATE = #{auditingState,jdbcType=INTEGER} 
+            	</if>
+            	<if test="groupName != null and groupName != ''" >
+                AND  btad.TICKET_TYPE_ID in (
+    				select TICKET_TYPE_ID 
+    					from 
+    						biz_ticket_type 
+    					where 
+    						group_name=#{groupName,jdbcType=VARCHAR})
+          	  </if>
+    </select>  
+    
+    
+    <!-- getMaxBizTicketApplyCode -->
+    
+    <select id="getMaxBizTicketApplyCode" resultType="java.lang.String">
+    	select max(APPLY_Code)
+    		from biz_ticket_apply
+    </select>
+    <select id="getBizTicketApplyById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_ticket_apply ta join biz_ticket_apply_detail tad on ta.APPLY_ID = tad.APPLY_ID
+        WHERE            
+            APPLY_ID = #{applyId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizTicketApply" resultMap="BaseResultMap">
+          SELECT * FROM biz_ticket_apply 
+    </select>
+    
+    <select id="findByAttrBizTicketApply" resultMap="BaseResultMap" >
+          SELECT * 
+          FROM 
+          biz_ticket_apply  ta left join biz_ticket_apply_detail tad on ta.APPLY_ID = tad.APPLY_ID
+          WHERE 1=1 
+            <if test="bizTicketApply.applyId != null and bizTicketApply.applyId != ''" >
+                AND ta.APPLY_ID = #{bizTicketApply.applyId,jdbcType=VARCHAR}
+            </if>
+            <if test="bizTicketApply.applyCode != null and bizTicketApply.applyCode != ''" >
+                AND APPLY_Code = #{bizTicketApply.applyCode,jdbcType=VARCHAR}
+            </if>
+            <if test="bizTicketApply.applyType != null and bizTicketApply.applyType != ''" >
+                AND APPLY_TYPE = #{bizTicketApply.applyType,jdbcType=INTEGER}
+            </if>
+            <if test="bizTicketApply.applyOrg != null and bizTicketApply.applyOrg != ''" >
+                AND APPLY_ORG = #{bizTicketApply.applyOrg,jdbcType=VARCHAR}
+            </if>
+            
+            <if test="bizTicketApply.applyContacts != null and bizTicketApply.applyContacts != ''" >
+                AND APPLY_CONTACTS = #{bizTicketApply.applyContacts,jdbcType=VARCHAR}
+            </if>
+            <if test="bizTicketApply.applyPhone != null and bizTicketApply.applyPhone != ''" >
+                AND APPLY_PHONE = #{bizTicketApply.applyPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="bizTicketApply.toOrg != null and bizTicketApply.toOrg != ''" >
+                AND TO_ORG = #{bizTicketApply.toOrg,jdbcType=VARCHAR}
+            </if>
+             
+            <if test="bizTicketApply.applyDate != null and bizTicketApply.applyDate != ''" >
+                AND APPLY_DATE = #{bizTicketApply.applyDate,jdbcType=DATE}
+            </if>
+            <if test="bizTicketApply.auditingState != null and bizTicketApply.auditingState != ''" >
+                AND AUDITING_STATE = #{bizTicketApply.auditingState,jdbcType=INTEGER}
+            </if>
+            
+            <if test="bizTicketApply.auditingOrg != null and bizTicketApply.auditingOrg != ''" >
+                AND AUDITING_ORG = #{bizTicketApply.auditingOrg,jdbcType=VARCHAR}
+            </if>
+            
+            <if test="bizTicketApply.auditingUsr != null and bizTicketApply.auditingUsr != ''" >
+                AND AUDITING_USR = #{bizTicketApply.auditingUsr,jdbcType=VARCHAR}
+            </if>
+            <if test="bizTicketApply.description != null and bizTicketApply.description != ''" >
+                AND DESCRIPTION = #{bizTicketApply.description,jdbcType=VARCHAR}
+            </if>
+            <if test="bizTicketApply.operator != null and bizTicketApply.operator != ''" >
+                AND OPERATOR = #{bizTicketApply.operator,jdbcType=VARCHAR}
+            </if>
+    </select>
+	<select id="findByAuditBizTicketApply" resultMap="BaseResultMap" >
+          SELECT * 
+          FROM 
+          biz_ticket_apply  ta left join biz_ticket_apply_detail tad on ta.APPLY_ID = tad.APPLY_ID
+          WHERE 1=1 
+            <if test="applyOrgArray != null and applyOrgArray != ''" >
+                AND APPLY_ORG in 
+                <foreach item="item" index="index" collection="applyOrgArray"   
+                        open="(" separator="," close=")">  
+                       #{item,jdbcType=VARCHAR}
+               </foreach> 
+            </if>
+            <if test="toOrgArray != null and toOrgArray != ''" >
+                AND TO_ORG in 
+                <foreach item="item" index="index" collection="toOrgArray"   
+                        open="(" separator="," close=")">  
+                       #{item,jdbcType=VARCHAR}
+               </foreach> 
+            </if>
+            <if test="auditingStateArray != null and auditingStateArray != ''" >
+                AND AUDITING_STATE in 
+                <foreach item="item" index="index" collection="auditingStateArray"   
+                        open="(" separator="," close=")">  
+                       #{item,jdbcType=VARCHAR}
+               </foreach> 
+            </if>
+            <if test="auditingOrgArray != null and auditingOrgArray != ''" >
+                AND (AUDITING_ORG not in 
+                <foreach item="item" index="index" collection="auditingOrgArray"   
+                        open="(" separator="," close=")">  
+                       #{item,jdbcType=VARCHAR}
+               </foreach> 
+                or AUDITING_ORG is null or AUDITING_ORG=''
+               )
+            </if>
+            
+    </select>
+    <select id="findByAuditedBizTicketApply" resultMap="BaseResultMap" >
+          SELECT * 
+          FROM 
+          biz_ticket_apply  ta left join biz_ticket_apply_detail tad on ta.APPLY_ID = tad.APPLY_ID
+          WHERE 1=1 
+            <if test="applyOrgArray != null and applyOrgArray != ''" >
+                AND APPLY_ORG in 
+                <foreach item="item" index="index" collection="applyOrgArray"   
+                        open="(" separator="," close=")">  
+                       #{item,jdbcType=VARCHAR}
+               </foreach> 
+            </if>
+            <if test="toOrgArray != null and toOrgArray != ''" >
+                AND TO_ORG in 
+                <foreach item="item" index="index" collection="toOrgArray"   
+                        open="(" separator="," close=")">  
+                       #{item,jdbcType=VARCHAR}
+               </foreach> 
+            </if>
+            <if test="auditingStateArray != null and auditingStateArray != ''" >
+                AND AUDITING_STATE in 
+                <foreach item="item" index="index" collection="auditingStateArray"   
+                        open="(" separator="," close=")">  
+                       #{item,jdbcType=VARCHAR}
+               </foreach> 
+            </if>
+            <if test="auditingOrgArray != null and auditingOrgArray != ''" >
+                AND (AUDITING_ORG in 
+                <foreach item="item" index="index" collection="auditingOrgArray"   
+                        open="(" separator="," close=")">  
+                       #{item,jdbcType=VARCHAR}
+               </foreach> 
+                
+               )
+            </if>
+            
+            order by AUDITING_DATE
+            
+    </select>
+    <delete id="deleteBizTicketApply">
+        DELETE
+        FROM
+             biz_ticket_apply
+        WHERE 
+            APPLY_ID = #{applyId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizTicketApply" parameterType="com.solidextend.sys.ticket.vo.BizTicketApply" >
+        INSERT INTO biz_ticket_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyId != null" >
+                APPLY_ID,
+            </if>
+            <if test="applyCode != null" >
+                APPLY_CODE,
+            </if>
+            <if test="applyType != null" >
+                APPLY_TYPE,
+            </if>
+            <if test="applyOrg != null" >
+                APPLY_ORG,
+            </if>
+            <if test="applyContacts != null" >
+                APPLY_CONTACTS,
+            </if>
+            <if test="applyPhone != null" >
+                APPLY_PHONE,
+            </if>
+            <if test="toOrg != null" >
+                TO_ORG,
+            </if>
+            <if test="applyDate != null" >
+                APPLY_DATE,
+            </if>
+            <if test="auditingState != null" >
+                AUDITING_STATE,
+            </if>
+            <if test="auditingOrg != null" >
+                AUDITING_ORG,
+            </if>
+            <if test="auditingUsr != null" >
+                AUDITING_USR,
+            </if>
+            <if test="description != null" >
+                DESCRIPTION,
+            </if>
+            <if test="operator != null" >
+                OPERATOR,
+            </if>
+            <if test="auditingDate != null" >
+                AUDITING_Date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyId != null" >
+                #{applyId,jdbcType=VARCHAR},
+            </if> 
+            <if test="applyCode != null" >
+                #{applyCode,jdbcType=VARCHAR},
+            </if> 
+            <if test="applyType != null" >
+                #{applyType,jdbcType=INTEGER},
+            </if> 
+            <if test="applyOrg != null" >
+                #{applyOrg,jdbcType=VARCHAR},
+            </if> 
+            <if test="applyContacts != null" >
+                #{applyContacts,jdbcType=VARCHAR},
+            </if> 
+            <if test="applyPhone != null" >
+                #{applyPhone,jdbcType=VARCHAR},
+            </if> 
+            <if test="toOrg != null" >
+                #{toOrg,jdbcType=VARCHAR},
+            </if> 
+            <if test="applyDate != null" >
+                #{applyDate,jdbcType=DATE},
+            </if> 
+            <if test="auditingState != null" >
+                #{auditingState,jdbcType=INTEGER},
+            </if> 
+            <if test="auditingOrg != null" >
+                #{auditingOrg,jdbcType=VARCHAR},
+            </if> 
+            <if test="auditingUsr != null" >
+                #{auditingUsr,jdbcType=VARCHAR},
+            </if> 
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if> 
+            <if test="operator != null" >
+                #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="auditingDate != null" >
+                #{auditingDate,jdbcType=DATE},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateBizTicketApply" parameterType="com.solidextend.sys.ticket.vo.BizTicketApply" >
+        UPDATE biz_ticket_apply
+        <set>
+            <if test="applyId != null" >
+                APPLY_ID = #{applyId,jdbcType=VARCHAR},
+            </if>
+            <if test="applyCode != null" >
+                APPLY_CODE = #{applyCode,jdbcType=VARCHAR},
+            </if>
+            <if test="applyType != null" >
+                APPLY_TYPE = #{applyType,jdbcType=INTEGER},
+            </if>
+            <if test="applyOrg != null" >
+                APPLY_ORG = #{applyOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="applyContacts != null" >
+                APPLY_CONTACTS = #{applyContacts,jdbcType=VARCHAR},
+            </if>
+            <if test="applyPhone != null" >
+                APPLY_PHONE = #{applyPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="toOrg != null" >
+                TO_ORG = #{toOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="applyDate != null" >
+                APPLY_DATE = #{applyDate,jdbcType=DATE},
+            </if>
+            <if test="auditingState != null" >
+                AUDITING_STATE = #{auditingState,jdbcType=INTEGER},
+            </if>
+            <if test="auditingOrg != null" >
+                AUDITING_ORG = #{auditingOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="auditingUsr != null" >
+                AUDITING_USR = #{auditingUsr,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null" >
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null" >
+                OPERATOR = #{operator,jdbcType=VARCHAR},
+            </if>
+            <if test="auditingDate != null" >
+                auditing_DATE = #{auditingDate,jdbcType=DATE},
+            </if>
+        </set>
+        WHERE 
+            APPLY_ID = #{applyId,jdbcType=VARCHAR}
+    </update>
+</mapper>

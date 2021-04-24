@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.subway.dao.BizStationFluxLimitWebMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.subway.vo.BizStationFluxLimitWeb">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="station_entry_safe" jdbcType="REAL" property="stationEntrySafe"/>
+        <result column="station_entry_warn" jdbcType="REAL" property="stationEntryWarn"/>
+        <result column="station_entry_alarm" jdbcType="REAL" property="stationEntryAlarm"/>
+        <result column="station_exit_safe" jdbcType="REAL" property="stationExitSafe"/>
+        <result column="station_exit_warn" jdbcType="REAL" property="stationExitWarn"/>
+        <result column="station_exit_alarm" jdbcType="REAL" property="stationExitAlarm"/>
+        <result column="station_transfor_safe" jdbcType="REAL" property="stationTransforSafe"/>
+        <result column="station_transfor_warn" jdbcType="REAL" property="stationTransforWarn"/>
+        <result column="station_transfor_alarm" jdbcType="REAL" property="stationTransforAlarm"/>
+        <result column="isEnable" jdbcType="INTEGER" property="isenable"/>
+        <result column="update_time" jdbcType="DATE" property="updateTime"/>
+    </resultMap>
+    <select id="getBizStationFluxLimitWebById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_station_flux_limit_web
+        WHERE            
+            id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizStationFluxLimitWeb" resultMap="BaseResultMap">
+          SELECT * FROM biz_station_flux_limit_web 
+    </select>
+    
+    <select id="findByAttrBizStationFluxLimitWeb" resultMap="BaseResultMap" parameterType="com.solidextend.sys.subway.vo.BizStationFluxLimitWeb">
+          SELECT * 
+          FROM 
+          biz_station_flux_limit_web 
+          WHERE 1=1 
+            <if test="id != null and id != ''" >
+                AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="stationEntrySafe != null and stationEntrySafe != ''" >
+                AND station_entry_safe = #{stationEntrySafe,jdbcType=REAL}
+            </if>
+            <if test="stationEntryWarn != null and stationEntryWarn != ''" >
+                AND station_entry_warn = #{stationEntryWarn,jdbcType=REAL}
+            </if>
+            <if test="stationEntryAlarm != null and stationEntryAlarm != ''" >
+                AND station_entry_alarm = #{stationEntryAlarm,jdbcType=REAL}
+            </if>
+            <if test="stationExitSafe != null and stationExitSafe != ''" >
+                AND station_exit_safe = #{stationExitSafe,jdbcType=REAL}
+            </if>
+            <if test="stationExitWarn != null and stationExitWarn != ''" >
+                AND station_exit_warn = #{stationExitWarn,jdbcType=REAL}
+            </if>
+            <if test="stationExitAlarm != null and stationExitAlarm != ''" >
+                AND station_exit_alarm = #{stationExitAlarm,jdbcType=REAL}
+            </if>
+            <if test="stationTransforSafe != null and stationTransforSafe != ''" >
+                AND station_transfor_safe = #{stationTransforSafe,jdbcType=REAL}
+            </if>
+            <if test="stationTransforWarn != null and stationTransforWarn != ''" >
+                AND station_transfor_warn = #{stationTransforWarn,jdbcType=REAL}
+            </if>
+            <if test="stationTransforAlarm != null and stationTransforAlarm != ''" >
+                AND station_transfor_alarm = #{stationTransforAlarm,jdbcType=REAL}
+            </if>
+            <if test="isenable != null and isenable != ''" >
+                AND isEnable = #{isenable,jdbcType=INTEGER}
+            </if>
+            <if test="updateTime != null and updateTime != ''" >
+                AND update_time = #{updateTime,jdbcType=DATE}
+            </if>
+    </select>
+
+    <delete id="deleteBizStationFluxLimitWeb">
+        DELETE
+        FROM
+             biz_station_flux_limit_web
+        WHERE 
+            id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizStationFluxLimitWeb" parameterType="com.solidextend.sys.subway.vo.BizStationFluxLimitWeb" >
+        INSERT INTO biz_station_flux_limit_web
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="stationEntrySafe != null" >
+                station_entry_safe,
+            </if>
+            <if test="stationEntryWarn != null" >
+                station_entry_warn,
+            </if>
+            <if test="stationEntryAlarm != null" >
+                station_entry_alarm,
+            </if>
+            <if test="stationExitSafe != null" >
+                station_exit_safe,
+            </if>
+            <if test="stationExitWarn != null" >
+                station_exit_warn,
+            </if>
+            <if test="stationExitAlarm != null" >
+                station_exit_alarm,
+            </if>
+            <if test="stationTransforSafe != null" >
+                station_transfor_safe,
+            </if>
+            <if test="stationTransforWarn != null" >
+                station_transfor_warn,
+            </if>
+            <if test="stationTransforAlarm != null" >
+                station_transfor_alarm,
+            </if>
+            <if test="isenable != null" >
+                isEnable,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if> 
+            <if test="stationEntrySafe != null" >
+                #{stationEntrySafe,jdbcType=REAL},
+            </if> 
+            <if test="stationEntryWarn != null" >
+                #{stationEntryWarn,jdbcType=REAL},
+            </if> 
+            <if test="stationEntryAlarm != null" >
+                #{stationEntryAlarm,jdbcType=REAL},
+            </if> 
+            <if test="stationExitSafe != null" >
+                #{stationExitSafe,jdbcType=REAL},
+            </if> 
+            <if test="stationExitWarn != null" >
+                #{stationExitWarn,jdbcType=REAL},
+            </if> 
+            <if test="stationExitAlarm != null" >
+                #{stationExitAlarm,jdbcType=REAL},
+            </if> 
+            <if test="stationTransforSafe != null" >
+                #{stationTransforSafe,jdbcType=REAL},
+            </if> 
+            <if test="stationTransforWarn != null" >
+                #{stationTransforWarn,jdbcType=REAL},
+            </if> 
+            <if test="stationTransforAlarm != null" >
+                #{stationTransforAlarm,jdbcType=REAL},
+            </if> 
+            <if test="isenable != null" >
+                #{isenable,jdbcType=INTEGER},
+            </if> 
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=DATE},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizStationFluxLimitWeb" parameterType="com.solidextend.sys.subway.vo.BizStationFluxLimitWeb" >
+        UPDATE biz_station_flux_limit_web
+        <set>
+            <if test="id != null" >
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="stationEntrySafe != null" >
+                station_entry_safe = #{stationEntrySafe,jdbcType=REAL},
+            </if>
+            <if test="stationEntryWarn != null" >
+                station_entry_warn = #{stationEntryWarn,jdbcType=REAL},
+            </if>
+            <if test="stationEntryAlarm != null" >
+                station_entry_alarm = #{stationEntryAlarm,jdbcType=REAL},
+            </if>
+            <if test="stationExitSafe != null" >
+                station_exit_safe = #{stationExitSafe,jdbcType=REAL},
+            </if>
+            <if test="stationExitWarn != null" >
+                station_exit_warn = #{stationExitWarn,jdbcType=REAL},
+            </if>
+            <if test="stationExitAlarm != null" >
+                station_exit_alarm = #{stationExitAlarm,jdbcType=REAL},
+            </if>
+            <if test="stationTransforSafe != null" >
+                station_transfor_safe = #{stationTransforSafe,jdbcType=REAL},
+            </if>
+            <if test="stationTransforWarn != null" >
+                station_transfor_warn = #{stationTransforWarn,jdbcType=REAL},
+            </if>
+            <if test="stationTransforAlarm != null" >
+                station_transfor_alarm = #{stationTransforAlarm,jdbcType=REAL},
+            </if>
+            <if test="isenable != null" >
+                isEnable = #{isenable,jdbcType=INTEGER},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=DATE},
+            </if>
+        </set>
+        WHERE 
+            id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

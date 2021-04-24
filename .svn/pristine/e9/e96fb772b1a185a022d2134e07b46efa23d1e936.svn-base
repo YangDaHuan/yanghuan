@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<bean id="logAspect" class="com.solidextend.sys.log.aop.AuditLogAspect">
+		<property name="btpLog" ref="btpLog" />
+		<property name="logContext" ref="logContext" />
+	</bean>
+
+	<aop:config>
+		<aop:pointcut id="logpct"
+			expression="execution(* com.solidextend..*Service.*(..)) " />
+		<aop:aspect ref="logAspect">
+			<aop:around method="logging" pointcut-ref="logpct" />
+		</aop:aspect>
+	</aop:config>
+
+	<bean id="logQueue" class="com.solidextend.sys.log.thread.LogQueue"
+		init-method="init">
+		<property name="queue">
+			<bean class="java.util.concurrent.LinkedBlockingQueue">
+				<!-- 配置阻塞性队列大小 -->
+				<constructor-arg value="100" />
+			</bean>
+		</property>
+	</bean>
+</beans>

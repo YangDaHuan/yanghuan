@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.solidextend.sys.quartz.dao.JobTypeMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.quartz.vo.JobType">
+		<id column="JOB_TYPE_ID" jdbcType="VARCHAR" property="jobTypeId" />
+		<result column="JOB_TYPE_NAME" jdbcType="VARCHAR" property="jobTypeName" />
+		<result column="DISCRIPTION" jdbcType="VARCHAR" property="discription" />
+		<result column="JOB_CLASS" jdbcType="VARCHAR" property="jobClass" />
+		<result column="STATE" jdbcType="INTEGER" property="state" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="LAST_UP_TIME" jdbcType="TIMESTAMP" property="lastUpTime" />
+		<result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+		<result column="SORT_NO" jdbcType="INTEGER" property="sortNo" />
+	</resultMap>
+
+
+
+	<insert id="insertJobType">
+		INSERT INTO sys_job_type
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="jobTypeId != null">
+				JOB_TYPE_ID,
+			</if>
+			<if test="jobTypeName != null">
+				JOB_TYPE_NAME,
+			</if>
+			<if test="discription != null">
+				DISCRIPTION,
+			</if>
+			<if test="jobClass != null">
+				JOB_CLASS,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="lastUpTime != null">
+				LAST_UP_TIME,
+			</if>
+			<if test="userId != null">
+				USER_ID,
+			</if>
+			<if test="sortNo != null">
+				SORT_NO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="jobTypeId != null">
+				#{jobTypeId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobTypeName != null">
+				#{jobTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="discription != null">
+				#{discription,jdbcType=VARCHAR},
+			</if>
+			<if test="jobClass != null">
+				#{jobClass,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpTime != null">
+				#{lastUpTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNo != null">
+				#{sortNo,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<delete id="deleteJobType" parameterType="java.lang.String">
+		DELETE FROM SYS_JOB_TYPE WHERE JOB_TYPE_ID = #{jopTypeId,jdbcType=VARCHAR}
+	</delete>
+
+	<update id="updateJobType" parameterType="com.solidextend.sys.quartz.vo.JobType">
+		UPDATE SYS_JOB_TYPE
+		<set>
+			<if test="jobTypeName != null">
+				JOB_TYPE_NAME = #{jobTypeName,jdbcType=VARCHAR},
+			</if>
+			<if test="discription != null">
+				DISCRIPTION = #{discription,jdbcType=VARCHAR},
+			</if>
+			<if test="jobClass != null">
+				JOB_CLASS = #{jobClass,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+			</if>
+			<if test="lastUpTime != null">
+				LAST_UP_TIME = #{lastUpTime,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				USER_ID = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNo != null">
+				SORT_NO = #{sortNo,jdbcType=VARCHAR},
+			</if>
+
+		</set>
+		WHERE JOB_TYPE_ID = #{jobTypeId,jdbcType=VARCHAR}
+	</update>
+	<select id="getJobTypeList" resultMap="BaseResultMap">
+		SELECT JOB_TYPE_ID, JOB_TYPE_NAME, DISCRIPTION, JOB_CLASS, STATE,
+		CREATE_TIME, LAST_UP_TIME, USER_ID, SORT_NO FROM SYS_JOB_TYPE
+		<if test="state != null">
+			WHERE STATE=#{state,jdbcType=INTEGER}
+		</if>
+		ORDER BY SORT_NO
+	</select>
+	<select id="getJobTypeById" resultMap="BaseResultMap">
+		SELECT JOB_TYPE_ID, JOB_TYPE_NAME, DISCRIPTION, JOB_CLASS, STATE,
+		CREATE_TIME, LAST_UP_TIME, USER_ID, SORT_NO FROM SYS_JOB_TYPE
+
+		WHERE JOB_TYPE_ID=#{jobTypeId,jdbcType=VARCHAR}
+
+		ORDER BY SORT_NO
+	</select>
+
+
+</mapper>

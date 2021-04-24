@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.takeout.dao.CoursesMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.takeout.vo.CoursesVO">
+        <id column="GOODS_ID" jdbcType="INTEGER" property="coursesId"/>
+        <result column="GOODS_NAME" jdbcType="VARCHAR" property="coursesName"/>
+        <result column="GOODS_TYPE_ID" jdbcType="INTEGER" property="coursesTypeId"/>
+        <result column="GOODS_TYPE_NAME" jdbcType="VARCHAR" property="coursesTypeName"/>
+        <result column="GOODS_DESC" jdbcType="INTEGER" property="coursesDesc"/>
+        <result column="GOODS_BUS_ID" jdbcType="INTEGER" property="userId"/>
+        <result column="GOODS_PIC_THCHER" jdbcType="DOUBLE" property="coursesPriceT"/>
+        <result column="GOODS_PIC_STUDENT" jdbcType="DOUBLE" property="coursesPriceS"/>
+        <result column="GOODS_TEJIA" jdbcType="VARCHAR" property="tejia"/>
+        <result column="GOODS_RAT" jdbcType="DOUBLE" property="rat"/>
+        <result column="GOODS_DEL" jdbcType="VARCHAR" property="isDelete"/>
+        <result column="CREATED_BY" jdbcType="INTEGER" property="createdBy"/>
+        <result column="CREATED_DATE" jdbcType="VARCHAR" property="createdDate"/>
+        <result column="LAST_UPDATE_BY" jdbcType="INTEGER" property="lastUpdateBy"/>
+        <result column="LAST_UPDATE_DATE" jdbcType="DATE" property="lastUpdateDate"/>
+    </resultMap>
+    <select id="getCoursesById" resultMap="BaseResultMap">
+        SELECT
+            T.*,
+            (select courses_type_name
+          FROM 
+          	biz_courses_type where T.goods_type_id = courses_type_id) as GOODS_TYPE_NAME
+        FROM
+             biz_takeout_goods T
+        WHERE 1=1 and  GOODS_DEL = 'N'
+            and GOODS_ID = #{coursesId,jdbcType=NUMERIC}
+    </select>
+    
+    <select id="findAllCourses" resultMap="BaseResultMap">
+          SELECT (select courses_type_name
+          FROM 
+          	biz_courses_type where T.goods_type_id = courses_type_id) as GOODS_TYPE_NAME,
+          T.* FROM biz_takeout_goods T
+           WHERE 1=1 and  GOODS_DEL = 'N'
+    </select>
+    
+     <select id="findByCourses" resultMap="BaseResultMap">
+          SELECT (select courses_type_name
+          FROM 
+          	biz_courses_type where T.goods_type_id = courses_type_id) as GOODS_TYPE_NAME,
+          T.* FROM biz_takeout_goods T
+          where 1=1 and GOODS_DEL = 'N'
+          <if test="coursesName != null and coursesName != ''" >
+                AND GOODS_NAME = #{coursesName,jdbcType=VARCHAR}
+            </if>
+    </select>
+    
+      <select id="findByCoursesCount" resultType="int" >
+          SELECT count(*) FROM biz_takeout_goods 
+          where 1=1 
+          <if test="coursesName != null and coursesName != ''" >
+                AND GOODS_NAME = #{coursesName,jdbcType=VARCHAR}
+            </if>
+    </select>
+
+    <delete id="deleteCourses">
+        DELETE
+        FROM
+             biz_takeout_goods
+        WHERE 
+            GOODS_ID = #{coursesId,jdbcType=NUMERIC}
+    </delete>
+    
+    <update id="delete" >
+        UPDATE biz_takeout_goods
+        set 
+			GOODS_DEL = 'Y'
+        WHERE 
+            GOODS_ID = #{coursesId,jdbcType=NUMERIC}
+    </update>
+
+    <insert id="saveCourses" parameterType="com.solidextend.sys.takeout.vo.CoursesVO" >
+        INSERT INTO BIZ_TAKEOUT_GOODS(
+        	GOODS_ID,
+			GOODS_NAME,
+			GOODS_TYPE_ID,
+			GOODS_DESC,
+			GOODS_BUS_ID,
+			GOODS_PIC_THCHER,
+			GOODS_PIC_STUDENT,
+			GOODS_TEJIA,
+			GOODS_RAT,
+			GOODS_DEL,
+			CREATED_BY,
+			CREATED_DATE,
+			LAST_UPDATE_BY,
+			LAST_UPDATE_DATE
+
+        )values(
+        	#{coursesId,jdbcType=NUMERIC},
+	        #{coursesName,jdbcType=VARCHAR},
+	        #{coursesTypeId,jdbcType=NUMERIC},
+	        #{coursesDesc,jdbcType=VARCHAR},
+			#{userId,jdbcType=NUMERIC},
+	        #{coursesPriceT,jdbcType=NUMERIC},
+	        #{coursesPriceS,jdbcType=NUMERIC},
+	        #{tejia,jdbcType=NUMERIC},
+			#{rat,jdbcType=VARCHAR},
+			#{isDelete,jdbcType=VARCHAR},
+			#{userId,jdbcType=VARCHAR},
+	        NOW(),
+	        #{userId,jdbcType=NUMERIC},
+			NOW()
+        )
+    </insert>
+
+    <update id="updateCourses" parameterType="com.solidextend.sys.takeout.vo.CoursesVO" >
+        UPDATE biz_takeout_goods
+        set 
+        	GOODS_NAME = #{coursesName,jdbcType=VARCHAR},
+			GOODS_TYPE_ID = #{coursesTypeId,jdbcType=NUMERIC},
+			GOODS_DESC = #{coursesDesc,jdbcType=VARCHAR},
+			GOODS_BUS_ID = #{userId,jdbcType=NUMERIC},
+			GOODS_PIC_THCHER = #{coursesPriceT,jdbcType=NUMERIC},
+			GOODS_PIC_STUDENT = #{coursesPriceS,jdbcType=NUMERIC},
+			GOODS_TEJIA = #{tejia,jdbcType=VARCHAR},
+			GOODS_RAT = #{rat,jdbcType=NUMERIC},
+			LAST_UPDATE_BY = #{userId,jdbcType=NUMERIC},
+			LAST_UPDATE_DATE = NOW()
+        WHERE 
+            GOODS_ID = #{coursesId,jdbcType=NUMERIC}
+    </update>
+    
+    <select id="getCoursesTypeName" resultType="com.solidextend.sys.takeout.vo.CoursesTypeVO" >
+          SELECT distinct courses_type_id as coursesTypeId,
+          		courses_type_name as coursesTypeName
+          FROM 
+          	biz_courses_type 
+         
+    </select>
+    
+</mapper>

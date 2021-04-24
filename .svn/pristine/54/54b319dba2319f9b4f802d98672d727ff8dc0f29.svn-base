@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.test.dao.RepresentativeInfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.solidextend.sys.test.vo.RepresentativeInfo">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="INCUMBENT_POST" jdbcType="VARCHAR" property="incumbentPost" />
+		<result column="GENDER" jdbcType="VARCHAR" property="gender" />
+		<result column="NATION" jdbcType="VARCHAR" property="nation" />
+		<result column="PLACE_OF_ORIGIN" jdbcType="VARCHAR" property="placeOfOrigin" />
+		<result column="EDUCATION_DEGREE" jdbcType="VARCHAR" property="educationDegree" />
+		<result column="BIRTHDAY" jdbcType="DATE" property="birthday" />
+		<result column="PARTY_TIME" jdbcType="DATE" property="partyTime" />
+		<result column="TAKE_WORK_TIME" jdbcType="DATE" property="takeWorkTime" />
+		<result column="IS_LEADING_CADRES" jdbcType="INTEGER" property="isLeadingCadres" />
+		<result column="IS_PROFESSIONAL" jdbcType="INTEGER" property="isProfessional" />
+		<result column="IS_RETIRED_CADRES" jdbcType="INTEGER" property="isRetiredCadres" />
+		<result column="IS_XJMF" jdbcType="INTEGER" property="isXjmf" />
+		<result column="IS_SJDWWY" jdbcType="INTEGER" property="isSjdwwy" />
+		<result column="IS_SJJWWY" jdbcType="INTEGER" property="isSjjwwy" />
+		<result column="IS_SJDB" jdbcType="INTEGER" property="isSjdb" />
+		<result column="REMARKS" jdbcType="VARCHAR" property="remarks" />
+	</resultMap>
+	<select id="getRepresentativeInfoById" resultMap="BaseResultMap">
+		SELECT
+		*
+		FROM
+		representative_info
+		WHERE
+		ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAllRepresentativeInfo" resultMap="BaseResultMap"
+		parameterType="com.solidextend.sys.test.vo.RepresentativeInfo">
+		SELECT * FROM representative_info where 1=1
+		<if test="id != null">
+			AND ID = #{id,jdbcType=VARCHAR}
+		</if>
+		<if test="name != null">
+			AND NAME = #{name,jdbcType=VARCHAR}
+		</if>
+		<if test="incumbentPost != null">
+			AND INCUMBENT_POST = #{incumbentPost,jdbcType=VARCHAR}
+		</if>
+		<if test="gender != null">
+			AND GENDER = #{gender,jdbcType=VARCHAR}
+		</if>
+		<if test="nation != null">
+			AND NATION = #{nation,jdbcType=VARCHAR}
+		</if>
+		<if test="placeOfOrigin != null">
+			AND PLACE_OF_ORIGIN = #{placeOfOrigin,jdbcType=VARCHAR}
+		</if>
+		<if test="educationDegree != null">
+			AND EDUCATION_DEGREE = #{educationDegree,jdbcType=VARCHAR}
+		</if>
+		<if test="birthday != null">
+			AND BIRTHDAY = #{birthday,jdbcType=DATE}
+		</if>
+		<if test="partyTime != null">
+			AND PARTY_TIME = #{partyTime,jdbcType=DATE}
+		</if>
+		<if test="takeWorkTime != null">
+			AND TAKE_WORK_TIME = #{takeWorkTime,jdbcType=DATE}
+		</if>
+		<if test="isLeadingCadres != null">
+			AND IS_LEADING_CADRES = #{isLeadingCadres,jdbcType=INTEGER}
+		</if>
+		<if test="isProfessional != null">
+			AND IS_PROFESSIONAL = #{isProfessional,jdbcType=INTEGER}
+		</if>
+		<if test="isRetiredCadres != null">
+			AND IS_RETIRED_CADRES = #{isRetiredCadres,jdbcType=INTEGER}
+		</if>
+		<if test="isXjmf != null">
+			AND IS_XJMF = #{isXjmf,jdbcType=INTEGER}
+		</if>
+		<if test="isSjdwwy != null">
+			AND IS_SJDWWY = #{isSjdwwy,jdbcType=INTEGER}
+		</if>
+		<if test="isSjjwwy != null">
+			AND IS_SJJWWY = #{isSjjwwy,jdbcType=INTEGER}
+		</if>
+		<if test="isSjdb != null">
+			AND IS_SJDB = #{isSjdb,jdbcType=INTEGER}
+		</if>
+
+	</select>
+
+	<delete id="deleteRepresentativeInfo">
+		DELETE
+		FROM
+		representative_info
+		WHERE
+		ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="saveRepresentativeInfo" parameterType="com.solidextend.sys.test.vo.RepresentativeInfo">
+		INSERT INTO representative_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+			<if test="incumbentPost != null">
+				INCUMBENT_POST,
+			</if>
+			<if test="gender != null">
+				GENDER,
+			</if>
+			<if test="nation != null">
+				NATION,
+			</if>
+			<if test="placeOfOrigin != null">
+				PLACE_OF_ORIGIN,
+			</if>
+			<if test="educationDegree != null">
+				EDUCATION_DEGREE,
+			</if>
+			<if test="birthday != null">
+				BIRTHDAY,
+			</if>
+			<if test="partyTime != null">
+				PARTY_TIME,
+			</if>
+			<if test="takeWorkTime != null">
+				TAKE_WORK_TIME,
+			</if>
+			<if test="isLeadingCadres != null">
+				IS_LEADING_CADRES,
+			</if>
+			<if test="isProfessional != null">
+				IS_PROFESSIONAL,
+			</if>
+			<if test="isRetiredCadres != null">
+				IS_RETIRED_CADRES,
+			</if>
+			<if test="isXjmf != null">
+				IS_XJMF,
+			</if>
+			<if test="isSjdwwy != null">
+				IS_SJDWWY,
+			</if>
+			<if test="isSjjwwy != null">
+				IS_SJJWWY,
+			</if>
+			<if test="isSjdb != null">
+				IS_SJDB,
+			</if>
+			<if test="remarks != null">
+				REMARKS,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="incumbentPost != null">
+				#{incumbentPost,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				#{gender,jdbcType=VARCHAR},
+			</if>
+			<if test="nation != null">
+				#{nation,jdbcType=VARCHAR},
+			</if>
+			<if test="placeOfOrigin != null">
+				#{placeOfOrigin,jdbcType=VARCHAR},
+			</if>
+			<if test="educationDegree != null">
+				#{educationDegree,jdbcType=VARCHAR},
+			</if>
+			<if test="birthday != null">
+				#{birthday,jdbcType=DATE},
+			</if>
+			<if test="partyTime != null">
+				#{partyTime,jdbcType=DATE},
+			</if>
+			<if test="takeWorkTime != null">
+				#{takeWorkTime,jdbcType=DATE},
+			</if>
+			<if test="isLeadingCadres != null">
+				#{isLeadingCadres,jdbcType=INTEGER},
+			</if>
+			<if test="isProfessional != null">
+				#{isProfessional,jdbcType=INTEGER},
+			</if>
+			<if test="isRetiredCadres != null">
+				#{isRetiredCadres,jdbcType=INTEGER},
+			</if>
+			<if test="isXjmf != null">
+				#{isXjmf,jdbcType=INTEGER},
+			</if>
+			<if test="isSjdwwy != null">
+				#{isSjdwwy,jdbcType=INTEGER},
+			</if>
+			<if test="isSjjwwy != null">
+				#{isSjjwwy,jdbcType=INTEGER},
+			</if>
+			<if test="isSjdb != null">
+				#{isSjdb,jdbcType=INTEGER},
+			</if>
+			<if test="remarks != null">
+				#{remarks,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateRepresentativeInfo" parameterType="com.solidextend.sys.test.vo.RepresentativeInfo">
+		UPDATE representative_info
+		<set>
+			<if test="id != null">
+				ID = #{id,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				NAME = #{name,jdbcType=VARCHAR},
+			</if>
+			<if test="incumbentPost != null">
+				INCUMBENT_POST = #{incumbentPost,jdbcType=VARCHAR},
+			</if>
+			<if test="gender != null">
+				GENDER = #{gender,jdbcType=VARCHAR},
+			</if>
+			<if test="nation != null">
+				NATION = #{nation,jdbcType=VARCHAR},
+			</if>
+			<if test="placeOfOrigin != null">
+				PLACE_OF_ORIGIN = #{placeOfOrigin,jdbcType=VARCHAR},
+			</if>
+			<if test="educationDegree != null">
+				EDUCATION_DEGREE = #{educationDegree,jdbcType=VARCHAR},
+			</if>
+			<if test="birthday != null">
+				BIRTHDAY = #{birthday,jdbcType=DATE},
+			</if>
+			<if test="partyTime != null">
+				PARTY_TIME = #{partyTime,jdbcType=DATE},
+			</if>
+			<if test="takeWorkTime != null">
+				TAKE_WORK_TIME = #{takeWorkTime,jdbcType=DATE},
+			</if>
+			<if test="isLeadingCadres != null">
+				IS_LEADING_CADRES = #{isLeadingCadres,jdbcType=INTEGER},
+			</if>
+			<if test="isProfessional != null">
+				IS_PROFESSIONAL = #{isProfessional,jdbcType=INTEGER},
+			</if>
+			<if test="isRetiredCadres != null">
+				IS_RETIRED_CADRES = #{isRetiredCadres,jdbcType=INTEGER},
+			</if>
+			<if test="isXjmf != null">
+				IS_XJMF = #{isXjmf,jdbcType=INTEGER},
+			</if>
+			<if test="isSjdwwy != null">
+				IS_SJDWWY = #{isSjdwwy,jdbcType=INTEGER},
+			</if>
+			<if test="isSjjwwy != null">
+				IS_SJJWWY = #{isSjjwwy,jdbcType=INTEGER},
+			</if>
+			<if test="isSjdb != null">
+				IS_SJDB = #{isSjdb,jdbcType=INTEGER},
+			</if>
+			<if test="remarks != null">
+				REMARKS = #{remarks,jdbcType=VARCHAR},
+			</if>
+		</set>
+		WHERE
+		ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

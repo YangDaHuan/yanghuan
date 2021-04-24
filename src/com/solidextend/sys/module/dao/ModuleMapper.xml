@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.solidextend.sys.module.dao.ModuleMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.module.vo.Module">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="MODULE_CODE" property="moduleCode" jdbcType="VARCHAR" />
+		<result column="MODULE_NAME" property="moduleName" jdbcType="VARCHAR" />
+		<result column="URL" property="url" jdbcType="VARCHAR" />
+		<result column="ICON" property="iconCls" jdbcType="VARCHAR" />
+		<result column="ORDER_NO" property="orderNo" jdbcType="DECIMAL" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="MODULE_TYPE" property="moduleType" jdbcType="VARCHAR" />
+		<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+		<result column="IS_PUBLIC" property="isPublic" jdbcType="VARCHAR" />
+		<result column="IS_FOLDER" property="isFolder" jdbcType="VARCHAR" />
+		<result column="DISABLED" property="disabled" jdbcType="VARCHAR" />
+		<result column="FUN_GROUP_CODE" property="funGroupCode"
+			jdbcType="VARCHAR" />
+		<collection column="ID" property="funs" javaType="ArrayList"
+			ofType="map">
+			<result column="FUN_CODE" jdbcType="VARCHAR" property="funCode" />
+			<result column="FUN_NAME" jdbcType="VARCHAR" property="funName" />
+			<result column="FUN_VALUE" jdbcType="VARCHAR" property="funValue" />
+			<result column="DICT_CODE" jdbcType="VARCHAR" property="dictCode" />
+			<collection column="FUN_CODE" property="options" javaType="ArrayList"
+				ofType="map">
+				<result column="ITEM_CODE" jdbcType="VARCHAR" property="itemCode" />
+				<result column="ITEM_NAME" jdbcType="VARCHAR" property="itemName" />
+			</collection>
+		</collection>
+	</resultMap>
+
+	<select id="getModuleList" resultMap="BaseResultMap">
+		SELECT M.*, F.FUN_CODE,F.FUN_NAME,F.DICT_CODE,DI.ITEM_CODE,DI.ITEM_NAME
+		FROM SYS_MODULE M
+		LEFT outer JOIN SYS_MODULE_FUN_GROUP FG
+		ON (M.FUN_GROUP_CODE = FG.FUN_GROUP_CODE OR FG.IS_PUBLIC='1') AND
+		FG.DISABLED='0'
+		LEFT outer JOIN SYS_MODULE_FUN F
+		ON FG.FUN_GROUP_CODE = F.FUN_GROUP_CODE
+		LEFT outer JOIN SYS_DICT_ITEM DI
+		ON F.DICT_CODE=DI.DICT_ID AND DI.DELETED='0'
+		where MODULE_TYPE = '1' AND M.DISABLED = '0'
+		ORDER BY M.ORDER_NO,FG.ORDER_NO,F.ORDER_NO,DI.ORDER_NO
+	</select>
+	<select id="getModuleInfoList" resultMap="BaseResultMap">
+		SELECT M.*
+		FROM SYS_MODULE M
+		where MODULE_TYPE = '1'
+		<if test="onlyFolder!=null and onlyFolder!='0'">
+			and IS_FOLDER='1'
+		</if>
+		ORDER BY M.ORDER_NO
+	</select>
+	<select id="getModuleInfoListByRole" resultMap="BaseResultMap">
+		SELECT M.ID, M.MODULE_CODE, M.MODULE_NAME, M.URL, M.ICON, M.ORDER_NO,
+		M.REMARK, M.MODULE_TYPE, M.PARENT_ID, M.IS_PUBLIC, M.DISABLED,
+		M.IS_FOLDER, M.FUN_GROUP_CODE,rm.FUN_CODE,max(rm.FUN_VALUE) as
+		FUN_VALUE
+		FROM SYS_MODULE M
+		JOIN
+		SYS_ROLE_MODULE rm
+		ON
+		m.id = rm.MODULE_ID
+		WHERE
+		m.DISABLED = '0'
+		AND MODULE_TYPE='1'
+		AND (rm.ROLE_ID in
+		<foreach item="item" index="index" collection="roleId" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+		OR m.IS_PUBLIC = '1')
+		<if test="onlyFolder!=null and onlyFolder!='0'">
+			and IS_FOLDER='1'
+		</if>
+		group by M.ID, M.MODULE_CODE, M.MODULE_NAME, M.URL, M.ICON,
+		M.ORDER_NO, M.REMARK, M.MODULE_TYPE, M.PARENT_ID, M.IS_PUBLIC,
+		M.DISABLED, M.IS_FOLDER, M.FUN_GROUP_CODE,rm.FUN_CODE
+		ORDER BY M.ORDER_NO
+	</select>
+	<select id="getModuleById" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select * from SYS_MODULE where ID = #{id,jdbcType=VARCHAR} ORDER BY ORDER_NO
+	</select>
+	<select id="getModuleByIdAndRole" resultMap="BaseResultMap">
+		SELECT M.ID, M.MODULE_CODE, M.MODULE_NAME, M.URL, M.ICON, M.ORDER_NO,
+		M.REMARK, M.MODULE_TYPE, M.PARENT_ID, M.IS_PUBLIC, M.DISABLED,
+		M.IS_FOLDER, M.FUN_GROUP_CODE,rm.FUN_CODE,max(rm.FUN_VALUE) as
+		FUN_VALUE
+		FROM SYS_MODULE M
+		JOIN
+		SYS_ROLE_MODULE rm
+		ON
+		m.id = rm.MODULE_ID
+		WHERE
+		m.ID = #{moduleId,jdbcType=VARCHAR}
+		AND rm.ROLE_ID in
+		<foreach item="item" index="index" collection="roleId" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+
+		group by M.ID, M.MODULE_CODE, M.MODULE_NAME, M.URL, M.ICON,
+		M.ORDER_NO, M.REMARK, M.MODULE_TYPE, M.PARENT_ID, M.IS_PUBLIC,
+		M.DISABLED, M.IS_FOLDER, M.FUN_GROUP_CODE,rm.FUN_CODE
+		ORDER BY M.ORDER_NO
+	</select>
+
+	<select id="getModuleByPid" parameterType="string" resultMap="BaseResultMap">
+		SELECT * FROM SYS_MODULE
+		<where>
+
+			<if test="pid!=null and pid!=''">
+				PARENT_ID = #{pid,jdbcType=VARCHAR}
+			</if>
+			<if test="pid ==null or pid==''">
+				PARENT_ID = '0'
+			</if>
+		</where>
+		ORDER BY ORDER_NO
+	</select>
+
+	<select id="getModuleListForRole" parameterType="string"
+		resultMap="BaseResultMap">
+		SELECT distinct
+		m.*
+		FROM
+		SYS_MODULE m
+		JOIN
+		SYS_ROLE_MODULE rm
+		ON
+		m.id = rm.MODULE_ID
+		WHERE
+		rm.ROLE_ID = #{value,jdbcType=VARCHAR}
+		AND MODULE_TYPE='1'
+		ORDER BY m.ORDER_NO
+	</select>
+
+	<!-- 该方法根据角色获得模块，可使用模块区分，模块不可用时不显示 -->
+	<select id="getNormalModuleListByRole" parameterType="string"
+		resultMap="BaseResultMap">
+		SELECT M.ID, M.MODULE_CODE, M.MODULE_NAME, M.URL, M.ICON, M.ORDER_NO,
+		M.REMARK, M.MODULE_TYPE, M.PARENT_ID, M.IS_PUBLIC, M.DISABLED,
+		M.IS_FOLDER, M.FUN_GROUP_CODE,
+		rm.FUN_CODE,F.FUN_NAME,max(rm.FUN_VALUE) as
+		FUN_VALUE,F.DICT_CODE,DI.ITEM_CODE,DI.ITEM_NAME,FG.ORDER_NO,F.ORDER_NO,DI.ORDER_NO
+		FROM SYS_MODULE M
+		JOIN SYS_ROLE_MODULE rm
+		ON m.id = rm.MODULE_ID
+		AND MODULE_TYPE = '1' and m.DISABLED = '0'
+		AND (rm.ROLE_ID in
+		<foreach item="item" index="index" collection="roleId" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		OR m.IS_PUBLIC = '1')
+		LEFT outer JOIN SYS_MODULE_FUN_GROUP FG
+		ON (M.FUN_GROUP_CODE = FG.FUN_GROUP_CODE OR FG.IS_PUBLIC='1') AND
+		FG.DISABLED='0'
+		LEFT outer JOIN SYS_MODULE_FUN F
+		ON FG.FUN_GROUP_CODE = F.FUN_GROUP_CODE and rm.FUN_CODE=F.FUN_CODE
+		LEFT outer JOIN SYS_DICT_ITEM DI
+		ON F.DICT_CODE=DI.DICT_ID AND DI.DELETED='0'
+		group by M.ID, M.MODULE_CODE, M.MODULE_NAME, M.URL, M.ICON, M.ORDER_NO,
+		M.REMARK, M.MODULE_TYPE, M.PARENT_ID, M.IS_PUBLIC, M.DISABLED,
+		M.IS_FOLDER, M.FUN_GROUP_CODE,
+		rm.FUN_CODE,F.FUN_NAME,F.DICT_CODE,DI.ITEM_CODE,DI.ITEM_NAME,FG.ORDER_NO,F.ORDER_NO,DI.ORDER_NO
+
+		ORDER BY M.ORDER_NO,FG.ORDER_NO,F.ORDER_NO,DI.ORDER_NO
+
+	</select>
+
+	<select id="getTopModuleForRole" resultMap="BaseResultMap">
+		SELECT
+		distinct m.*
+		FROM
+		SYS_MODULE m
+		JOIN
+		SYS_ROLE_MODULE rm
+		ON
+		m.ID = rm.MODULE_ID
+		WHERE
+		m.PARENT_ID = '0'
+		AND m.DISABLED = '0'
+		AND (rm.ROLE_ID in
+		<foreach item="item" index="index" collection="roleId" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		OR m.IS_PUBLIC = '1')
+		ORDER BY ORDER_NO
+	</select>
+
+	<select id="getTopModule" resultMap="BaseResultMap">
+		select * from SYS_MODULE where PARENT_ID = '0' ORDER BY ORDER_NO
+	</select>
+
+	<select id="getSubModuleForRole" resultMap="BaseResultMap">
+		SELECT
+		DISTINCT m.*
+		FROM
+		SYS_MODULE m
+		JOIN
+		SYS_ROLE_MODULE rm
+		ON
+		m.ID = rm.MODULE_ID
+		WHERE
+		m.DISABLED = '0'
+		AND rm.ROLE_ID in
+		<foreach item="item" index="index" collection="roleId" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		AND m.PARENT_ID = #{parentId,jdbcType=VARCHAR}
+		ORDER BY ORDER_NO
+	</select>
+	<!-- 角色分配时，可分配模块即使模块不可用，也可分配 -->
+	<select id="getAssignModule" resultMap="BaseResultMap">
+		SELECT
+		m.*
+		FROM
+		SYS_ADMIN_ROLE_MODULE arm
+		JOIN
+		SYS_MODULE m
+		ON
+		arm.MODULE_ID = m.id
+		WHERE
+		ROLE_ID=#{value,jdbcType=VARCHAR}
+		ORDER BY m.ORDER_NO
+	</select>
+	<!-- 角色分配时，可使用模块即使模块不可用，也可分配 -->
+	<select id="getUseModule" parameterType="string" resultMap="BaseResultMap">
+		SELECT distinct
+		m.*,arm.fun_code,arm.fun_value
+		FROM
+		sys_role_module arm
+		JOIN
+		SYS_MODULE m
+		ON
+		arm.MODULE_ID = m.id
+		WHERE
+		ROLE_ID=#{roleId,jdbcType=VARCHAR}
+		ORDER BY m.ORDER_NO
+	</select>
+
+	<delete id="deleteModuleById" parameterType="java.lang.String">
+		delete from SYS_MODULE where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deleteRoleModuleByModuleId" parameterType="java.lang.String">
+		delete from sys_role_module where MODULE_ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deleteAdminRoleModuleByModuleId" parameterType="java.lang.String">
+		delete from sys_admin_role_module where MODULE_ID =
+		#{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insertModule" parameterType="com.solidextend.sys.module.vo.Module">
+		insert into SYS_MODULE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="moduleCode != null">
+				MODULE_CODE,
+			</if>
+			<if test="moduleName != null">
+				MODULE_NAME,
+			</if>
+			<if test="url != null">
+				URL,
+			</if>
+			<if test="iconCls != null">
+				ICON,
+			</if>
+			<if test="orderNo != null">
+				ORDER_NO,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="moduleType != null">
+				MODULE_TYPE,
+			</if>
+			<if test="parentId != null">
+				PARENT_ID,
+			</if>
+			<if test="isPublic != null">
+				IS_PUBLIC,
+			</if>
+			<if test="isFolder != null">
+				IS_FOLDER,
+			</if>
+			<if test="disabled != null">
+				DISABLED,
+			</if>
+			<if test="funGroupCode != null">
+				FUN_GROUP_CODE,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="moduleCode != null">
+				#{moduleCode,jdbcType=VARCHAR},
+			</if>
+			<if test="moduleName != null">
+				#{moduleName,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="iconCls != null">
+				#{iconCls,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=DECIMAL},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=OTHER},
+			</if>
+			<if test="moduleType != null">
+				#{moduleType,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="isPublic != null">
+				#{isPublic,jdbcType=VARCHAR},
+			</if>
+			<if test="isFolder != null">
+				#{isFolder,jdbcType=VARCHAR},
+			</if>
+			<if test="disabled != null">
+				#{disabled,jdbcType=VARCHAR},
+			</if>
+			<if test="funGroupCode != null">
+				#{funGroupCode,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateModuleById" parameterType="com.solidextend.sys.module.vo.Module">
+		update SYS_MODULE
+		<set>
+			<if test="moduleCode != null">
+				MODULE_CODE = #{moduleCode,jdbcType=VARCHAR},
+			</if>
+			<if test="moduleName != null">
+				MODULE_NAME = #{moduleName,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				URL = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="iconCls != null">
+				ICON = #{iconCls,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null">
+				ORDER_NO = #{orderNo,jdbcType=DECIMAL},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=OTHER},
+			</if>
+			<if test="moduleType != null">
+				MODULE_TYPE = #{moduleType,jdbcType=VARCHAR},
+			</if>
+			<if test="parentId != null">
+				PARENT_ID = #{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="isPublic != null">
+				IS_PUBLIC = #{isPublic,jdbcType=VARCHAR},
+			</if>
+			<if test="isFolder != null">
+				IS_FOLDER = #{isFolder,jdbcType=VARCHAR},
+			</if>
+			<if test="disabled != null">
+				DISABLED = #{disabled,jdbcType=VARCHAR},
+			</if>
+			<if test="funGroupCode != null">
+				FUN_GROUP_CODE = #{funGroupCode,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<select id="getQuickModulesByUserId" parameterType="string"
+		resultMap="BaseResultMap">
+		select m.* from sys_module m
+		inner join SYS_SHORTCUT_MENU ssm on m.id=ssm.module_id
+		where ssm.user_id = #{id,jdbcType=VARCHAR} order by m.ORDER_NO
+	</select>
+
+	<insert id="saveQuickModule" parameterType="string">
+		insert into sys_shortcut_menu
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				USER_ID,
+			</if>
+			<if test="moduleId != null">
+				MODULE_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="moduleId != null">
+				#{moduleId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<delete id="deleteQuickModuleByUserId" parameterType="java.lang.String">
+		delete from sys_shortcut_menu where USER_ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<select id="selectModuleByName" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT * FROM SYS_MODULE where MODULE_NAME = #{name,jdbcType=VARCHAR} order
+		by ORDER_NO
+	</select>
+	<select id="findNameDuplicate" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT * FROM SYS_MODULE
+		<where>
+			AND MODULE_NAME = #{moduleName,jdbcType=VARCHAR}
+			<if test="moduleId != null and moduleId!=''">
+				AND ID != #{moduleId,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+	<select id="findCodeDuplicate" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT * FROM SYS_MODULE
+		<where>
+			AND MODULE_CODE = #{moduleCode,jdbcType=VARCHAR}
+			<if test="moduleId != null and moduleId!=''">
+				AND ID != #{moduleId,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+</mapper>

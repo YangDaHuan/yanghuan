@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.solidextend.sys.prompt.dao.PromptMsgMapper">
+	<resultMap id="promptMsgRM" type="com.solidextend.sys.prompt.vo.PromptMsg">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="CONTENT" property="content" jdbcType="OTHER" />
+		<result column="REF_CODE" property="refCode" jdbcType="VARCHAR" />
+		<result column="IS_PUBLIC" property="isPublic" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getById" resultMap="promptMsgRM" parameterType="java.lang.String">
+		select * from SYS_PROMPT_MSG where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findPromptMsg" resultMap="promptMsgRM"
+		parameterType="com.solidextend.sys.prompt.vo.PromptMsg">
+		select * from SYS_PROMPT_MSG
+		<where>
+			<if test="code != null">
+				and CODE = #{code,jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+				and CONTENT like #{content,jdbcType=VARCHAR}
+			</if>
+			<if test="refCode != null">
+				and REF_CODE = #{refCode,jdbcType=VARCHAR}
+			</if>
+			<if test="isPublic != null">
+				and IS_PUBLIC = #{isPublic,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+	<select id="findPromptMsgCount" resultType="int"
+		parameterType="com.solidextend.sys.prompt.vo.PromptMsg">
+		select count(*) from SYS_PROMPT_MSG
+		<where>
+			<if test="code != null">
+				and CODE = #{code,jdbcType=VARCHAR}
+			</if>
+			<if test="content != null">
+				and CONTENT like #{content,jdbcType=VARCHAR}
+			</if>
+			<if test="refCode != null">
+				and REF_CODE = #{refCode,jdbcType=VARCHAR}
+			</if>
+			<if test="isPublic != null">
+				and IS_PUBLIC = #{isPublic,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from SYS_PROMPT_MSG where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.solidextend.sys.prompt.vo.PromptMsg">
+		insert into SYS_PROMPT_MSG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="code != null">
+				CODE,
+			</if>
+			<if test="content != null">
+				CONTENT,
+			</if>
+			<if test="refCode != null">
+				REF_CODE,
+			</if>
+			<if test="isPublic != null">
+				IS_PUBLIC,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="code != null">
+				#{code,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				#{content,jdbcType=OTHER},
+			</if>
+			<if test="refCode != null">
+				#{refCode,jdbcType=VARCHAR},
+			</if>
+			<if test="isPublic != null">
+				#{isPublic,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateById" parameterType="com.solidextend.sys.prompt.vo.PromptMsg">
+		update SYS_PROMPT_MSG
+		<set>
+			<if test="code != null">
+				CODE = #{code,jdbcType=VARCHAR},
+			</if>
+			<if test="content != null">
+				CONTENT = #{content,jdbcType=OTHER},
+			</if>
+			<if test="refCode != null">
+				REF_CODE = #{refCode,jdbcType=VARCHAR},
+			</if>
+			<if test="isPublic != null">
+				IS_PUBLIC = #{isPublic,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>基线信息</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<link rel="stylesheet" type="text/css" href="themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="themes/icon.css" />
+
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="js/easyui-ext.js"></script>
+<script type="text/javascript" src="js/jquery.easyui.extend.min.js"></script>
+<script type="text/javascript" src="js/datagrid-dnd.js"></script>
+<style>
+.edc-input {
+	border: none;
+	border-bottom: 1px solid black;
+}
+
+.edc-td {
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+	min-height: 20pt;
+}
+</style>
+<script>
+	function singleChecked(target){
+		var name=$(target).attr("name");
+		if(name==null||name.length==0)return;
+		var value=$(target).val();
+		var checkboxs=$("input[name='"+name+"']");
+		for(var i=0;i<checkboxs.length;i++){
+			if($(checkboxs[i]).val()==value){
+				$(checkboxs[i]).attr("checked", true);
+			}else{
+				$(checkboxs[i]).attr("checked", false);
+			}
+		}
+	}
+	function getCheckBoxValues(name){
+		if(name==null||name.length==0)return;
+		var values=new Array();
+		var checkboxs=$("input[name='"+name+"']");
+		for(var i=0;i<checkboxs.length;i++){
+			if($(checkboxs[i]).attr("checked")){
+				values[values.length]=$(checkboxs[i]).val();
+			}
+		}
+		return values;
+	}
+	</script>
+</head>
+<body>
+	<form>
+		<table width="800" border="0" cellspacing="0" cellpadding="0"
+			align="center" style="line-height: 5mm;">
+			<tr>
+				<td align="center" style="font-size: 18pt; font-weight: bold">基线信息表</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" style="font-size: 16pt; font-weight: bold">基线信息表-病史记录</td>
+			</tr>
+			<tr height="90px">
+				<td style="font-size: 11pt; border: 1px solid black;">
+					<table style="margin: 5px">
+						<tr>
+							<td colspan="2"><label for="ryrq">入院日期：</label><input
+								id="ryrq" name="ryrq" class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td>身高：<input id="sg" name="sg" size="10" class="edc-input" />cm
+							</td>
+							<td>体重：<input id="tz" name="tz" size="10" class="edc-input" />kg
+							</td>
+						</tr>
+						<tr>
+							<td>心率：<input id="sg" name="sg" size="10" class="edc-input" />次/分
+							</td>
+							<td>血压：<input id="sg" name="sg" size="5" class="edc-input" />/<input
+								id="sg" name="sg" size="5" class="edc-input" />（mmHg）
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td vAlign="top"
+					style="font-size: 11pt; border: 1px solid black; border-top: none;">
+					<table style="margin: 5px">
+						<tr>
+							<td colspan="4"><b>心律失常病史</b></td>
+						</tr>
+						<tr>
+							<td colspan="4">EHRA心律失常症状分级：<input type="checkbox"
+								name="ehraLevel" value="I" onclick="singleChecked(this);">I
+								&nbsp;<input type="checkbox" name="ehraLevel" value="II轻度"
+								onclick="singleChecked(this);">II轻度 &nbsp;<input
+								type="checkbox" name="ehraLevel" value="III重度"
+								onclick="singleChecked(this);">III重度 &nbsp;<input
+								type="checkbox" name="ehraLevel" value="IV致残"
+								onclick="singleChecked(this);">IV致残
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">发作频率：<input type="checkbox" name="fzpl"
+								value="偶尔（少于1次/月）" onclick="singleChecked(this);">偶尔（少于1次/月）
+								<input type="checkbox" name="fzpl" value="经常（1次/月—几乎每天）"
+								onclick="singleChecked(this);">经常（1次/月—几乎每天） <input
+								type="checkbox" name="fzpl" value="频繁（每天至少一次）"
+								onclick="singleChecked(this);">频繁（每天至少一次）
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">心脏复律/除颤：<input type="checkbox" name="xzfl"
+								value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="xzfl" value="是"
+								onclick="singleChecked(this);">是
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							<td>如是，类型</td>
+							<td><input type="checkbox" name="xzflType" value="药物" />药物</td>
+							<td>次数<input id="sg" name="sg" size="10" class="edc-input" />,最近一次时间<input
+								id="ryrq" name="ryrq" class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td colspan="2">&nbsp;&nbsp;&nbsp;</td>
+							<td><input type="checkbox" name="xzflType" value="电击" />电击</td>
+							<td>次数<input id="sg" name="sg" size="10" class="edc-input" />,最近一次时间<input
+								id="ryrq" name="ryrq" class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td colspan="4">AFL<input type="checkbox" name="AFL"
+								value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="AFL" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">AT<input type="checkbox" name="AT" value="无"
+								onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="AT" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">原发性心电疾病<input type="checkbox" name="yfxxdjb"
+								value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="yfxxdjb" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+						<tr>
+							<td colspan="4">非房颤消融术史：<input type="checkbox"
+								name="ffcxrss" value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="ffcxrss" value="AFL"
+								onclick="singleChecked(this);">AFL&nbsp;<input
+								type="checkbox" name="ffcxrss" value="AT"
+								onclick="singleChecked(this);">AT&nbsp;<input
+								type="checkbox" name="ffcxrss" value="qt"
+								onclick="singleChecked(this);">其他：<input id="sg"
+								name="sg" size="10" class="edc-input" /></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td
+					style="font-size: 11pt; border: 1px solid black; border-top: none; line-height: 1cm;">
+					<table style="margin: 5px">
+						<tr>
+							<td><b>植入器械史</b></td>
+							<td><input type="checkbox" name="zrqxs" value="无"
+								onclick="singleChecked(this);">无&nbsp; <input
+								type="checkbox" name="zrqxs" value="起搏器"
+								onclick="singleChecked(this);">起搏器&nbsp; <input
+								type="checkbox" name="zrqxs" value="CRT"
+								onclick="singleChecked(this);">CRT&nbsp; <input
+								type="checkbox" name="zrqxs" value="ICD"
+								onclick="singleChecked(this);">ICD&nbsp; <input
+								type="checkbox" name="zrqxs" value="左心耳封堵器"
+								onclick="singleChecked(this);">左心耳封堵器</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="checkbox" name="zrqxs"
+								value="植入式心电事件记录仪（如：Reveal）" onclick="singleChecked(this);">植入式心电事件记录仪（如：Reveal）&nbsp;
+								<input type="checkbox" name="zrqxs" value="其他"
+								onclick="singleChecked(this);">其他&nbsp;<input id="sg"
+								name="sg" size="10" class="edc-input" /></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" style="font-size: 11pt; font-weight: bold">主要心脏病史</td>
+			</tr>
+			<tr height="95px">
+				<td style="font-size: 11pt; border: 1px solid black;">
+					<table width="98%" style="margin: 5px" border=0>
+						<tr height="1">
+							<td width="20px"></td>
+							<td width="20px"></td>
+							<td width="20px"></td>
+							<td width="20px"></td>
+							<td width="20px"></td>
+							<td width="30px"></td>
+							<td width="100px"></td>
+						</tr>
+						<tr>
+							<td colspan="6"><input type="checkbox" name="zyxzbs"
+								value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="zyxzbs" value="有"
+								onclick="singleChecked(this);">有</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>如有,</td>
+							<td colspan="5"><input type="checkbox" name="zyxzbs_xm"
+								value="冠心病" onclick="singleChecked(this);">冠心病，如有</td>
+
+
+						</tr>
+						<tr>
+							<td colspan="4"></td>
+							<td colspan=3><input type="checkbox" name="zyxzbs_gxb"
+								value="心绞痛" onclick="singleChecked(this);">心绞痛</td>
+						</tr>
+						<tr>
+							<td colspan="5"></td>
+							<td>主要治疗：</td>
+							<td><input type="checkbox" name="zyxzbs_gxb_zyzl"
+								value="PCI" onclick="singleChecked(this);">PCI，时间<input
+								name="zyxzbs_gxb_zyzl_pci_sj" class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td colspan="6"></td>
+							<td><input type="checkbox" name="zyxzbs_gxb_zyzl"
+								value="CABG" onclick="singleChecked(this);">CABG，时间<input
+								name="zyxzbs_gxb_zyzl_CABG_sj" class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td colspan="6"></td>
+							<td><input type="checkbox" name="zyxzbs_gxb_zyzl" value="药物"
+								onclick="singleChecked(this);">药物</td>
+						</tr>
+						<tr>
+							<td colspan="6"></td>
+							<td><input type="checkbox" name="zyxzbs_gxb_zyzl"
+								value="未进行治疗" onclick="singleChecked(this);">未进行治疗</td>
+						</tr>
+						<tr>
+							<td colspan="4"></td>
+							<td colspan=3><input type="checkbox" name="zyxzbs_gxb"
+								value="心肌梗死病史" onclick="singleChecked(this);">心肌梗死病史</td>
+						</tr>
+
+						<tr>
+							<td colspan="5"></td>
+							<td>心梗时间：</td>
+							<td><input name="zyxzbs_gxb_zyzl_pci_sj"
+								class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td colspan="5"></td>
+							<td>主要治疗：</td>
+							<td><input type="checkbox" name="zyxzbs_gxb_zyzl"
+								value="PCI" onclick="singleChecked(this);">PCI，时间<input
+								name="zyxzbs_gxb_zyzl_pci_sj" class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td colspan="6"></td>
+							<td><input type="checkbox" name="zyxzbs_gxb_zyzl"
+								value="CABG" onclick="singleChecked(this);">CABG，时间<input
+								name="zyxzbs_gxb_zyzl_CABG_sj" class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td colspan="6"></td>
+							<td><input type="checkbox" name="zyxzbs_gxb_zyzl" value="溶栓"
+								onclick="singleChecked(this);">溶栓</td>
+						</tr>
+						<tr>
+							<td colspan="6"></td>
+							<td><input type="checkbox" name="zyxzbs_gxb_zyzl" value="药物"
+								onclick="singleChecked(this);">药物</td>
+						</tr>
+						<tr>
+							<td colspan="6"></td>
+							<td><input type="checkbox" name="zyxzbs_gxb_zyzl"
+								value="未进行治疗" onclick="singleChecked(this);">未进行治疗</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td colspan="5"><input type="checkbox" name="zyxzbs_xm"
+								value="高血压性心脏病" onclick="singleChecked(this);">高血压性心脏病</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td colspan="5"><input type="checkbox" name="zyxzbs_xm"
+								value="肥厚型心肌病" onclick="singleChecked(this);">肥厚型心肌病</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td colspan="5"><input type="checkbox" name="zyxzbs_xm"
+								value="扩张型心肌病" onclick="singleChecked(this);">扩张型心肌病</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td colspan="5"><input type="checkbox" name="zyxzbs_xm"
+								value="先天性心脏病" onclick="singleChecked(this);">先天性心脏病</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td colspan="5"><input type="checkbox" name="zyxzbs_xm"
+								value="心脏瓣膜病" onclick="singleChecked(this);">心脏瓣膜病</td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td colspan="4"><input type="checkbox" name="zyxzbs_xzbmb"
+								value="主动脉瓣病" onclick="singleChecked(this);">主动脉瓣病</td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td colspan="4"><input type="checkbox" name="zyxzbs_xzbmb"
+								value="二尖瓣病史" onclick="singleChecked(this);">二尖瓣病史</td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td colspan="4"><input type="checkbox" name="zyxzbs_xzbmb"
+								value="三尖瓣病史" onclick="singleChecked(this);">三尖瓣病史</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td colspan="5"><input type="checkbox" name="zyxzbs_xm"
+								value="qt" onclick="singleChecked(this);">其他，注明：<input
+								id="sg" name="sg" size="10" class="edc-input" /></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" style="font-size: 11pt; font-weight: bold">其他病史</td>
+			</tr>
+			<tr height="95px">
+				<td style="font-size: 11pt; border: 1px solid black;">
+					<table width="98%" style="margin: 5px" border=0>
+						<tr>
+							<td>高血压<input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+						<tr>
+							<td>糖尿病<input type="checkbox" name="qtbs_tnb" value="无"
+								onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_tnb" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+						<tr>
+							<td>心力衰竭史<input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有，目前NYHA心功能分级：<input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">I级 <input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);">II级
+								<input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">III级 <input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">IV级
+							</td>
+						</tr>
+						<tr>
+							<td>短暂性脑缺血发作史<input type="checkbox" name="qtbs_gxy"
+								value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有，最近一次发作时间<input
+								id="ryrq" name="ryrq" class="easyui-datebox" />
+							</td>
+						</tr>
+						<tr>
+							<td>卒中史<input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有，最近一次发作时间<input
+								id="ryrq" name="ryrq" class="easyui-datebox" />
+							</td>
+						</tr>
+						<tr>
+							<td>静脉栓塞史<input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+						<tr>
+							<td>慢性阻塞性肺病（COPD）<input type="checkbox" name="qtbs_gxy"
+								value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+						<tr>
+							<td>外周血管病（PAD）<input type="checkbox" name="qtbs_gxy"
+								value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+						<tr>
+							<td>肾功能不全史<input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" style="font-size: 16pt; font-weight: bold">基线信息表-相关检查表</td>
+			</tr>
+			<tr height="90px">
+				<td style="font-size: 11pt; border: 1px solid black;">
+					<table style="margin: 5px">
+						<tr>
+							<td width="20px"></td>
+							<td width="80px"></td>
+							<td width="80px"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td colspan="4">心电图：<input type="checkbox" name="qtbs_gxy"
+								value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有，检查日期：<input id="ryrq"
+								name="ryrq" class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>检查结果：</td>
+							<td>心律：</td>
+							<td><input type="checkbox" name="qtbs_gxy" value="窦性心律"
+								onclick="singleChecked(this);">窦性心律 <input
+								type="checkbox" name="qtbs_gxy" value="房颤"
+								onclick="singleChecked(this);">房颤 <input type="checkbox"
+								name="qtbs_gxy" value="起搏心律" onclick="singleChecked(this);">起搏心律
+								<input type="checkbox" name="qtbs_gxy" value="其他"
+								onclick="singleChecked(this);">其他<input id="sg"
+								name="sg" size="10" class="edc-input" /></td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td>传导：</td>
+							<td>QRS波宽度<input id="sg" name="sg" size="10"
+								class="edc-input" />ms
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td>传导异常：</td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无</td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td><input type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有， <input type="checkbox"
+								name="qtbs_gxy" value="AVB I°" onclick="singleChecked(this);">AVB
+								I° <input type="checkbox" name="qtbs_gxy" value="AVB II°"
+								onclick="singleChecked(this);">AVB II° <input
+								type="checkbox" name="qtbs_gxy" value="AVB III°"
+								onclick="singleChecked(this);">AVB III° <input
+								type="checkbox" name="qtbs_gxy" value="LBBB"
+								onclick="singleChecked(this);">LBBB <input
+								type="checkbox" name="qtbs_gxy" value="RBBB"
+								onclick="singleChecked(this);">RBBB</td>
+						</tr>
+						<tr>
+							<td colspan="4">Holter：<input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有，检查日期：<input id="ryrq"
+								name="ryrq" class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>检查结果：</td>
+							<td>心律：</td>
+							<td><input type="checkbox" name="qtbs_gxy" value="窦性心律"
+								onclick="singleChecked(this);">窦性心律 <input
+								type="checkbox" name="qtbs_gxy" value="房颤"
+								onclick="singleChecked(this);">房颤 <input type="checkbox"
+								name="qtbs_gxy" value="起搏心律" onclick="singleChecked(this);">起搏心律
+								<input type="checkbox" name="qtbs_gxy" value="其他"
+								onclick="singleChecked(this);">其他<input id="sg"
+								name="sg" size="10" class="edc-input" /></td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td>传导：</td>
+							<td>QRS波宽度<input id="sg" name="sg" size="10"
+								class="edc-input" />ms
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2"></td>
+							<td>传导异常：</td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无</td>
+						</tr>
+						<tr>
+							<td colspan="3"></td>
+							<td><input type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有， <input type="checkbox"
+								name="qtbs_gxy" value="AVB I°" onclick="singleChecked(this);">AVB
+								I° <input type="checkbox" name="qtbs_gxy" value="AVB II°"
+								onclick="singleChecked(this);">AVB II° <input
+								type="checkbox" name="qtbs_gxy" value="AVB III°"
+								onclick="singleChecked(this);">AVB III° <input
+								type="checkbox" name="qtbs_gxy" value="LBBB"
+								onclick="singleChecked(this);">LBBB <input
+								type="checkbox" name="qtbs_gxy" value="RBBB"
+								onclick="singleChecked(this);">RBBB</td>
+						</tr>
+
+					</table>
+				</td>
+			</tr>
+			<tr height="90px">
+				<td
+					style="font-size: 11pt; border: 1px solid black; border-top: none">
+					<table style="margin: 5px">
+						<tr>
+							<td width="100px"></td>
+							<td width="150px"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>心脏影像：</td>
+							<td colspan="2"><input type="checkbox" name="qtbs_gxy"
+								value="无" onclick="singleChecked(this);">无&nbsp; <input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td colspan="2"><input type="checkbox" name="qtbs_gxy"
+								value="经胸心脏超声（TTE）" onclick="singleChecked(this);">经胸心脏超声（TTE）
+								<input type="checkbox" name="qtbs_gxy" value="经食道心脏超声（TEE）"
+								onclick="singleChecked(this);">经食道心脏超声（TEE） <input
+								type="checkbox" name="qtbs_gxy" value="心脏CT"
+								onclick="singleChecked(this);">心脏CT <input
+								type="checkbox" name="qtbs_gxy" value="心脏MRI"
+								onclick="singleChecked(this);">心脏MRI <input
+								type="checkbox" name="qtbs_gxy" value="其他"
+								onclick="singleChecked(this);">其他：<input id="sg"
+								name="sg" size="10" class="edc-input" /></td>
+						</tr>
+						<tr>
+							<td>LVEF</td>
+							<td colspan="2"><input id="sg" name="sg" size="10"
+								class="edc-input" />% 左房内径<input id="sg" name="sg" size="10"
+								class="edc-input" />mm 左房容积<input id="sg" name="sg" size="10"
+								class="edc-input" />ml</td>
+						</tr>
+						<tr>
+							<td>肺静脉影像：</td>
+							<td colspan="2"><input type="checkbox" name="qtbs_gxy"
+								value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有， 如有，<input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">CT <input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);">MRI
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>肺静脉解剖结构：</td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">一般解剖结构 <input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">左侧共干</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">额外右中肺静脉 <input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">额外顶部肺静脉 <input
+								type="checkbox" name="qtbs_gxy" value="其他"
+								onclick="singleChecked(this);">其他：<input id="sg"
+								name="sg" size="10" class="edc-input" /></td>
+						</tr>
+						<tr>
+							<td>X线检查：</td>
+							<td colspan="2"><input type="checkbox" name="qtbs_gxy"
+								value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有， 如有，膈神经活动<input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">正常 <input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);">异常，说明<input
+								id="sg" name="sg" size="10" class="edc-input" /></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td></td>
+			</tr>
+
+			<tr height="90px">
+				<td style="font-size: 11pt;">
+					<table border="0" cellspacing="0" cellpadding="0"
+						style="margin: 0px; border-top: 1px solid black; border-left: 1px solid black;">
+						<tr>
+							<td width="200px"></td>
+							<td width="180px"></td>
+							<td width="120px"></td>
+							<td width="80px"></td>
+							<td width="80px"></td>
+							<td width="80px"></td>
+							<td width="80px"></td>
+						</tr>
+						<tr height="30px">
+							<td class="edc-td" colspan="7" align="left"
+								style="font-size: 16pt; font-weight: bold;">实验室检查</td>
+						</tr>
+						<tr>
+							<td align="center" class="edc-td" rowspan="2">检查项目</td>
+							<td align="center" class="edc-td" rowspan="2">检查结果</td>
+							<td align="center" class="edc-td" rowspan="2">单位</td>
+							<td class="edc-td" colspan="4">结果评价（1 正常；2 异常，无临床意义； 3.
+								异常，有临床意义；4. 未进行检查</td>
+						</tr>
+						<tr>
+							<td align="center" class="edc-td">1</td>
+							<td align="center" class="edc-td">2</td>
+							<td align="center" class="edc-td">3</td>
+							<td align="center" class="edc-td">4</td>
+						</tr>
+						<tr>
+							<td rowspan="4" class="edc-td">血常规<br> <input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有 <br> 检查日期<input
+								id="ryrq" name="ryrq" class="easyui-datebox"
+								data-options="width:100" />
+							<td class="edc-td">白细胞<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td class="edc-td">× 10<SUP>9</SUP>/L
+							</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">红细胞<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td class="edc-td">×10<SUP>12</SUP>/L
+							</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">血红蛋白<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td class="edc-td">g/L</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">血小板<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td class="edc-td">× 10<SUP>9</SUP>/L
+							</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td rowspan="3" class="edc-td">尿常规<br> <input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有
+							<td class="edc-td">尿蛋白</br> <input type="checkbox"
+								name="qtbs_gxy" value="阴性" onclick="singleChecked(this);">阴性&nbsp;
+								<input type="checkbox" name="qtbs_gxy" value="+"
+								onclick="singleChecked(this);">+&nbsp; <input
+								type="checkbox" name="qtbs_gxy" value="++"
+								onclick="singleChecked(this);">++<br> <input
+								type="checkbox" name="qtbs_gxy" value="+++"
+								onclick="singleChecked(this);">+++&nbsp; <input
+								type="checkbox" name="qtbs_gxy" value="++++"
+								onclick="singleChecked(this);">++++
+							</td>
+							<td class="edc-td">-</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">白细胞<input id="sg" name="sg" size="10"
+								class="edc-input" />
+							</td>
+							<td class="edc-td"><input type="checkbox" name="qtbs_gxy"
+								value="uL" onclick="singleChecked(this);">uL<br> <input
+								type="checkbox" name="qtbs_gxy" value="HP"
+								onclick="singleChecked(this);">HP</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">红细胞<input id="sg" name="sg" size="10"
+								class="edc-input" />
+							</td>
+							<td class="edc-td"><input type="checkbox" name="qtbs_gxy"
+								value="uL" onclick="singleChecked(this);">uL<br> <input
+								type="checkbox" name="qtbs_gxy" value="HP"
+								onclick="singleChecked(this);">HP</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td rowspan="8" class="edc-td">血生化<br> <input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有 <br> 检查日期<input
+								id="ryrq" name="ryrq" class="easyui-datebox"
+								data-options="width:100" />
+							<td class="edc-td">谷丙转氨酶<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td class="edc-td">U/L</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">谷草转氨酶<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td class="edc-td">U/L</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">肌酐<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td class="edc-td"><input type="checkbox" name="qtbs_gxy"
+								value="uL" onclick="singleChecked(this);">ummol/L<br>
+								<input type="checkbox" name="qtbs_gxy" value="HP"
+								onclick="singleChecked(this);">ng/dL</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">葡萄糖<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td class="edc-td"><input type="checkbox" name="qtbs_gxy"
+								value="uL" onclick="singleChecked(this);">ummol/L<br>
+								<input type="checkbox" name="qtbs_gxy" value="HP"
+								onclick="singleChecked(this);">ng/dL</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						</tr>
+						<tr>
+							<td class="edc-td">甘油三酯<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td class="edc-td">mmol/L</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">总胆固醇<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td class="edc-td">mmol/L</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">高密度值蛋白胆固醇<input id="sg" name="sg"
+								size="10" class="edc-input" /></td>
+							<td class="edc-td">mmol/L</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						</tr>
+						<tr>
+							<td class="edc-td">低密度值蛋白胆固醇<input id="sg" name="sg"
+								size="10" class="edc-input" /></td>
+							<td class="edc-td">mmol/L</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+						<tr>
+							<td class="edc-td">凝血<br> <input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);">无&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有 <br> 检查日期<input
+								id="ryrq" name="ryrq" class="easyui-datebox"
+								data-options="width:100" />
+							<td class="edc-td">国际标准化比值<br> （ INR）<input id="sg"
+								name="sg" size="10" class="edc-input" /></td>
+							<td class="edc-td">-</td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							<td align="center" class="edc-td"><input type="checkbox"
+								name="qtbs_gxy" value="无" onclick="singleChecked(this);"></td>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" style="font-size: 16pt; font-weight: bold">基线信息表-术前用药记录</td>
+			</tr>
+			<tr height="30px">
+				<td align="left"
+					style="font-size: 16pt; font-weight: bold; border: 1px solid black; border-bottom: none;">用药情况</td>
+			</tr>
+			<tr height="90px">
+				<td style="font-size: 11pt; border: 1px solid black;">
+					<table border="0" cellspacing="0" cellpadding="0"
+						style="margin: 5px; line-height: 1cm;">
+						<tr>
+							<td width="130px"></td>
+							<td width="230px"></td>
+							<td width="200px"></td>
+							<td width="160px"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td colspan="5" style="font-weight: bold;">抗心律失常药物（含既往及目前使用情况）：
+								<input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp; <input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+						<tr>
+							<td colspan="5">如有，药物种类<input id="sg" name="sg" size="10"
+								class="edc-input" />种，
+							</td>
+						</tr>
+						<tr>
+							<td>名称：<input id="sg" name="sg" size="10" class="edc-input" /></td>
+							<td>用量及单位（mg/d）<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td>开始使用时间<input id="kssysj1" name="ryrq"
+								class="easyui-datebox" data-options="width:100" /></td>
+							<td>停用时间<input id="tysj1" name="ryrq" class="easyui-datebox"
+								data-options="width:100" /></td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">持续</td>
+						</tr>
+						<tr>
+							<td>名称：<input id="sg" name="sg" size="10" class="edc-input" /></td>
+							<td>用量及单位（mg/d）<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td>开始使用时间<input id="ryrq" name="ryrq"
+								class="easyui-datebox" data-options="width:100" /></td>
+							<td>停用时间<input id="ryrq" name="ryrq" class="easyui-datebox"
+								data-options="width:100" /></td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">持续</td>
+						</tr>
+						<tr>
+							<td>名称：<input id="sg" name="sg" size="10" class="edc-input" /></td>
+							<td>用量及单位（mg/d）<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td>开始使用时间<input id="ryrq" name="ryrq"
+								class="easyui-datebox" data-options="width:100" /></td>
+							<td>停用时间<input id="ryrq" name="ryrq" class="easyui-datebox"
+								data-options="width:100" /></td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">持续</td>
+						</tr>
+						<tr height="20">
+							<td colspan="5"></td>
+						</tr>
+						<tr>
+							<td colspan="5" style="font-weight: bold;">抗凝/抗血小板药物（含既往及目前使用情况）：
+								<input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp; <input
+								type="checkbox" name="qtbs_gxy" value="有"
+								onclick="singleChecked(this);">有
+							</td>
+						</tr>
+						<tr>
+							<td colspan="5">如有，药物种类<input id="sg" name="sg" size="10"
+								class="edc-input" />种，
+							</td>
+						</tr>
+						<tr>
+							<td>名称：<input id="sg" name="sg" size="10" class="edc-input" /></td>
+							<td>用量及单位（mg/d）<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td>开始使用时间<input id="kssysj1" name="ryrq"
+								class="easyui-datebox" data-options="width:100" /></td>
+							<td>停用时间<input id="tysj1" name="ryrq" class="easyui-datebox"
+								data-options="width:100" /></td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">持续</td>
+						</tr>
+						<tr>
+							<td>名称：<input id="sg" name="sg" size="10" class="edc-input" /></td>
+							<td>用量及单位（mg/d）<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td>开始使用时间<input id="ryrq" name="ryrq"
+								class="easyui-datebox" data-options="width:100" /></td>
+							<td>停用时间<input id="ryrq" name="ryrq" class="easyui-datebox"
+								data-options="width:100" /></td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">持续</td>
+						</tr>
+						<tr>
+							<td>名称：<input id="sg" name="sg" size="10" class="edc-input" /></td>
+							<td>用量及单位（mg/d）<input id="sg" name="sg" size="10"
+								class="edc-input" /></td>
+							<td>开始使用时间<input id="ryrq" name="ryrq"
+								class="easyui-datebox" data-options="width:100" /></td>
+							<td>停用时间<input id="ryrq" name="ryrq" class="easyui-datebox"
+								data-options="width:100" /></td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">持续</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" style="font-size: 16pt; font-weight: bold">手术——术中记录</td>
+			</tr>
+			<tr height="120px">
+				<td
+					style="font-size: 11pt; border: 1px solid black; border-bottom: none;">
+					<table border="0" cellspacing="0" cellpadding="0"
+						style="margin: 5px; line-height: 1cm;">
+						<tr>
+							<td width="130px"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>手术日期：</td>
+							<td><input id="ryrq" name="ryrq" class="easyui-datebox" /></td>
+						</tr>
+						<tr>
+							<td>麻醉：</td>
+							<td><input type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">无&nbsp; <input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">清醒镇静麻醉&nbsp; <input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">全身麻醉&nbsp; <input
+								type="checkbox" name="qtbs_gxy" value="无"
+								onclick="singleChecked(this);">其他<input id="sg"
+								name="sg" size="10" class="edc-input" /></td>
+						</tr>
+						<tr>
+							<td>房间隔穿刺：</td>
+							<td><input id="sg" name="sg" size="10" class="edc-input" />次
+							</td>
+						</tr>
+						<tr>
+							<td>肺静脉造影：</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>肺静脉直径：RSPV<input id="sg" name="sg" size="10"
+								class="edc-input" />mm LSPV<input id="sg" name="sg" size="10"
+								class="edc-input" />mm
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>左侧共干<input id="sg" name="sg" size="10" class="edc-input" />mm
+								RIPV<input id="sg" name="sg" size="10" class="edc-input" />mm
+								LIPV<input id="sg" name="sg" size="10" class="edc-input" />mm
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr height="240px">
+				<td
+					style="font-size: 11pt; border: 1px solid black; border-bottom: none;">
+					<table border="0" cellspacing="0" cellpadding="0"
+						style="margin: 5px; line-height: 1cm;">
+						<tr>
+							<td width="180"></td>
+							<td width="200"></td>
+							<td width="100"></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>使用球囊总数量：</td>
+							<td colspan="3"><input id="sg" name="sg" size="10"
+								class="edc-input" />根</td>
+						</tr>
+						<tr>
+							<td align="right">第一个球囊：</td>
+							<td>球囊直径<input id="sg" name="sg" size="10" class="edc-input" />mm
+							</td>
+							<td>第二个球囊：</td>
+							<td>球囊直径<input id="sg" name="sg" size="10" class="edc-input" />mm
+							</td>
+						</tr>
+
+						<tr>
+							<td align="right">冷冻消融最低温度：</td>
+							<td>RSPV<input id="sg" name="sg" size="10" class="edc-input" />℃
+							</td>
+							<td colspan="2">LSPV<input id="sg" name="sg" size="10"
+								class="edc-input" />℃
+							</td>
+						</tr>
+
+						<tr>
+							<td align="right"></td>
+							<td>RIPV<input id="sg" name="sg" size="10" class="edc-input" />℃
+							</td>
+							<td colspan="2">LIPV<input id="sg" name="sg" size="10"
+								class="edc-input" />℃
+							</td>
+						</tr>
+						<tr>
+							<td align="right">（选填）</td>
+							<td>RMPV<input id="sg" name="sg" size="10" class="edc-input" />℃
+							</td>
+							<td colspan="2">LMPV<input id="sg" name="sg" size="10"
+								class="edc-input" />℃
+							</td>
+						</tr>
+						<tr>
+							<td align="right">冷冻消融总时间：</td>
+							<td>RSPV<input id="sg" name="sg" size="10" class="edc-input" />分钟
+							</td>
+							<td colspan="2">LSPV<input id="sg" name="sg" size="10"
+								class="edc-input" />分钟
+							</td>
+						</tr>
+						<tr>
+							<td align="right"></td>
+							<td>RIPV<input id="sg" name="sg" size="10" class="edc-input" />分钟
+							</td>
+							<td colspan="2">LIPV<input id="sg" name="sg" size="10"
+								class="edc-input" />分钟
+							</td>
+						</tr>
+						<tr>
+							<td align="right">（选填）</td>
+							<td>RMPV<input id="sg" name="sg" size="10" class="edc-input" />分钟
+							</td>
+							<td colspan="2">LMPV<input id="sg" name="sg" size="10"
+								class="edc-input" />分钟
+							</td>
+						</tr>
+						<tr>
+							<td>Achieve观察到电位变化：</td>
+							<td>LSPV <input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">否&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="是"
+								onclick="singleChecked(this);">是
+							</td>
+							<td colspan="2">电位消失时间<input id="sg" name="sg" size="10"
+								class="edc-input" />分钟
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>LSPV <input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">否&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="是"
+								onclick="singleChecked(this);">是
+							</td>
+							<td colspan="2">电位消失时间<input id="sg" name="sg" size="10"
+								class="edc-input" />分钟
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>LSPV <input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">否&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="是"
+								onclick="singleChecked(this);">是
+							</td>
+							<td colspan="2">电位消失时间<input id="sg" name="sg" size="10"
+								class="edc-input" />分钟
+							</td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>LSPV <input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">否&nbsp;<input
+								type="checkbox" name="qtbs_gxy" value="是"
+								onclick="singleChecked(this);">是
+							</td>
+							<td colspan="2">电位消失时间<input id="sg" name="sg" size="10"
+								class="edc-input" />分钟
+							</td>
+							<td></td>
+						</tr>
+					</table>
+
+				</td>
+			</tr>
+			<tr height="20px">
+				<td
+					style="font-size: 11pt; border: 1px solid black; border-bottom: none;">
+					膈肌刺激：<input type="checkbox" name="qtbs_gxy" value="否"
+					onclick="singleChecked(this);">否&nbsp;<input
+					type="checkbox" name="qtbs_gxy" value="是"
+					onclick="singleChecked(this);">是
+				</td>
+			</tr>
+			<tr height="20px">
+				<td
+					style="font-size: 11pt; border: 1px solid black; border-bottom: none;">
+					病灶冷冻消融补点：<input type="checkbox" name="qtbs_gxy" value="否"
+					onclick="singleChecked(this);">否&nbsp;<input
+					type="checkbox" name="qtbs_gxy" value="是"
+					onclick="singleChecked(this);">是
+				</td>
+			</tr>
+			<tr height="90px">
+				<td style="font-size: 11pt; border: 1px solid black;">
+					<table>
+						<tr>
+							<td colspan="2">手术总时间：<input id="sg" name="sg" size="10"
+								class="edc-input" />分钟
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">X-射线曝光时间<input id="sg" name="sg" size="10"
+								class="edc-input" />分钟， 辐射剂量<input id="sg" name="sg" size="10"
+								class="edc-input" />mGy
+							</td>
+						</tr>
+						<tr>
+							<td>术中抗凝：</td>
+							<td><input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">肝素，共给予：<input id="sg"
+								name="sg" size="10" class="edc-input" />IU</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">ACT监测 <input
+								type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">INR <input
+								type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">其他<input id="sg"
+								name="sg" size="10" class="edc-input" /></td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr height="30px">
+				<td align="left" style="font-size: 16pt; font-weight: bold">手术——术后评价电生理检测成功率</td>
+			</tr>
+			<tr height="120px">
+				<td
+					style="font-size: 11pt; border: 1px solid black; border-bottom: none;">
+					<table border="0" cellspacing="0" cellpadding="0"
+						style="margin: 5px; line-height: 1cm;">
+						<tr>
+							<td width="180px"></td>
+							<td></td>
+						</tr>
+						<tr style="font-weight: bold;">
+							<td>肺静脉隔离成功</td>
+							<td><input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">LSPV <input
+								type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">LIPV <input
+								type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">RSPV <input
+								type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">RIPV</td>
+						</tr>
+						<tr>
+							<td>LA-PV 传入阻滞（4PV）</td>
+							<td><input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">否 <input type="checkbox"
+								name="qtbs_gxy" value="否" onclick="singleChecked(this);">是
+								<input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">未检测</td>
+						</tr>
+						<tr>
+							<td>LA-PV 传出阻滞（4PV）</td>
+							<td><input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">否 <input type="checkbox"
+								name="qtbs_gxy" value="否" onclick="singleChecked(this);">是
+								<input type="checkbox" name="qtbs_gxy" value="否"
+								onclick="singleChecked(this);">未检测</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td style="font-size: 11pt; border: 1px solid black;">
+					本例手术困难程度（手术医生主观评价） <input type="checkbox" name="qtbs_gxy" value="否"
+					onclick="singleChecked(this);">容易 <input type="checkbox"
+					name="qtbs_gxy" value="否" onclick="singleChecked(this);">中等
+					<input type="checkbox" name="qtbs_gxy" value="否"
+					onclick="singleChecked(this);">困难
+				</td>
+			</tr>
+		</table>
+	</form>
+</body>
+</html>

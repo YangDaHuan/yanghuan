@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.takeout.dao.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.takeout.vo.OrderVO">
+        <id column="ORDER_ID" jdbcType="INTEGER" property="orderId"/>
+        <result column="ORDER_BUS_ID" jdbcType="INTEGER" property="orderBusId"/>
+        <result column="ORDER_USER_ID" jdbcType="INTEGER" property="orderUserId"/>
+        <result column="ORDER_DATE" jdbcType="DATE" property="orderDate"/>
+        <result column="ORDER_STATUS" jdbcType="VARCHAR" property="orderStatus"/>
+        <result column="ORDER_ADDRESS" jdbcType="VARCHAR" property="orderAddress"/>
+        <result column="TOTAL_PRICE" jdbcType="DOUBLE" property="totalPrice"/>
+        <result column="ORDER_PALY_TYPE" jdbcType="VARCHAR" property="orderPalyType"/>
+    </resultMap>
+    
+    <select id="getOrderById" resultMap="BaseResultMap">
+        SELECT
+            T.*,
+            (select sum(goods_price*goods_number)
+          FROM 
+          	biz_takeout_order_detail where T.ORDER_ID = order_code) as TOTAL_PRICE 
+        FROM
+             biz_takeout_order T
+        WHERE 1=1 
+            and ORDER_ID = #{orderId,jdbcType=NUMERIC}
+    </select>
+    
+    <select id="findAllOrder" resultMap="BaseResultMap">
+           SELECT
+            T.*,
+            (select sum(goods_price*goods_number)
+          FROM 
+          	biz_takeout_order_detail where T.ORDER_ID = order_code) as TOTAL_PRICE
+        FROM
+             biz_takeout_order T
+       
+    </select>
+    
+     <select id="findByOrder" resultMap="BaseResultMap">
+           SELECT
+            T.*,
+            (select sum(goods_price*goods_number)
+          FROM 
+          	biz_takeout_order_detail where T.ORDER_ID = order_code) as TOTAL_PRICE
+        FROM
+             biz_takeout_order T
+          where 1=1 
+          <if test="orderId != null and orderId != 0" >
+                AND GOODS_NAME = #{OrderName,jdbcType=VARCHAR}
+            </if>
+           
+    </select>
+    
+      <select id="findByOrderCount" resultType="int" >
+          SELECT count(*) FROM biz_takeout_order 
+          where 1=1 
+    </select>
+
+    <delete id="deleteOrder">
+        DELETE
+        FROM
+             biz_takeout_order
+        WHERE 
+            ORDER_ID = #{OrderId,jdbcType=NUMERIC}
+    </delete>
+    
+    <update id="delete" >
+        UPDATE biz_takeout_order
+        set 
+			GOODS_DEL = 'Y'
+        WHERE 
+            ORDER_ID = #{OrderId,jdbcType=NUMERIC}
+    </update>
+
+    <insert id="saveOrder" parameterType="com.solidextend.sys.takeout.vo.OrderVO" >
+        INSERT INTO biz_takeout_order(
+        	ORDER_ID,
+			GOODS_NAME,
+			GOODS_TYPE_ID,
+			GOODS_DESC,
+			GOODS_BUS_ID,
+			GOODS_PIC_THCHER,
+			GOODS_PIC_STUDENT,
+			GOODS_TEJIA,
+			GOODS_RAT,
+			GOODS_DEL,
+			CREATED_BY,
+			CREATED_DATE,
+			LAST_UPDATE_BY,
+			LAST_UPDATE_DATE
+
+        )values(
+        	#{OrderId,jdbcType=NUMERIC},
+	        #{OrderName,jdbcType=VARCHAR},
+	        #{OrderTypeId,jdbcType=NUMERIC},
+	        #{OrderDesc,jdbcType=VARCHAR},
+			#{userId,jdbcType=NUMERIC},
+	        #{OrderPriceT,jdbcType=NUMERIC},
+	        #{OrderPriceS,jdbcType=NUMERIC},
+	        #{tejia,jdbcType=NUMERIC},
+			#{rat,jdbcType=VARCHAR},
+			#{isDelete,jdbcType=VARCHAR},
+			#{userId,jdbcType=VARCHAR},
+	        NOW(),
+	        #{userId,jdbcType=NUMERIC},
+			NOW()
+        )
+    </insert>
+
+    <update id="updateOrder" parameterType="com.solidextend.sys.takeout.vo.OrderVO" >
+        UPDATE biz_takeout_order
+        set 
+        	GOODS_NAME = #{OrderName,jdbcType=VARCHAR},
+			GOODS_TYPE_ID = #{OrderTypeId,jdbcType=NUMERIC},
+			GOODS_DESC = #{OrderDesc,jdbcType=VARCHAR},
+			GOODS_BUS_ID = #{userId,jdbcType=NUMERIC},
+			GOODS_PIC_THCHER = #{OrderPriceT,jdbcType=NUMERIC},
+			GOODS_PIC_STUDENT = #{OrderPriceS,jdbcType=NUMERIC},
+			GOODS_TEJIA = #{tejia,jdbcType=VARCHAR},
+			GOODS_RAT = #{rat,jdbcType=NUMERIC},
+			LAST_UPDATE_BY = #{userId,jdbcType=NUMERIC},
+			LAST_UPDATE_DATE = NOW()
+        WHERE 
+            ORDER_ID = #{OrderId,jdbcType=NUMERIC}
+    </update>
+    
+</mapper>

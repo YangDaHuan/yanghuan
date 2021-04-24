@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.ticket.dao.BizTicketStockHistoryMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.ticket.vo.BizTicketStockHistory">
+        <id column="STOCK_ID" jdbcType="VARCHAR" property="stockId"/>
+        <result column="STOCK_ORG" jdbcType="VARCHAR" property="stockOrg"/>
+        <result column="STOCK_DATE" jdbcType="DATE" property="stockDate"/>
+        <result column="TICKET_TYPE_ID" jdbcType="VARCHAR" property="ticketTypeId"/>
+        <result column="TICKET_STATE_ID" jdbcType="VARCHAR" property="ticketStateId"/>
+        <result column="TICKET_NUMBER" jdbcType="INTEGER" property="ticketNumber"/>
+        <result column="TICKET_MONEY" jdbcType="REAL" property="ticketMoney"/>
+    </resultMap>
+    <select id="getBizTicketStockHistoryById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_ticket_stock_history
+        WHERE            
+            STOCK_ID = #{stockId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizTicketStockHistory" resultMap="BaseResultMap">
+          SELECT * FROM biz_ticket_stock_history 
+    </select>
+    
+    <select id="findByAttrBizTicketStockHistory" resultMap="BaseResultMap" parameterType="com.solidextend.sys.ticket.vo.BizTicketStockHistory">
+          SELECT * 
+          FROM 
+          biz_ticket_stock_history 
+          WHERE 1=1 
+            <if test="stockId != null and stockId != ''" >
+                AND STOCK_ID = #{stockId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockOrg != null and stockOrg != ''" >
+                AND STOCK_ORG = #{stockOrg,jdbcType=VARCHAR}
+            </if>
+            <if test="stockDate != null and stockDate != ''" >
+                AND STOCK_DATE = #{stockDate,jdbcType=DATE}
+            </if>
+            <if test="ticketTypeId != null and ticketTypeId != ''" >
+                AND TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketStateId != null and ticketStateId != ''" >
+                AND TICKET_STATE_ID = #{ticketStateId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketNumber != null and ticketNumber != ''" >
+                AND TICKET_NUMBER = #{ticketNumber,jdbcType=INTEGER}
+            </if>
+            <if test="ticketMoney != null and ticketMoney != ''" >
+                AND TICKET_MONEY = #{ticketMoney,jdbcType=REAL}
+            </if>
+    </select>
+
+    <delete id="deleteBizTicketStockHistory">
+        DELETE
+        FROM
+             biz_ticket_stock_history
+        WHERE 
+            STOCK_ID = #{stockId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizTicketStockHistory" parameterType="com.solidextend.sys.ticket.vo.BizTicketStockHistory" >
+        INSERT INTO biz_ticket_stock_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stockId != null" >
+                STOCK_ID,
+            </if>
+            <if test="stockOrg != null" >
+                STOCK_ORG,
+            </if>
+            <if test="stockDate != null" >
+                STOCK_DATE,
+            </if>
+            <if test="ticketTypeId != null" >
+                TICKET_TYPE_ID,
+            </if>
+            <if test="ticketStateId != null" >
+                TICKET_STATE_ID,
+            </if>
+            <if test="ticketNumber != null" >
+                TICKET_NUMBER,
+            </if>
+            <if test="ticketMoney != null" >
+                TICKET_MONEY,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stockId != null" >
+                #{stockId,jdbcType=VARCHAR},
+            </if> 
+            <if test="stockOrg != null" >
+                #{stockOrg,jdbcType=VARCHAR},
+            </if> 
+            <if test="stockDate != null" >
+                #{stockDate,jdbcType=DATE},
+            </if> 
+            <if test="ticketTypeId != null" >
+                #{ticketTypeId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketStateId != null" >
+                #{ticketStateId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketNumber != null" >
+                #{ticketNumber,jdbcType=INTEGER},
+            </if> 
+            <if test="ticketMoney != null" >
+                #{ticketMoney,jdbcType=REAL},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizTicketStockHistory" parameterType="com.solidextend.sys.ticket.vo.BizTicketStockHistory" >
+        UPDATE biz_ticket_stock_history
+        <set>
+            <if test="stockId != null" >
+                STOCK_ID = #{stockId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockOrg != null" >
+                STOCK_ORG = #{stockOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="stockDate != null" >
+                STOCK_DATE = #{stockDate,jdbcType=DATE},
+            </if>
+            <if test="ticketTypeId != null" >
+                TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketStateId != null" >
+                TICKET_STATE_ID = #{ticketStateId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketNumber != null" >
+                TICKET_NUMBER = #{ticketNumber,jdbcType=INTEGER},
+            </if>
+            <if test="ticketMoney != null" >
+                TICKET_MONEY = #{ticketMoney,jdbcType=REAL},
+            </if>
+        </set>
+        WHERE 
+            STOCK_ID = #{stockId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -1,0 +1,11 @@
+#Fri Jun 14 10:06:06 CST 2013
+DELEGATES_PREFERENCE=delegateValidatorList
+USER_BUILD_PREFERENCE=enabledBuildValidatorListorg.eclipse.wst.common.componentcore.internal.ModuleCoreValidator;
+USER_MANUAL_PREFERENCE=enabledManualValidatorListorg.eclipse.wst.common.componentcore.internal.ModuleCoreValidator;
+USER_PREFERENCE=overrideGlobalPreferencestruedisableAllValidationfalseversion1.2.104.me201003160859
+eclipse.preferences.version=1
+override=true
+suspend=false
+vals/com.genuitec.javascript.wst.integration.JSValidator/global=FF01
+vals/org.eclipse.wst.xsl.core.xsl/global=FF02
+vf.version=3

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.ticket.dao.BizTicketInDetailMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.ticket.vo.BizTicketInDetail">
+        <id column="IN_DETAIL_ID" jdbcType="VARCHAR" property="inDetailId"/>
+        <result column="IN_ID" jdbcType="VARCHAR" property="inId"/>
+        <result column="TICKET_TYPE_ID" jdbcType="VARCHAR" property="ticketTypeId"/>
+        <result column="TICKET_STATE_ID" jdbcType="VARCHAR" property="ticketStateId"/>
+        <result column="TICKET_NUMBER" jdbcType="INTEGER" property="ticketNumber"/>
+        <result column="TICKET_MONEY" jdbcType="REAL" property="ticketMoney"/>
+    </resultMap>
+    <select id="getBizTicketInDetailById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_ticket_in_detail
+        WHERE            
+            IN_DETAIL_ID = #{inDetailId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizTicketInDetail" resultMap="BaseResultMap">
+          SELECT * FROM biz_ticket_in_detail 
+    </select>
+    
+    <select id="findByAttrBizTicketInDetail" resultMap="BaseResultMap" parameterType="com.solidextend.sys.ticket.vo.BizTicketInDetail">
+          SELECT * 
+          FROM 
+          biz_ticket_in_detail 
+          WHERE 1=1 
+            <if test="inDetailId != null and inDetailId != ''" >
+                AND IN_DETAIL_ID = #{inDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="inId != null and inId != ''" >
+                AND IN_ID = #{inId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketTypeId != null and ticketTypeId != ''" >
+                AND TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketStateId != null and ticketStateId != ''" >
+                AND TICKET_STATE_ID = #{ticketStateId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketNumber != null and ticketNumber != ''" >
+                AND TICKET_NUMBER = #{ticketNumber,jdbcType=INTEGER}
+            </if>
+            <if test="ticketMoney != null and ticketMoney != ''" >
+                AND TICKET_MONEY = #{ticketMoney,jdbcType=REAL}
+            </if>
+    </select>
+
+    <delete id="deleteBizTicketInDetail">
+        DELETE
+        FROM
+             biz_ticket_in_detail
+        WHERE 
+            IN_DETAIL_ID = #{inDetailId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizTicketInDetail" parameterType="com.solidextend.sys.ticket.vo.BizTicketInDetail" >
+        INSERT INTO biz_ticket_in_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inDetailId != null" >
+                IN_DETAIL_ID,
+            </if>
+            <if test="inId != null" >
+                IN_ID,
+            </if>
+            <if test="ticketTypeId != null" >
+                TICKET_TYPE_ID,
+            </if>
+            <if test="ticketStateId != null" >
+                TICKET_STATE_ID,
+            </if>
+            <if test="ticketNumber != null" >
+                TICKET_NUMBER,
+            </if>
+            <if test="ticketMoney != null" >
+                TICKET_MONEY,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inDetailId != null" >
+                #{inDetailId,jdbcType=VARCHAR},
+            </if> 
+            <if test="inId != null" >
+                #{inId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketTypeId != null" >
+                #{ticketTypeId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketStateId != null" >
+                #{ticketStateId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketNumber != null" >
+                #{ticketNumber,jdbcType=INTEGER},
+            </if> 
+            <if test="ticketMoney != null" >
+                #{ticketMoney,jdbcType=REAL},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizTicketInDetail" parameterType="com.solidextend.sys.ticket.vo.BizTicketInDetail" >
+        UPDATE biz_ticket_in_detail
+        <set>
+            <if test="inDetailId != null" >
+                IN_DETAIL_ID = #{inDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="inId != null" >
+                IN_ID = #{inId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketTypeId != null" >
+                TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketStateId != null" >
+                TICKET_STATE_ID = #{ticketStateId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketNumber != null" >
+                TICKET_NUMBER = #{ticketNumber,jdbcType=INTEGER},
+            </if>
+            <if test="ticketMoney != null" >
+                TICKET_MONEY = #{ticketMoney,jdbcType=REAL},
+            </if>
+        </set>
+        WHERE 
+            IN_DETAIL_ID = #{inDetailId,jdbcType=VARCHAR}
+    </update>
+</mapper>

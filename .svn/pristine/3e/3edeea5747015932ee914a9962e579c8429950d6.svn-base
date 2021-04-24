@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+
+.edit-data-table {
+	width: 100%;
+}
+
+.edit-data-table tr {
+	height: 30px;
+}
+
+.icon-imp {
+	background: url("../images/imp.png") no-repeat;
+}
+
+.icon-exp {
+	background: url("../images/exp.png") no-repeat;
+}

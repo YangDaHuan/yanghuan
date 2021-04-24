@@ -1,0 +1,61 @@
+﻿UNKNOWN_ERROR_TITLE|Unbekannter Fehler
+UNKNOWN_ERROR|Ein unbekannter Fehler ist aufgetreten
+ARCPLAN_SERVER_NOT_AVAILABLE|Der arplan Server konnte nicht erreicht werden.
+ARCPLAN_SERVER_EXCEPTION|Auf dem Server ist ein Fehler aufgetreten. Bitte starten Sie neu.
+CGI_ERROR_TITLE|CGI-Fehler
+NETWORK_ERROR_TITLE|Netzwerkfehler
+NETWORK_ERROR|Bei der Verbindung zum arcplan Server ist ein Fehler aufgetreten.
+CONFIGURATION_ERROR_TITLE|Konfigurationsfehler
+PROTOCOL_MISMATCH|Das Protokoll für die Cgi Url ist falsch
+INTERNAL_ERROR_TITLE|Interner Fehler
+INTERNAL_ERROR|Ein interner Fehler ist auftreten
+DATA_ERROR_TITLE|Datenfehler
+READING_SERVER_ANSWER_ERROR|Beim Lesen der Server-Antwort ist ein Fehler aufgetreten.
+NO_SESSIONID|Der Server lieferte keine Session ID
+NOTHML5_USAGE|Die aktuell verwendete Lizenz erlaubt nicht die Benutzung des Html5 Clients
+NOHTML5_MOBILEUSAGE|Die aktuell verwendete Lizenz erlaubt nicht die Benutzung des Html5 Clients auf mobilen Geräten
+NOMOBILE_CLIENT_LICENSE|Die aktuell verwendete Lizenz erlaubt nicht die Benutzung von mobilen Geräten.
+LICENCE_EXCEEDED|Die Anzahl lizenzierter gleichzeitiger Nutzer ist gegenwärtig überschritten. Bitte benachrichtigen Sie Ihren Systemadministrator.
+LICENCE_EXPIRED|Die Version des arcplan Application Servers ist ungültig oder abgelaufen.
+SESSION_END|Die Verbindung wurde längere Zeit nicht benutzt. Die Verbindung wurde daher beendet. Bitte starten Sie neu.
+WIDGET_OPEN_ANOTHER_DOCUMENT_QUESTION|Die Applikation möchte zu einem anderen Dokument navigieren. Wollen Sie dieses nun in einem neuen Fenster anzeigen?
+LICENCE_ERROR_TITLE|Lizenzfehler
+NOT_IMPLEMENTED_TITLE|Noch nicht implementiert
+INFORMATION_TITLE|Information
+INFORMATION_TEXT|Das ist ein Informationstext.
+SERVER_ERROR_TITLE|Serverfehler
+SERVER_MESSAGE_TITLE|Servermeldung
+NOTIMPLEMENTED_UNSERINFOSTYPE|Der Server schickte eine nicht implementierte Antwort vom Typ:<br> {0}, {1}
+COMPATIBILITY_WARNING|Internet Explorer 9 ist erforderlich
+COMPATIBILITY_WARNING_TITLE|Kompatibilitätswarnung
+CLIENT|Client
+WINDOWS_USER|Windows Benutzer
+ARCPLAN_USER|arcplan Benutzer
+USERNAME|Benutzername
+PASSWORD|Passwort
+KEEP_LOGGEDIN|Angemeldet bleiben
+OK|Ok
+CANCEL|Abbrechen
+YES|Ja
+NO|Nein
+LANGUAGE|Sprache
+LOGIN|Login
+USER_LOGIN|Benutzeranmeldung
+UPLOAD_TITLE|Datei hochladen
+UPLOAD_SELECT_FILE|Wählen Sie bitte eine Datei aus: 
+UPLOAD_IN_PROGRESS|Datei wird hochgeladen... 
+UPLOAD_BROWSE|Durchsuchen...
+OPENLINK_TITLE|Möchten Sie diesen Link in einem neuen Fenster öffnen?
+OPENLINK_ALL_TITLE|Möchten Sie jeden Link in einem neuen Fenster öffnen?
+OPEN|Öffnen
+DATA_ERROR_NO_BODY|Datenfehler. Die Anfrage enthält keine Daten.
+FILE_UPLOAD_FAILED|Hochladen der Datei fehlgeschlagen
+SHOW_DETAILS|Details anzeigen
+PASSWORDNOTSAVED|Das Passwort konnte nicht gespeichert werden.
+NOT_FOR_PR_USAGE|NICHT FÜR DEN PRODUKTIVEN EINSATZ
+LICENSEDFOR|Lizenzierte Produkte
+LICENSEOWNER|Lizenznehmer: 
+EVALUATIONVERSION|Evaluationslizenz
+PARTNERVERSION|Partner Lizenz
+TESTORBACKUPVERSION|Test- / Backup- Lizenz
+ARCPLAN_MEMORY_OVERLOAD|Die Sitzung wurde abgebrochen weil der Speicherbedarf zu groß war.

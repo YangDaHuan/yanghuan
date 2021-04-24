@@ -1,0 +1,75 @@
+package com.solidextend.sys.ticket.service;
+
+import java.util.List;
+import com.solidextend.sys.ticket.vo.BizTicketOut;
+import com.solidextend.sys.ticket.dao.BizTicketOutMapper;
+import javax.annotation.Resource;
+import org.springframework.stereotype.Service;
+import com.solidextend.core.util.Identities;
+
+/**
+ * TODO
+ * @author 
+ */
+@Service
+public class BizTicketOutServiceImpl implements BizTicketOutService{   
+
+	@Resource
+	private BizTicketOutMapper bizTicketOutMapper;
+	
+	/**
+     * 根据主键查询
+     */
+    @Override
+    public BizTicketOut getBizTicketOutById(String outId){
+    	return bizTicketOutMapper.getBizTicketOutById(outId);
+    } 
+
+    /**
+     * 查询出所有记录
+     */
+    @Override
+    public List<BizTicketOut> findAllBizTicketOut(){
+    	return bizTicketOutMapper.findAllBizTicketOut();
+	}  
+    
+    /**
+     * 查询出所有符合条件的记录
+     */
+    @Override
+    public List<BizTicketOut> findByAttrBizTicketOut(BizTicketOut bizTicketOut){
+    	return bizTicketOutMapper.findByAttrBizTicketOut(bizTicketOut);
+    }    
+    
+    /**
+     * 保存
+     */
+    @Override
+    public int saveBizTicketOut(BizTicketOut bizTicketOut){
+    	boolean isInsert=false;
+            if(bizTicketOut.getOutId()==null||"".equals(bizTicketOut.getOutId())){
+            	isInsert=true;
+            }
+        
+        if(isInsert){
+        	bizTicketOut.setOutId(Identities.uuid());
+        	return bizTicketOutMapper.saveBizTicketOut(bizTicketOut);
+        }else{
+        	return bizTicketOutMapper.updateBizTicketOut(bizTicketOut);
+        }
+    	
+    }
+    
+    /**
+     * 根据主键删除
+     */
+    @Override
+    public int deleteBizTicketOut(String[] outId){
+    	int i;
+    	for(i=0;i<outId.length;i++){
+    		bizTicketOutMapper.deleteBizTicketOut(outId[i]);
+    	}
+    	return i;
+    }
+}
+

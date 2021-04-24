@@ -1,0 +1,3 @@
+log.com.zebone.sys.dict.service.DictServiceImpl.updateDictById=更新字典类型
+log.com.zebone.sys.dict.service.DictServiceImpl.saveDict=新增字典类型
+log.com.zebone.sys.dict.service.DictServiceImpl.removeDictById=删除字典类型

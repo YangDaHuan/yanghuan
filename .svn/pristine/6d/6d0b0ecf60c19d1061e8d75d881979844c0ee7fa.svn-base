@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f044bb29-17ca-4cf0-ab0f-d4352a33bfbd">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<template><![CDATA["C:\\Users\\Admin\\Desktop\\zeboneTemplate.jrtx"]]></template>
+	<parameter name="name" class="java.lang.String">
+		<property name="type" value="text"/>
+		<parameterDescription><![CDATA[名字]]></parameterDescription>
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<parameter name="birthday" class="java.lang.String">
+		<property name="type" value="date"/>
+		<parameterDescription><![CDATA[出生日期]]></parameterDescription>
+		<defaultValueExpression><![CDATA[""]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+     雇员."雇员ID" AS 雇员_雇员ID,
+     雇员."名字" AS 雇员_名字,
+     雇员."职务" AS 雇员_职务,
+     雇员."尊称" AS 雇员_尊称,
+     substr(雇员."出生日期",1,10) AS 雇员_出生日期,
+     雇员."雇用日期" AS 雇员_雇用日期,
+     雇员."姓氏" AS 雇员_姓氏
+FROM
+     "PUBLIC"."雇员" 雇员
+where (雇员."名字" = $P{name} or $P{name} = '') and  (substr(雇员."出生日期",1,10) = $P{birthday} or $P{birthday} = '')]]>
+	</queryString>
+	<field name="雇员_雇员ID" class="java.lang.Integer"/>
+	<field name="雇员_名字" class="java.lang.String"/>
+	<field name="雇员_职务" class="java.lang.String"/>
+	<field name="雇员_尊称" class="java.lang.String"/>
+	<field name="雇员_出生日期" class="java.lang.String"/>
+	<field name="雇员_雇用日期" class="java.lang.String"/>
+	<field name="雇员_姓氏" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<textField>
+				<reportElement style="title" x="85" y="22" width="328" height="57" uuid="6dee04e1-f5bc-40f8-95f2-3c1f49f518f9"/>
+				<textFieldExpression><![CDATA["雇员信息列表"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement style="columnHeader" mode="Opaque" x="0" y="0" width="100" height="20" backcolor="#66FFFF" uuid="fc84e52e-44d9-4798-9175-7a51ac9b1bc4"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[雇员_雇员ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="columnHeader" mode="Opaque" x="100" y="0" width="100" height="20" backcolor="#66FFFF" uuid="cdced3a8-f49c-4b30-a00a-f4e56d866a57"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[雇员_名字]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="columnHeader" mode="Opaque" x="200" y="0" width="100" height="20" backcolor="#66FFFF" uuid="2b8d32a4-b757-481a-b54c-ad72aa6588a1"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[雇员_职务]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="columnHeader" mode="Opaque" x="400" y="0" width="100" height="20" backcolor="#66FFFF" uuid="18d99fa8-b86e-418b-b2d2-383664646aa7"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[雇员_尊称]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="columnHeader" mode="Opaque" x="300" y="0" width="100" height="20" backcolor="#66FFFF" uuid="2c48ab26-ccf1-41f2-9f9b-780bb493c84e"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[雇员_出生日期]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="detail" x="0" y="0" width="100" height="20" uuid="3efded6c-7b7a-48af-92b6-ea0ebe42138b"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{雇员_雇员ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="100" y="0" width="100" height="20" uuid="b28035f1-5de1-4e15-9d65-5c4c3b72d0e8"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{雇员_名字}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="200" y="0" width="100" height="20" uuid="214f4633-4540-4e37-9779-0ffc2bb96088"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{雇员_职务}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="400" y="0" width="100" height="20" uuid="00abdb92-6bb9-4225-938c-2304bd84eece"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{雇员_尊称}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="detail" x="300" y="0" width="100" height="20" uuid="a6e6b042-f554-4124-868f-96385a7c941c"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{雇员_出生日期}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.authorize.dao.AuthorizeMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.authorize.vo.Authorize">
+		<id column="ROLE_ID" jdbcType="VARCHAR" property="roleId" />
+		<result column="USE_MODULES" jdbcType="VARCHAR" property="useModules" />
+		<result column="ASSIGN_MODULES" jdbcType="VARCHAR" property="assignModules" />
+	</resultMap>
+	<insert id="insertUse">
+		insert into SYS_ROLE_MODULE(ROLE_ID, MODULE_ID, FUN_CODE, FUN_VALUE)
+		values(#{roleId,jdbcType=VARCHAR},#{moduleId,jdbcType=VARCHAR},#{funCode,jdbcType=VARCHAR},#{funValue,jdbcType=VARCHAR})
+
+	</insert>
+	<insert id="insertAssign">
+		insert into SYS_ADMIN_ROLE_MODULE(ROLE_ID, MODULE_ID)
+		values(#{roleId,jdbcType=VARCHAR},#{moduleId,jdbcType=VARCHAR})
+
+	</insert>
+	<delete id="deleteUse" parameterType="java.lang.String">
+		delete from SYS_ROLE_MODULE where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteAssign" parameterType="java.lang.String">
+		delete from SYS_ADMIN_ROLE_MODULE where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+	</delete>
+	<select id="selectUse" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select wm_concat(MODULE_ID) from SYS_ROLE_MODULE where
+		ROLE_ID=#{roleId,jdbcType=VARCHAR}
+	</select>
+	<select id="selectAssign" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select wm_concat(MODULE_ID) from SYS_ADMIN_ROLE_MODULE where
+		ROLE_ID=#{roleId,jdbcType=VARCHAR}
+	</select>
+
+	<delete id="deleteFun" parameterType="java.lang.String">
+		delete from SYS_ROLE_MODULE where FUN_CODE = #{funCode,jdbcType=VARCHAR}
+	</delete>
+	<delete id="deleteFunByGroup" parameterType="java.lang.String">
+		delete from SYS_ROLE_MODULE where FUN_CODE in (select FUN_CODE FROM
+		SYS_MODULE_FUN WHERE FUN_GROUP_CODE=#{groupCode,jdbcType=VARCHAR} )
+	</delete>
+	<delete id="deleteModuleAuthorize">
+		DELETE
+		FROM SYS_ROLE_MODULE
+		WHERE MODULE_ID=#{moduleId,jdbcType=VARCHAR}
+		AND ROLE_ID=#{roleId,jdbcType=VARCHAR}
+	</delete>
+</mapper>

@@ -1,0 +1,4 @@
+[
+{"id":1,"text":"父节点", "attributes":{ "url":"http://www.baidu.com"}},
+{"id":2,"text":"子节点","pid":1,"attributes":{ "url":"http://www.baidu.com"}}
+]

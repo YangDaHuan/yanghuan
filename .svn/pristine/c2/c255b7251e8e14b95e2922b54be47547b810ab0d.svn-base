@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.input.dao.SysInputTaskInstanceMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.input.vo.SysInputTaskInstance">
+        <id column="TASK_INSTANCE_ID" jdbcType="VARCHAR" property="taskInstanceId"/>
+        <result column="TASK_INSTANCE_DESCRIBE" jdbcType="VARCHAR" property="taskInstanceDescribe"/>
+        <result column="FORM_ID" jdbcType="VARCHAR" property="formId"/>
+        <result column="TASK_ID" jdbcType="VARCHAR" property="taskId"/>
+        <result column="TASK_NAME" jdbcType="VARCHAR" property="taskName"/>
+        <result column="INPUT_USERID" jdbcType="VARCHAR" property="inputUserid"/>
+        <result column="INPUT_USERNAME" jdbcType="VARCHAR" property="inputUsername"/>
+        <result column="INPUT_DEPARTMENT" jdbcType="VARCHAR" property="inputDepartment"/>
+        <result column="INPUT_TIME" jdbcType="DATE" property="inputTime"/>
+        <result column="INPUT_STATE" jdbcType="INTEGER" property="inputState"/>
+        <result column="AUDIT_USERID" jdbcType="VARCHAR" property="auditUserid"/>
+        <result column="AUDIT_USERNAME" jdbcType="VARCHAR" property="auditUsername"/>
+        <result column="AUDIT_DEPARTMENT" jdbcType="VARCHAR" property="auditDepartment"/>
+        <result column="AUDIT_OPINION" jdbcType="VARCHAR" property="auditOpinion"/>
+        <result column="AUDIT_TIME" jdbcType="DATE" property="auditTime"/>
+        <result column="AUDIT_STATE" jdbcType="INTEGER" property="auditState"/>
+    </resultMap>
+    <select id="getSysInputTaskInstanceById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             sys_input_task_instance
+        WHERE            
+            TASK_INSTANCE_ID = #{taskInstanceId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllSysInputTaskInstance" resultMap="BaseResultMap">
+          SELECT * FROM sys_input_task_instance 
+    </select>
+    
+    <select id="findByAttrSysInputTaskInstance" resultMap="BaseResultMap" parameterType="com.solidextend.sys.input.vo.SysInputTaskInstance">
+          SELECT i.*,iu.fullname as input_username,au.fullname as audit_username ,it.TASK_NAME
+          FROM 
+          sys_input_task_instance  i left join sys_user iu on i.INPUT_USERID=iu.id  left join sys_user au on i.AUDIT_USERID=au.id  left join SYS_INPUT_TASK it on i.TASK_ID=it.TASK_ID 
+          WHERE 1=1 
+            <if test="taskInstanceId != null" >
+                AND TASK_INSTANCE_ID = #{taskInstanceId,jdbcType=VARCHAR}
+            </if>
+            <if test="taskInstanceDescribe != null" >
+                AND TASK_INSTANCE_DESCRIBE = #{taskInstanceDescribe,jdbcType=VARCHAR}
+            </if>
+            <if test="formId != null" >
+                AND FORM_ID = #{formId,jdbcType=VARCHAR}
+            </if>
+            <if test="taskId != null" >
+                AND TASK_ID = #{taskId,jdbcType=VARCHAR}
+            </if>
+            <if test="inputUserid != null" >
+                AND INPUT_USERID = #{inputUserid,jdbcType=VARCHAR}
+            </if>
+            <if test="inputDepartment != null" >
+                AND INPUT_DEPARTMENT = #{inputDepartment,jdbcType=VARCHAR}
+            </if>
+            <if test="inputTime != null" >
+                AND INPUT_TIME = #{inputTime,jdbcType=DATE}
+            </if>
+            <if test="inputState != null" >
+                AND INPUT_STATE = #{inputState,jdbcType=INTEGER}
+            </if>
+            <if test="auditUserid != null" >
+                AND AUDIT_USERID = #{auditUserid,jdbcType=VARCHAR}
+            </if>
+            <if test="auditDepartment != null" >
+                AND AUDIT_DEPARTMENT = #{auditDepartment,jdbcType=VARCHAR}
+            </if>
+            <if test="auditOpinion != null" >
+                AND AUDIT_OPINION = #{auditOpinion,jdbcType=VARCHAR}
+            </if>
+            <if test="auditTime != null" >
+                AND AUDIT_TIME = #{auditTime,jdbcType=DATE}
+            </if>
+            <if test="auditState != null" >
+                AND AUDIT_STATE = #{auditState,jdbcType=INTEGER}
+            </if>
+    </select>
+
+    <delete id="deleteSysInputTaskInstance">
+        DELETE
+        FROM
+             sys_input_task_instance
+        WHERE            
+            TASK_INSTANCE_ID = #{taskInstanceId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveSysInputTaskInstance" parameterType="com.solidextend.sys.input.vo.SysInputTaskInstance" >
+        INSERT INTO sys_input_task_instance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="taskInstanceId != null" >
+                TASK_INSTANCE_ID,
+            </if>
+            <if test="taskInstanceDescribe != null" >
+                TASK_INSTANCE_DESCRIBE,
+            </if>
+            <if test="formId != null" >
+                FORM_ID,
+            </if>
+            <if test="taskId != null" >
+                TASK_ID,
+            </if>
+            <if test="inputUserid != null" >
+                INPUT_USERID,
+            </if>
+            <if test="inputDepartment != null" >
+                INPUT_DEPARTMENT,
+            </if>
+            <if test="inputTime != null" >
+                INPUT_TIME,
+            </if>
+            <if test="inputState != null" >
+                INPUT_STATE,
+            </if>
+            <if test="auditUserid != null" >
+                AUDIT_USERID,
+            </if>
+            <if test="auditDepartment != null" >
+                AUDIT_DEPARTMENT,
+            </if>
+            <if test="auditOpinion != null" >
+                AUDIT_OPINION,
+            </if>
+            <if test="auditTime != null" >
+                AUDIT_TIME,
+            </if>
+            <if test="auditState != null" >
+                AUDIT_STATE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="taskInstanceId != null" >
+                #{taskInstanceId,jdbcType=VARCHAR},
+            </if> 
+            <if test="taskInstanceDescribe != null" >
+                #{taskInstanceDescribe,jdbcType=VARCHAR},
+            </if> 
+            <if test="formId != null" >
+                #{formId,jdbcType=VARCHAR},
+            </if> 
+            <if test="taskId != null" >
+                #{taskId,jdbcType=VARCHAR},
+            </if> 
+            <if test="inputUserid != null" >
+                #{inputUserid,jdbcType=VARCHAR},
+            </if> 
+            <if test="inputDepartment != null" >
+                #{inputDepartment,jdbcType=VARCHAR},
+            </if> 
+            <if test="inputTime != null" >
+                #{inputTime,jdbcType=DATE},
+            </if> 
+            <if test="inputState != null" >
+                #{inputState,jdbcType=INTEGER},
+            </if> 
+            <if test="auditUserid != null" >
+                #{auditUserid,jdbcType=VARCHAR},
+            </if> 
+            <if test="auditDepartment != null" >
+                #{auditDepartment,jdbcType=VARCHAR},
+            </if> 
+            <if test="auditOpinion != null" >
+                #{auditOpinion,jdbcType=VARCHAR},
+            </if> 
+            <if test="auditTime != null" >
+                #{auditTime,jdbcType=DATE},
+            </if> 
+            <if test="auditState != null" >
+                #{auditState,jdbcType=INTEGER},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateSysInputTaskInstance" parameterType="com.solidextend.sys.input.vo.SysInputTaskInstance" >
+        UPDATE sys_input_task_instance
+        <set>
+            <if test="taskInstanceId != null" >
+                TASK_INSTANCE_ID = #{taskInstanceId,jdbcType=VARCHAR},
+            </if>
+            <if test="taskInstanceDescribe != null" >
+                TASK_INSTANCE_DESCRIBE = #{taskInstanceDescribe,jdbcType=VARCHAR},
+            </if>
+            <if test="formId != null" >
+                FORM_ID = #{formId,jdbcType=VARCHAR},
+            </if>
+            <if test="taskId != null" >
+                TASK_ID = #{taskId,jdbcType=VARCHAR},
+            </if>
+            <if test="inputUserid != null" >
+                INPUT_USERID = #{inputUserid,jdbcType=VARCHAR},
+            </if>
+            <if test="inputDepartment != null" >
+                INPUT_DEPARTMENT = #{inputDepartment,jdbcType=VARCHAR},
+            </if>
+            <if test="inputTime != null" >
+                INPUT_TIME = #{inputTime,jdbcType=DATE},
+            </if>
+            <if test="inputState != null" >
+                INPUT_STATE = #{inputState,jdbcType=INTEGER},
+            </if>
+            <if test="auditUserid != null" >
+                AUDIT_USERID = #{auditUserid,jdbcType=VARCHAR},
+            </if>
+            <if test="auditDepartment != null" >
+                AUDIT_DEPARTMENT = #{auditDepartment,jdbcType=VARCHAR},
+            </if>
+            <if test="auditOpinion != null" >
+                AUDIT_OPINION = #{auditOpinion,jdbcType=VARCHAR},
+            </if>
+            <if test="auditTime != null" >
+                AUDIT_TIME = #{auditTime,jdbcType=DATE},
+            </if>
+            <if test="auditState != null" >
+                AUDIT_STATE = #{auditState,jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE 
+            TASK_INSTANCE_ID = #{taskInstanceId,jdbcType=VARCHAR}
+    </update>
+</mapper>

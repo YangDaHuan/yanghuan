@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.solidextend.sys.dataset.dao.DataSetMapper">
+	<select id="select" resultType="map"
+		parameterType="com.solidextend.sys.dataset.vo.Params">
+		select * from sys_dict_item where item_code = #{itemCode}
+		<if test="deleted != null and deleted !='' ">
+			and deleted =#{deleted}
+		</if>
+	</select>
+	<select id="select1" resultType="map"
+		parameterType="com.solidextend.sys.dataset.vo.Params">
+		select * from sys_dict
+
+	</select>
+</mapper>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.log.dao.SysModuleLogMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.log.vo.SysModuleLog">
+        <result column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="USER_ID" jdbcType="VARCHAR" property="userId"/>
+        <result column="MODULE_ID" jdbcType="VARCHAR" property="moduleId"/>
+        <result column="IP" jdbcType="VARCHAR" property="ip"/>
+        <result column="ACCESS_TIME" jdbcType="TIMESTAMP" property="accessTime"/>
+        <result column="ORGAN_ID" jdbcType="VARCHAR" property="organId"/>
+    </resultMap>
+    <resultMap id="logCount" type="com.solidextend.sys.log.vo.SysModuleLogCount">
+        <result column="MODULE_ID" jdbcType="VARCHAR" property="moduleId"/>
+		<result column="MODULE_CODE" property="moduleCode" jdbcType="VARCHAR" />
+		<result column="MODULE_NAME" property="moduleName" jdbcType="VARCHAR" />
+		<result column="URL" property="url" jdbcType="VARCHAR" />
+		<result column="ACCESS_COUNT" property="accessCount" jdbcType="INTEGER" />
+    </resultMap>
+    <select id="findAllSysModuleLog" resultMap="BaseResultMap">
+          SELECT * FROM sys_module_log 
+    </select>
+    
+    <select id="findByAttrSysModuleLog" resultMap="BaseResultMap" parameterType="com.solidextend.sys.log.vo.SysModuleLog">
+          SELECT * 
+          FROM 
+          sys_module_log 
+          WHERE 1=1 
+            <if test="id != null" >
+                AND ID = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="userId != null" >
+                AND USER_ID = #{userId,jdbcType=VARCHAR}
+            </if>
+            <if test="moduleId != null" >
+                AND MODULE_ID = #{moduleId,jdbcType=VARCHAR}
+            </if>
+            <if test="ip != null" >
+                AND IP = #{ip,jdbcType=VARCHAR}
+            </if>
+            <if test="accessTime != null" >
+                AND ACCESS_TIME = #{accessTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="organId != null" >
+                AND ORGAN_ID = #{organId,jdbcType=VARCHAR}
+            </if>
+           
+    </select>
+	<select id="countBySysModuleLog" resultMap="logCount" >
+          SELECT 
+          l.MODULE_ID,
+          m.MODULE_CODE,
+          m.MODULE_NAME,
+          m.url,
+          count(l.id) as ACCESS_COUNT 
+          from sys_module_log l inner join sys_module m on l.MODULE_ID=m.ID
+          WHERE 1=1 
+            <if test="startDate != null" >
+                AND ACCESS_TIME  &gt;= #{startDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="endDate != null" >
+                AND ACCESS_TIME &lt;= #{endDate,jdbcType=TIMESTAMP}
+            </if>
+            <if test="userId != null" >
+                AND l.USER_ID= #{userId,jdbcType=VARCHAR}
+            </if>
+           group by l.MODULE_ID,m.MODULE_CODE,m.MODULE_NAME,m.url
+			order by count(l.id) desc
+    </select>
+
+    <insert id="saveSysModuleLog" parameterType="com.solidextend.sys.log.vo.SysModuleLog" >
+        INSERT INTO sys_module_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null" >
+                ID,
+            </if>
+            <if test="userId != null" >
+                USER_ID,
+            </if>
+            <if test="moduleId != null" >
+                MODULE_ID,
+            </if>
+            <if test="ip != null" >
+                IP,
+            </if>
+            <if test="accessTime != null" >
+                ACCESS_TIME,
+            </if>
+            <if test="organId != null" >
+                ORGAN_ID,
+            </if>
+           
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if> 
+            <if test="userId != null" >
+                #{userId,jdbcType=VARCHAR},
+            </if> 
+            <if test="moduleId != null" >
+                #{moduleId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ip != null" >
+                #{ip,jdbcType=VARCHAR},
+            </if> 
+            <if test="accessTime != null" >
+                #{accessTime,jdbcType=TIMESTAMP},
+            </if> 
+            <if test="organId != null" >
+                #{organId,jdbcType=VARCHAR},
+            </if> 
+           
+        </trim>
+    </insert>
+
+    <update id="updateSysModuleLog" parameterType="com.solidextend.sys.log.vo.SysModuleLog" >
+        UPDATE sys_module_log
+        <set>
+            <if test="id != null" >
+                ID = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null" >
+                USER_ID = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="moduleId != null" >
+                MODULE_ID = #{moduleId,jdbcType=VARCHAR},
+            </if>
+            <if test="ip != null" >
+                IP = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="accessTime != null" >
+                ACCESS_TIME = #{accessTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="organId != null" >
+                ORGAN_ID = #{organId,jdbcType=VARCHAR},
+            </if>
+            
+        </set>
+        WHERE 
+        ID = #{id,jdbcType=VARCHAR}
+    </update>
+    <delete id="deleteSysModuleLog">
+		DELETE
+		FROM
+		sys_module_log
+		WHERE
+		ID = #{id,jdbcType=VARCHAR}
+	</delete>
+</mapper>

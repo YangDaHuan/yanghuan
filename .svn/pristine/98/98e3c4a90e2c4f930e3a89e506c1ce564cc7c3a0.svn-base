@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.ticket.dao.BizTicketDepolyDetailMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.ticket.vo.BizTicketDeployDetail">
+        <id column="DEPOLY_DETAIL_ID" jdbcType="VARCHAR" property="depolyDetailId"/>
+        <result column="TICKET_TYPE_ID" jdbcType="VARCHAR" property="ticketTypeId"/>
+        <result column="TICKET_STATE_ID" jdbcType="VARCHAR" property="ticketStateId"/>
+        <result column="DEPLOY_ID" jdbcType="VARCHAR" property="deployId"/>
+        <result column="TICKET_NUMBER" jdbcType="INTEGER" property="ticketNumber"/>
+        <result column="TICKET_MONEY" jdbcType="REAL" property="ticketMoney"/>
+    </resultMap>
+    <select id="getBizTicketDepolyDetailById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_ticket_depoly_detail
+        WHERE            
+            DEPOLY_DETAIL_ID = #{depolyDetailId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizTicketDepolyDetail" resultMap="BaseResultMap">
+          SELECT * FROM biz_ticket_depoly_detail 
+    </select>
+    
+    <select id="findByAttrBizTicketDepolyDetail" resultMap="BaseResultMap" parameterType="com.solidextend.sys.ticket.vo.BizTicketDeployDetail">
+          SELECT * 
+          FROM 
+          biz_ticket_depoly_detail 
+          WHERE 1=1 
+            <if test="depolyDetailId != null and depolyDetailId != ''" >
+                AND DEPOLY_DETAIL_ID = #{depolyDetailId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketTypeId != null and ticketTypeId != ''" >
+                AND TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketStateId != null and ticketStateId != ''" >
+                AND TICKET_STATE_ID = #{ticketStateId,jdbcType=VARCHAR}
+            </if>
+            <if test="deployId != null and deployId != ''" >
+                AND DEPLOY_ID = #{deployId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketNumber != null and ticketNumber != ''" >
+                AND TICKET_NUMBER = #{ticketNumber,jdbcType=INTEGER}
+            </if>
+            <if test="ticketMoney != null and ticketMoney != ''" >
+                AND TICKET_MONEY = #{ticketMoney,jdbcType=REAL}
+            </if>
+    </select>
+
+    <delete id="deleteBizTicketDepolyDetail">
+        DELETE
+        FROM
+             biz_ticket_depoly_detail
+        WHERE 
+            DEPOLY_DETAIL_ID = #{depolyDetailId,jdbcType=VARCHAR}
+    </delete>
+	<delete id="deleteBizTicketApplyDetailByDeployId">
+        DELETE
+        FROM
+             biz_ticket_depoly_detail
+        WHERE 
+            DEPOLY_ID = #{depolyId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="saveBizTicketDepolyDetail" parameterType="com.solidextend.sys.ticket.vo.BizTicketDeployDetail" >
+        INSERT INTO biz_ticket_depoly_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="depolyDetailId != null" >
+                DEPOLY_DETAIL_ID,
+            </if>
+            <if test="ticketTypeId != null" >
+                TICKET_TYPE_ID,
+            </if>
+            <if test="ticketStateId != null" >
+                TICKET_STATE_ID,
+            </if>
+            <if test="deployId != null" >
+                DEPLOY_ID,
+            </if>
+            <if test="ticketNumber != null" >
+                TICKET_NUMBER,
+            </if>
+            <if test="ticketMoney != null" >
+                TICKET_MONEY,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="depolyDetailId != null" >
+                #{depolyDetailId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketTypeId != null" >
+                #{ticketTypeId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketStateId != null" >
+                #{ticketStateId,jdbcType=VARCHAR},
+            </if> 
+            <if test="deployId != null" >
+                #{deployId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketNumber != null" >
+                #{ticketNumber,jdbcType=INTEGER},
+            </if> 
+            <if test="ticketMoney != null" >
+                #{ticketMoney,jdbcType=REAL},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizTicketDepolyDetail" parameterType="com.solidextend.sys.ticket.vo.BizTicketDeployDetail" >
+        UPDATE biz_ticket_depoly_detail
+        <set>
+            <if test="depolyDetailId != null" >
+                DEPOLY_DETAIL_ID = #{depolyDetailId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketTypeId != null" >
+                TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketStateId != null" >
+                TICKET_STATE_ID = #{ticketStateId,jdbcType=VARCHAR},
+            </if>
+            <if test="deployId != null" >
+                DEPLOY_ID = #{deployId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketNumber != null" >
+                TICKET_NUMBER = #{ticketNumber,jdbcType=INTEGER},
+            </if>
+            <if test="ticketMoney != null" >
+                TICKET_MONEY = #{ticketMoney,jdbcType=REAL},
+            </if>
+        </set>
+        WHERE 
+            DEPOLY_DETAIL_ID = #{depolyDetailId,jdbcType=VARCHAR}
+    </update>
+</mapper>

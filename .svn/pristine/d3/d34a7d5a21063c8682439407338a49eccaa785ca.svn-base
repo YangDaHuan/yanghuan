@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.quartz.dao.JobGroupMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.quartz.vo.JobGroup">
+		<id column="JOB_GROUP_ID" jdbcType="VARCHAR" property="jobGroupId" />
+		<result column="JOB_GROUP_NAME" jdbcType="VARCHAR" property="jobGroupName" />
+		<result column="STATE" jdbcType="INTEGER" property="state" />
+		<result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="LAST_UP_TIME" jdbcType="TIMESTAMP" property="lastUpTime" />
+		<result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+		<result column="SORT_NO" jdbcType="INTEGER" property="sortNo" />
+	</resultMap>
+	<select id="getJobGroupById" resultMap="BaseResultMap">
+		SELECT
+		*
+		FROM
+		sys_job_group
+		WHERE
+		JOB_GROUP_ID = #{jobGroupId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getJobGroupByPId" resultMap="BaseResultMap">
+		SELECT
+		*
+		FROM
+		sys_job_group
+		WHERE
+		PARENT_ID = #{parentId,jdbcType=VARCHAR}
+	</select>
+	<select id="findAllJobGroup" resultMap="BaseResultMap">
+		SELECT * FROM sys_job_group
+		<if test="state != null">
+			WHERE STATE=#{state,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<delete id="deleteJobGroup">
+		DELETE
+		FROM
+		sys_job_group
+		WHERE
+		JOB_GROUP_ID = #{jobGroupId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="saveJobGroup" parameterType="com.solidextend.sys.quartz.vo.JobGroup">
+		INSERT INTO sys_job_group
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="jobGroupId != null">
+				JOB_GROUP_ID,
+			</if>
+			<if test="jobGroupName != null">
+				JOB_GROUP_NAME,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="parentId != null">
+				PARENT_ID,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="lastUpTime != null">
+				LAST_UP_TIME,
+			</if>
+			<if test="userId != null">
+				USER_ID,
+			</if>
+			<if test="sortNo != null">
+				SORT_NO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="jobGroupId != null">
+				#{jobGroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobGroupName != null">
+				#{jobGroupName,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=INTEGER},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpTime != null">
+				#{lastUpTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNo != null">
+				#{sortNo,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateJobGroup" parameterType="com.solidextend.sys.quartz.vo.JobGroup">
+		UPDATE sys_job_group
+		<set>
+			<if test="jobGroupId != null">
+				JOB_GROUP_ID = #{jobGroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobGroupName != null">
+				JOB_GROUP_NAME = #{jobGroupName,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=INTEGER},
+			</if>
+			<if test="parentId != null">
+				PARENT_ID = #{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpTime != null">
+				LAST_UP_TIME = #{lastUpTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userId != null">
+				USER_ID = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNo != null">
+				SORT_NO = #{sortNo,jdbcType=INTEGER},
+			</if>
+		</set>
+		WHERE
+		JOB_GROUP_ID = #{jobGroupId,jdbcType=VARCHAR}
+	</update>
+</mapper>

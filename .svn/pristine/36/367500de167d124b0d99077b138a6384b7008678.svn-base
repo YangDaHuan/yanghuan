@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.subway.dao.BizStationFluxSectionMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.subway.vo.BizStationFluxSection">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="settlement_date" jdbcType="DATE" property="settlementDate"/>
+        <result column="line_id" jdbcType="VARCHAR" property="lineId"/>
+        <result column="line_name" jdbcType="VARCHAR" property="lineName"/>
+        <result column="station_name_begin" jdbcType="VARCHAR" property="stationNameBegin"/>
+        <result column="station_id_begin" jdbcType="VARCHAR" property="stationIdBegin"/>
+        <result column="station_name_end" jdbcType="VARCHAR" property="stationNameEnd"/>
+        <result column="station_id_end" jdbcType="VARCHAR" property="stationIdEnd"/>
+        <result column="section_begin" jdbcType="TIMESTAMP" property="sectionBegin"/>
+        <result column="section_end" jdbcType="TIMESTAMP" property="sectionEnd"/>
+        <result column="section_flux_num" jdbcType="INTEGER" property="sectionFluxNum"/>
+        <result column="direction" jdbcType="INTEGER" property="direction"/>
+    </resultMap>
+    <select id="getBizStationFluxSectionById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_station_flux_section
+        WHERE            
+            id = #{id,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizStationFluxSection" resultMap="BaseResultMap">
+          SELECT * FROM biz_station_flux_section 
+    </select>
+    
+    <select id="findByAttrBizStationFluxSection" resultMap="BaseResultMap" parameterType="com.solidextend.sys.subway.vo.BizStationFluxSection">
+          SELECT * 
+          FROM 
+          biz_station_flux_section 
+          WHERE 1=1 
+            <if test="id != null and id != ''" >
+                AND id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="settlementDate != null and settlementDate != ''" >
+                AND settlement_date = #{settlementDate,jdbcType=DATE}
+            </if>
+            <if test="lineId != null and lineId != ''" >
+                AND line_id = #{lineId,jdbcType=VARCHAR}
+            </if>
+            <if test="lineName != null and lineName != ''" >
+                AND line_name = #{lineName,jdbcType=VARCHAR}
+            </if>
+            <if test="stationNameBegin != null and stationNameBegin != ''" >
+                AND station_name_begin = #{stationNameBegin,jdbcType=VARCHAR}
+            </if>
+            <if test="stationIdBegin != null and stationIdBegin != ''" >
+                AND station_id_begin = #{stationIdBegin,jdbcType=VARCHAR}
+            </if>
+            <if test="stationNameEnd != null and stationNameEnd != ''" >
+                AND station_name_end = #{stationNameEnd,jdbcType=VARCHAR}
+            </if>
+            <if test="stationIdEnd != null and stationIdEnd != ''" >
+                AND station_id_end = #{stationIdEnd,jdbcType=VARCHAR}
+            </if>
+            <if test="sectionTime != null and sectionTime != ''" >
+                AND section_begin &lt;= #{sectionTime,jdbcType=TIMESTAMP}
+                AND section_end &gt;= #{sectionTime,jdbcType=TIMESTAMP}
+            </if>
+            <if test="sectionBegin != null and sectionBegin != ''" >
+                AND section_begin = #{sectionBegin,jdbcType=TIMESTAMP}
+            </if>
+            <if test="sectionEnd != null and sectionEnd != ''" >
+                AND section_end = #{sectionEnd,jdbcType=TIMESTAMP}
+            </if>
+            <if test="sectionFluxNum != null and sectionFluxNum != ''" >
+                AND section_flux_num = #{sectionFluxNum,jdbcType=INTEGER}
+            </if>
+            <if test="direction != null and direction != ''" >
+                AND direction = #{direction,jdbcType=INTEGER}
+            </if>
+    </select>
+
+    <delete id="deleteBizStationFluxSection">
+        DELETE
+        FROM
+             biz_station_flux_section
+        WHERE 
+            id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizStationFluxSection" parameterType="com.solidextend.sys.subway.vo.BizStationFluxSection" >
+        INSERT INTO biz_station_flux_section
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="settlementDate != null" >
+                settlement_date,
+            </if>
+            <if test="lineId != null" >
+                line_id,
+            </if>
+            <if test="lineName != null" >
+                line_name,
+            </if>
+            <if test="stationNameBegin != null" >
+                station_name_begin,
+            </if>
+            <if test="stationIdBegin != null" >
+                station_id_begin,
+            </if>
+            <if test="stationNameEnd != null" >
+                station_name_end,
+            </if>
+            <if test="stationIdEnd != null" >
+                station_id_end,
+            </if>
+            <if test="sectionBegin != null" >
+                section_begin,
+            </if>
+            <if test="sectionEnd != null" >
+                section_end,
+            </if>
+            <if test="sectionFluxNum != null" >
+                section_flux_num,
+            </if>
+            <if test="direction != null" >
+                direction,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if> 
+            <if test="settlementDate != null" >
+                #{settlementDate,jdbcType=DATE},
+            </if> 
+            <if test="lineId != null" >
+                #{lineId,jdbcType=VARCHAR},
+            </if> 
+            <if test="lineName != null" >
+                #{lineName,jdbcType=VARCHAR},
+            </if> 
+            <if test="stationNameBegin != null" >
+                #{stationNameBegin,jdbcType=VARCHAR},
+            </if> 
+            <if test="stationIdBegin != null" >
+                #{stationIdBegin,jdbcType=VARCHAR},
+            </if> 
+            <if test="stationNameEnd != null" >
+                #{stationNameEnd,jdbcType=VARCHAR},
+            </if> 
+            <if test="stationIdEnd != null" >
+                #{stationIdEnd,jdbcType=VARCHAR},
+            </if> 
+            <if test="sectionBegin != null" >
+                #{sectionBegin,jdbcType=TIMESTAMP},
+            </if> 
+            <if test="sectionEnd != null" >
+                #{sectionEnd,jdbcType=TIMESTAMP},
+            </if> 
+            <if test="sectionFluxNum != null" >
+                #{sectionFluxNum,jdbcType=INTEGER},
+            </if> 
+            <if test="direction != null" >
+                #{direction,jdbcType=INTEGER},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizStationFluxSection" parameterType="com.solidextend.sys.subway.vo.BizStationFluxSection" >
+        UPDATE biz_station_flux_section
+        <set>
+            <if test="id != null" >
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="settlementDate != null" >
+                settlement_date = #{settlementDate,jdbcType=DATE},
+            </if>
+            <if test="lineId != null" >
+                line_id = #{lineId,jdbcType=VARCHAR},
+            </if>
+            <if test="lineName != null" >
+                line_name = #{lineName,jdbcType=VARCHAR},
+            </if>
+            <if test="stationNameBegin != null" >
+                station_name_begin = #{stationNameBegin,jdbcType=VARCHAR},
+            </if>
+            <if test="stationIdBegin != null" >
+                station_id_begin = #{stationIdBegin,jdbcType=VARCHAR},
+            </if>
+            <if test="stationNameEnd != null" >
+                station_name_end = #{stationNameEnd,jdbcType=VARCHAR},
+            </if>
+            <if test="stationIdEnd != null" >
+                station_id_end = #{stationIdEnd,jdbcType=VARCHAR},
+            </if>
+            <if test="sectionBegin != null" >
+                section_begin = #{sectionBegin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sectionEnd != null" >
+                section_end = #{sectionEnd,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sectionFluxNum != null" >
+                section_flux_num = #{sectionFluxNum,jdbcType=INTEGER},
+            </if>
+            <if test="direction != null" >
+                direction = #{direction,jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE 
+            id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

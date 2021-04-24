@@ -1,0 +1,192 @@
+package com.solidextend.sys.ticket.service;
+
+import java.sql.Timestamp;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.shiro.SecurityUtils;
+import org.springframework.stereotype.Service;
+
+import com.solidextend.core.util.Identities;
+import com.solidextend.sys.security.UserDetails;
+import com.solidextend.sys.ticket.dao.BizTicketDeployMapper;
+import com.solidextend.sys.ticket.dao.BizTicketInDetailMapper;
+import com.solidextend.sys.ticket.dao.BizTicketInMapper;
+import com.solidextend.sys.ticket.dao.BizTicketStockMapper;
+import com.solidextend.sys.ticket.vo.BizTicketIn;
+import com.solidextend.sys.ticket.vo.BizTicketInDetail;
+import com.solidextend.sys.ticket.vo.BizTicketStock;
+
+/**
+ * TODO
+ * @author 
+ */
+@Service
+public class BizTicketInServiceImpl implements BizTicketInService{   
+
+	@Resource
+	private BizTicketInMapper bizTicketInMapper;
+	@Resource
+	private BizTicketInDetailMapper bizTicketInDetailMapper;
+	@Resource
+	private BizTicketStockMapper bizTicketStockMapper;
+	@Resource
+	BizTicketDeployMapper bizTicketDeployMapper;
+	
+	private BizTicketStock bizTicketStock;
+	
+	/**
+     * 根据主键查询
+     */
+    @Override
+    public BizTicketIn getBizTicketInById(String inId){
+    	return bizTicketInMapper.getBizTicketInById(inId);
+    } 
+
+    /**
+     * 查询出所有记录
+     */
+    @Override
+    public List<BizTicketIn> findAllBizTicketIn(){
+    	return bizTicketInMapper.findAllBizTicketIn();
+	}  
+    
+    /**
+     * 查询出所有符合条件的记录
+     */
+    @Override
+    public List<BizTicketIn> findByAttrBizTicketIn(BizTicketIn bizTicketIn){
+    	return bizTicketInMapper.findByAttrBizTicketIn(bizTicketIn);
+    }    
+    
+    /**
+     * 保存
+     */
+    @Override
+    public boolean saveBizTicketIn(BizTicketIn bizTicketIn,boolean saveDetail){
+    	boolean isInsert=false;
+    	 bizTicketStock = new BizTicketStock();
+            if(bizTicketIn.getInId()==null||"".equals(bizTicketIn.getInId())){
+            	isInsert=true;
+            }
+        
+        if(isInsert){
+        	String deployId=Identities.uuid();
+        	bizTicketIn.setInId(deployId);
+        	Date date = new Timestamp(new Date().getTime());
+        	bizTicketIn.setInDate(date);
+        	UserDetails userDetails = (UserDetails) SecurityUtils.getSubject().getPrincipal();
+        	bizTicketIn.setOperator(userDetails.getId());
+        	
+        	bizTicketInMapper.saveBizTicketIn(bizTicketIn);
+        	
+        	if(bizTicketIn.getDeployCode()!=null) {
+	    		int deployState = 3;
+	    		bizTicketDeployMapper.updateBizTicketStateDeployByCode(bizTicketIn.getDeployCode(), deployState);
+	    	}
+        	
+        	List<BizTicketInDetail> details=bizTicketIn.getDetails();
+        	bizTicketStock.setStockOrg(bizTicketIn.getInOrg());
+        	bizTicketStock.setStockUpdateDate(date);
+        	for(int i=0;i<details.size();i++){
+	    		BizTicketInDetail bizTicketInDetail=details.get(i);
+	    		String id = Identities.uuid();
+	    		bizTicketInDetail.setInDetailId(id);
+	    		bizTicketInDetail.setInDetailCode(id);
+	    		bizTicketInDetail.setInId(deployId);
+	    		bizTicketInDetailMapper.saveBizTicketInDetail(bizTicketInDetail);
+	    		
+	    		/**
+	    		 *库存操作 
+	    		 */
+	    		bizTicketStock.setTicketStateId(bizTicketInDetail.getTicketStateId());
+	    		bizTicketStock.setTicketTypeId(bizTicketInDetail.getTicketTypeId());
+	    		bizTicketStock.setTicketMoney(bizTicketInDetail.getTicketMoney());
+	    		BizTicketStock BizTicketStock2 = bizTicketStockMapper.bizTicketStock(bizTicketStock);
+	    		
+	    		if(BizTicketStock2==null) {
+	    			bizTicketStock.setStockId(Identities.uuid());
+	    			bizTicketStock.setTicketNumber(bizTicketInDetail.getTicketNumber());
+	    			bizTicketStockMapper.saveBizTicketStock(bizTicketStock);
+	    		}else {
+	    			bizTicketStock.setStockId(BizTicketStock2.getStockId());
+	    			bizTicketStock.setTicketNumber(BizTicketStock2.getTicketNumber()+bizTicketInDetail.getTicketNumber());
+	    			bizTicketStockMapper.updateBizTicketStock(bizTicketStock);
+	    		}
+	    		
+	    		
+	    		
+	    		
+	    	}
+        }
+        
+        else{
+        	 bizTicketInMapper.updateBizTicketIn(bizTicketIn);
+        	 if(saveDetail) {
+        		 
+        		 
+        	 }
+        }
+        
+        return true;
+      /*  if(saveDetail){
+        	String deployId=bizTicketDeploy.getDeployId();
+        	bizTicketDeployDetailMapper.deleteBizTicketApplyDetailByDeployId(deployId);
+        	List<BizTicketDeployDetail> details=bizTicketDeploy.getDetails();
+        	for(int i=0;i<details.size();i++){
+        		BizTicketDeployDetail bizTicketDeployDetail=details.get(i);
+	    		bizTicketDeployDetail.setDepolyDetailId(Identities.uuid());
+	    		bizTicketDeployDetail.setDeployId(deployId);
+	    		bizTicketDeployDetailMapper.saveBizTicketDepolyDetail(bizTicketDeployDetail);
+        	}
+    	}*/
+    	
+    }
+    
+    /**
+     * 根据主键删除
+     */
+    @Override
+    public int deleteBizTicketIn(String[] inId){
+    	int i;
+    	for(i=0;i<inId.length;i++){
+    		bizTicketInMapper.deleteBizTicketIn(inId[i]);
+    	}
+    	return i;
+    }
+    /**
+     * 
+     */
+
+	@Override
+	public Long getCountByCode(String inCode) {	
+		return bizTicketInMapper.getCountByCode(inCode);
+	}
+	
+	/*
+     * 获取新的code
+     */
+    public String getNewBizTicketInCode() {
+		String code = bizTicketInMapper.getMaxBizTicketInCode();
+		Date date = new  Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String yyyy=sdf.format(date);
+		String yy =  yyyy.substring(2,4);
+		String MM =  yyyy.substring(5,7);
+		String yyMM=yy+MM;
+		if(code!=null && code.length()>5 && code.substring(1,5).equals(yyMM)) {
+			int i =Integer.parseInt(code.substring(5));
+			i+=1;
+			DecimalFormat df=new DecimalFormat("0000");
+			String str=df.format(i);
+			String newCode = "R"+yyMM+str;
+	    	return newCode;
+		}
+		return "R"+yyMM+"0001";
+    }
+}
+

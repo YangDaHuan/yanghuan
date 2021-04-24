@@ -1,0 +1,1 @@
+define("assert/assert",function(){return function(a,b){if(!a)throw b=b||"Assertion failed",new Error(b)}})

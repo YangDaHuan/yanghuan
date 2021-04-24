@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.solidextend.sys.log.dao.LoginLogMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.log.vo.LoginLog">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+		<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+		<result column="IP" property="ip" jdbcType="VARCHAR" />
+		<result column="LOGIN_TIME" property="loginTime" jdbcType="VARCHAR" />
+		<result column="LOGOUT_TIME" property="logoutTime" jdbcType="VARCHAR" />
+		<result column="ORGAN_ID" property="organId" jdbcType="VARCHAR" />
+		<result column="ORGAN_NAME" property="organName" jdbcType="VARCHAR" />
+		<result column="LOGIN_START_TIME" property="loginStartTime"
+			jdbcType="VARCHAR" />
+		<result column="LOGIN_END_TIME" property="loginEndTime"
+			jdbcType="VARCHAR" />
+		<result column="JSESSIONID" property="jsessionid"
+			jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select * from SYS_LOGIN_LOG where ID = #{id,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from SYS_LOGIN_LOG where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.solidextend.sys.log.vo.LoginLog">
+		insert into SYS_LOGIN_LOG
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="userId != null">
+				USER_ID,
+			</if>
+			<if test="userName != null">
+				USER_NAME,
+			</if>
+			<if test="ip != null">
+				IP,
+			</if>
+			<if test="loginTime != null">
+				LOGIN_TIME,
+			</if>
+			<if test="logoutTime != null">
+				LOGOUT_TIME,
+			</if>
+			<if test="organId != null">
+				ORGAN_ID,
+			</if>
+			<if test="jsessionid != null">
+				JSESSIONID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				#{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="loginTime != null">
+				#{loginTime,jdbcType=VARCHAR},
+			</if>
+			<if test="logoutTime != null">
+				#{logoutTime,jdbcType=VARCHAR},
+			</if>
+			<if test="organId != null">
+				#{organId,jdbcType=VARCHAR},
+			</if>
+			<if test="jsessionid != null">
+				#{jsessionid,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateById" parameterType="com.solidextend.sys.log.vo.LoginLog">
+		update SYS_LOGIN_LOG
+		<set>
+			<if test="userId != null">
+				USER_ID = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				USER_NAME = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="ip != null">
+				IP = #{ip,jdbcType=VARCHAR},
+			</if>
+			<if test="loginTime != null">
+				LOGIN_TIME = #{loginTime,jdbcType=VARCHAR},
+			</if>
+			<if test="logoutTime != null">
+				LOGOUT_TIME = #{logoutTime,jdbcType=VARCHAR},
+			</if>
+			<if test="organId != null">
+				ORGAN_ID = #{organId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByJsessionid" parameterType="com.solidextend.sys.log.vo.LoginLog">
+		update SYS_LOGIN_LOG
+		<set>
+			
+			<if test="logoutTime != null">
+				LOGOUT_TIME = #{logoutTime,jdbcType=VARCHAR},
+			</if>
+			
+		</set>
+		where JSESSIONID = #{jsessionid,jdbcType=VARCHAR} and LOGOUT_TIME is null
+	</update>
+	<!-- 查询的字段信息 -->
+	<sql id="log_sql_base">
+		select log.id, log.user_name, log.ip, log.login_time,
+		log.ORGAN_ID,org.organ_name as organName, log.logout_time
+		from
+		SYS_LOGIN_LOG log inner join SYS_ORGAN org on log.organ_id=org.id
+	</sql>
+	<!-- 查询条件 -->
+	<sql id="log_sql_where">
+		where 1=1
+		<if test="ip != null and ip != '' ">
+			and log.IP=#{ip}
+		</if>
+		<if test="userName != null and userName != '' ">
+			and log.user_name like #{userName}
+		</if>
+
+		<if test="loginStartTime != null and loginStartTime != ''">
+			AND log.login_time >= #{loginStartTime,jdbcType=VARCHAR}
+		</if>
+		<if test="loginEndTime!=null and loginEndTime!= '' ">
+      <![CDATA[
+      	AND log.login_time <= #{loginEndTime,jdbcType=VARCHAR}
+      	]]>
+		</if>
+	</sql>
+	<!-- 排序 -->
+	<sql id="log_order">
+		order by log.LOGIN_TIME desc
+	</sql>
+	<!-- 查询记录数 -->
+	<sql id="log_sql_count">
+		select count(1) from SYS_LOGIN_LOG log
+		<include refid="log_sql_where" />
+	</sql>
+	<!-- 分页查询登录日志 -->
+	<select id="searchLog" resultMap="BaseResultMap" parameterType="java.lang.String">
+		<include refid="log_sql_base" />
+		<include refid="log_sql_where" />
+		<include refid="log_order" />
+	</select>
+	<!-- 查询审计登录总数 -->
+	<select id="getTotalCount" resultType="int"
+		parameterType="com.solidextend.sys.log.vo.LoginLog">
+		<include refid="log_sql_count" />
+	</select>
+</mapper>

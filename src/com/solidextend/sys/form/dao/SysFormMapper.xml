@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.form.dao.SysFormMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.form.vo.SysForm">
+        <id column="FORM_ID" jdbcType="VARCHAR" property="formId"/>
+        <result column="FORM_NAME" jdbcType="VARCHAR" property="formName"/>
+        <result column="FORM_TITLE" jdbcType="VARCHAR" property="formTitle"/>
+        <result column="FORM_COLUMN_NUMBER" jdbcType="INTEGER" property="formColumnNumber"/>
+        <result column="DESIGN_ORG" jdbcType="VARCHAR" property="designOrg"/>
+        <result column="DESIGN_USER" jdbcType="VARCHAR" property="designUser"/>
+        <result column="SORTNO" jdbcType="INTEGER" property="sortno"/>
+        <result column="FORM_DESCRIPTION" jdbcType="VARCHAR" property="formDescription"/>
+        <result column="DISABLED" jdbcType="VARCHAR" property="state"/>
+        <result column="CREATE_TIME" jdbcType="DATE" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime"/>
+    </resultMap>
+    <select id="getSysFormById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             sys_form
+        WHERE            
+            FORM_ID = #{formId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllSysForm" resultMap="BaseResultMap">
+          SELECT * FROM sys_form 
+    </select>
+    
+    <select id="findByAttrSysForm" resultMap="BaseResultMap" parameterType="com.solidextend.sys.form.vo.SysForm">
+          SELECT * 
+          FROM 
+          sys_form 
+          WHERE 1=1 
+            <if test="formId != null" >
+                AND FORM_ID = #{formId,jdbcType=VARCHAR}
+            </if>
+            <if test="formName != null" >
+                AND FORM_NAME = #{formName,jdbcType=VARCHAR}
+            </if>
+            <if test="formTitle != null" >
+                AND FORM_TITLE = #{formTitle,jdbcType=VARCHAR}
+            </if>
+            <if test="formColumnNumber != null" >
+                AND FORM_COLUMN_NUMBER = #{formColumnNumber,jdbcType=INTEGER}
+            </if>
+            <if test="designOrg != null" >
+                AND DESIGN_ORG = #{designOrg,jdbcType=VARCHAR}
+            </if>
+            <if test="designUser != null" >
+                AND DESIGN_USER = #{designUser,jdbcType=VARCHAR}
+            </if>
+            <if test="sortno != null" >
+                AND SORTNO = #{sortno,jdbcType=INTEGER}
+            </if>
+            <if test="formDescription != null" >
+                AND FORM_DESCRIPTION = #{formDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="state != null" >
+                AND DISABLED = #{state,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null" >
+                AND CREATE_TIME = #{createTime,jdbcType=DATE}
+            </if>
+            <if test="updateTime != null" >
+                AND UPDATE_TIME = #{updateTime,jdbcType=DATE}
+            </if>
+    </select>
+
+    <delete id="deleteSysForm">
+        DELETE
+        FROM
+             sys_form
+        WHERE            
+            FORM_ID = #{formId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveSysForm" parameterType="com.solidextend.sys.form.vo.SysForm" >
+        INSERT INTO sys_form
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="formId != null" >
+                FORM_ID,
+            </if>
+            <if test="formName != null" >
+                FORM_NAME,
+            </if>
+            <if test="formTitle != null" >
+                FORM_TITLE,
+            </if>
+            <if test="formColumnNumber != null" >
+                FORM_COLUMN_NUMBER,
+            </if>
+            <if test="designOrg != null" >
+                DESIGN_ORG,
+            </if>
+            <if test="designUser != null" >
+                DESIGN_USER,
+            </if>
+            <if test="sortno != null" >
+                SORTNO,
+            </if>
+            <if test="formDescription != null" >
+                FORM_DESCRIPTION,
+            </if>
+            <if test="state != null" >
+                DISABLED,
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME,
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="formId != null" >
+                #{formId,jdbcType=VARCHAR},
+            </if> 
+            <if test="formName != null" >
+                #{formName,jdbcType=VARCHAR},
+            </if> 
+            <if test="formTitle != null" >
+                #{formTitle,jdbcType=VARCHAR},
+            </if> 
+            <if test="formColumnNumber != null" >
+                #{formColumnNumber,jdbcType=INTEGER},
+            </if> 
+            <if test="designOrg != null" >
+                #{designOrg,jdbcType=VARCHAR},
+            </if> 
+            <if test="designUser != null" >
+                #{designUser,jdbcType=VARCHAR},
+            </if> 
+            <if test="sortno != null" >
+                #{sortno,jdbcType=INTEGER},
+            </if> 
+            <if test="formDescription != null" >
+                #{formDescription,jdbcType=VARCHAR},
+            </if> 
+            <if test="state != null" >
+                #{state,jdbcType=VARCHAR},
+            </if> 
+            <if test="createTime != null" >
+                #{createTime,jdbcType=DATE},
+            </if> 
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=DATE},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateSysForm" parameterType="com.solidextend.sys.form.vo.SysForm" >
+        UPDATE sys_form
+        <set>
+            <if test="formId != null" >
+                FORM_ID = #{formId,jdbcType=VARCHAR},
+            </if>
+            <if test="formName != null" >
+                FORM_NAME = #{formName,jdbcType=VARCHAR},
+            </if>
+            <if test="formTitle != null" >
+                FORM_TITLE = #{formTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="formColumnNumber != null" >
+                FORM_COLUMN_NUMBER = #{formColumnNumber,jdbcType=INTEGER},
+            </if>
+            <if test="designOrg != null" >
+                DESIGN_ORG = #{designOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="designUser != null" >
+                DESIGN_USER = #{designUser,jdbcType=VARCHAR},
+            </if>
+            <if test="sortno != null" >
+                SORTNO = #{sortno,jdbcType=INTEGER},
+            </if>
+            <if test="formDescription != null" >
+                FORM_DESCRIPTION = #{formDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null" >
+                DISABLED = #{state,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime,jdbcType=DATE},
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME = #{updateTime,jdbcType=DATE},
+            </if>
+        </set>
+        WHERE 
+            FORM_ID = #{formId,jdbcType=VARCHAR}
+    </update>
+</mapper>

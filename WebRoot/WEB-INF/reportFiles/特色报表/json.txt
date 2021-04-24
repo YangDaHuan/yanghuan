@@ -1,0 +1,52 @@
+[	
+{	"id" : 1000,
+	"content" : "我有个报表需要从JSON格式的文件中取数据，哪位大侠指点一下。",
+	"comment" : 
+	[ 
+		{ 
+			"author" : "joe", 
+			"score" : 3, 
+			"comment" : "润乾集算报表能够连接多种数据源，包括JSON!" 
+		}, 
+		{ 
+			"author" : "jimmy", 
+			"score" : 4, "comment" : "嗯，我用过，生成报表非常方便。" 
+		}, 
+		{ 
+			"author" : "jimmy", 
+			"score" : 5, "comment" : "大致是这样的写法：=file(\"\reportFiles\\特色报表\\json.txt\").read().import@j()" 
+		} 
+	] 
+},
+{	"id" : 1001, 
+	"content" : "天气太冷了！", 
+	"comment" : 
+	[ 
+		{ 
+			"author" : "james", 
+			"score" : 1, 
+			"comment" : "还真是!" },
+		{ 
+			"author": "jimmy", 
+			"score" : 5, 
+			"comment" : "冷死宝宝了!" 
+		} 
+	] 
+},
+{	"id" : 1002, 
+	"content" : "今天多云，几乎看不到蓝天！",
+	"comment" : 
+	[ 
+		{
+			"author" : "tom", 
+			"score" : 3, 
+			"comment" : "不会呀，我这里很好的蓝天!" 
+		},
+		{ 
+			"author" : "jimmy",
+			"score" : 5,
+			"comment" : "你在哪里呀？" 
+		} 
+	] 
+}
+]

@@ -1,0 +1,61 @@
+﻿UNKNOWN_ERROR_TITLE|Unknown error
+UNKNOWN_ERROR|An unknown error occured
+ARCPLAN_SERVER_NOT_AVAILABLE|The arcplan server is not available.
+ARCPLAN_SERVER_EXCEPTION|An exception occured on the server. Please restart.
+CGI_ERROR_TITLE|CGI error
+NETWORK_ERROR_TITLE|Network error
+NETWORK_ERROR|An error occured while contacting the server
+CONFIGURATION_ERROR_TITLE|Configuration error
+PROTOCOL_MISMATCH|Protocol mismatch for the cgi url
+INTERNAL_ERROR_TITLE|Internal error
+INTERNAL_ERROR|An internal error occured
+DATA_ERROR_TITLE|Data error
+READING_SERVER_ANSWER_ERROR|An error occured while reading the server answer
+NO_SESSIONID|The server returned no Session ID
+NOTHML5_USAGE|The usage of the HTML5 client is not allowed by the current license.
+NOHTML5_MOBILEUSAGE|The usage of the HTML5 client on mobile devices is not allowed by the current license.
+NOMOBILE_CLIENT_LICENSE|The usage of mobile devices is not allowed by the current license.
+LICENCE_EXCEEDED|The number of licensed concurrent users has currently been exceeded. Please contact your system administrator.
+LICENCE_EXPIRED|The arcplan license is invalid or has expired.
+SESSION_END|The connection was not used for some time. It was therefore terminated by the server. Please refresh the page.
+WIDGET_OPEN_ANOTHER_DOCUMENT_QUESTION|The application tries to navigate to another document. Do you want to open that document in a new window?
+LICENCE_ERROR_TITLE|License error
+NOT_IMPLEMENTED_TITLE|Not yet implemented
+INFORMATION_TITLE|Information
+INFORMATION_TEXT|This is an informational text.
+SERVER_ERROR_TITLE|Server error
+SERVER_MESSAGE_TITLE|Server message
+NOTIMPLEMENTED_UNSERINFOSTYPE|The Server sent an answer of a not implemented type:<br> {0}, {1}
+COMPATIBILITY_WARNING|Internet Explorer 9 mode is needed
+COMPATIBILITY_WARNING_TITLE|Compatibility Warning
+CLIENT|Client
+WINDOWS_USER|Windows User
+ARCPLAN_USER|arcplan User
+USERNAME|User name
+PASSWORD|Password
+KEEP_LOGGEDIN|Keep me logged in
+OK|Ok
+CANCEL|Cancel
+YES|Yes
+NO|No
+LANGUAGE|Language
+LOGIN|Login
+USER_LOGIN|User Login
+UPLOAD_TITLE|Upload File
+UPLOAD_SELECT_FILE|Please select file to upload: 
+UPLOAD_IN_PROGRESS|Upload in progress... 
+UPLOAD_BROWSE|Browse...
+OPENLINK_TITLE|Do you want to open this link in a new window?
+OPENLINK_ALL_TITLE|Do you want to open all links in a separate new window?
+OPEN|Open
+DATA_ERROR_NO_BODY|Data Error. The request contains no Data.
+FILE_UPLOAD_FAILED|File upload failed
+SHOW_DETAILS|Show details
+PASSWORDNOTSAVED|The password could not be saved.
+NOT_FOR_PR_USAGE|NOT FOR PRODUCTION USAGE
+LICENSEDFOR|Licensed Products
+LICENSEOWNER|License Owner: 
+EVALUATIONVERSION|Evaluation License
+PARTNERVERSION|Partner License
+TESTORBACKUPVERSION|Test / Backup License
+ARCPLAN_MEMORY_OVERLOAD|The session was canceled because the memory consumption was too high.

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.ticket.dao.BizTicketStockMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.ticket.vo.BizTicketStock">
+        <id column="STOCK_ID" jdbcType="VARCHAR" property="stockId"/>
+        <result column="STOCK_ORG" jdbcType="VARCHAR" property="stockOrg"/>
+        <result column="TICKET_TYPE_ID" jdbcType="VARCHAR" property="ticketTypeId"/>
+        <result column="TICKET_STATE_ID" jdbcType="VARCHAR" property="ticketStateId"/>
+        <result column="TICKET_NUMBER" jdbcType="INTEGER" property="ticketNumber"/>
+        <result column="TICKET_MONEY" jdbcType="REAL" property="ticketMoney"/>
+        <result column="STOCK_UPDATE_DATE" jdbcType="DATE" property="stockUpdateDate"/>
+    </resultMap>
+    
+   <!--  public String getId(); -->
+    
+    <select id="BizTicketStock" resultMap="BaseResultMap">
+    	select * from BIZ_TICKET_STOCK 
+    	where 1=1 
+    	 <if test="stockOrg != null and stockOrg != ''" >
+                AND STOCK_ORG = #{stockOrg,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketTypeId != null and ticketTypeId != ''" >
+                AND TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketStateId != null and ticketStateId != ''" >
+                AND TICKET_STATE_ID = #{ticketStateId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketMoney != null and ticketMoney != ''" >
+                AND TICKET_MONEY = #{ticketMoney,jdbcType=REAL}
+            </if>
+    
+    	
+    </select>
+    
+    <select id="getBizTicketStockById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_ticket_stock
+        WHERE            
+            STOCK_ID = #{stockId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizTicketStock" resultMap="BaseResultMap">
+          SELECT * FROM biz_ticket_stock 
+    </select>
+    
+    <select id="findByAttrBizTicketStock" resultMap="BaseResultMap" parameterType="com.solidextend.sys.ticket.vo.BizTicketStock">
+          SELECT * 
+          FROM 
+          biz_ticket_stock 
+          WHERE 1=1 
+            <if test="stockId != null and stockId != ''" >
+                AND STOCK_ID = #{stockId,jdbcType=VARCHAR}
+            </if>
+            <if test="stockOrg != null and stockOrg != ''" >
+                AND STOCK_ORG = #{stockOrg,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketTypeId != null and ticketTypeId != ''" >
+                AND TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketStateId != null and ticketStateId != ''" >
+                AND TICKET_STATE_ID = #{ticketStateId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketNumber != null and ticketNumber != ''" >
+                AND TICKET_NUMBER = #{ticketNumber,jdbcType=INTEGER}
+            </if>
+            <if test="ticketMoney != null and ticketMoney != ''" >
+                AND TICKET_MONEY = #{ticketMoney,jdbcType=REAL}
+            </if>
+            <if test="stockUpdateDate != null and stockUpdateDate != ''" >
+                AND STOCK_UPDATE_DATE = #{stockUpdateDate,jdbcType=DATE}
+            </if>
+    </select>
+
+    <delete id="deleteBizTicketStock">
+        DELETE
+        FROM
+             biz_ticket_stock
+        WHERE 
+            STOCK_ID = #{stockId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizTicketStock" parameterType="com.solidextend.sys.ticket.vo.BizTicketStock" >
+        INSERT INTO biz_ticket_stock
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="stockId != null" >
+                STOCK_ID,
+            </if>
+            <if test="stockOrg != null" >
+                STOCK_ORG,
+            </if>
+            <if test="ticketTypeId != null" >
+                TICKET_TYPE_ID,
+            </if>
+            <if test="ticketStateId != null" >
+                TICKET_STATE_ID,
+            </if>
+            <if test="ticketNumber != null" >
+                TICKET_NUMBER,
+            </if>
+            <if test="ticketMoney != null" >
+                TICKET_MONEY,
+            </if>
+            <if test="stockUpdateDate != null" >
+                STOCK_UPDATE_DATE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="stockId != null" >
+                #{stockId,jdbcType=VARCHAR},
+            </if> 
+            <if test="stockOrg != null" >
+                #{stockOrg,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketTypeId != null" >
+                #{ticketTypeId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketStateId != null" >
+                #{ticketStateId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketNumber != null" >
+                #{ticketNumber,jdbcType=INTEGER},
+            </if> 
+            <if test="ticketMoney != null" >
+                #{ticketMoney,jdbcType=REAL},
+            </if> 
+            <if test="stockUpdateDate != null" >
+                #{stockUpdateDate,jdbcType=DATE},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizTicketStock" parameterType="com.solidextend.sys.ticket.vo.BizTicketStock" >
+        UPDATE biz_ticket_stock
+        <set>
+            <if test="stockId != null" >
+                STOCK_ID = #{stockId,jdbcType=VARCHAR},
+            </if>
+            <if test="stockOrg != null" >
+                STOCK_ORG = #{stockOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketTypeId != null" >
+                TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketStateId != null" >
+                TICKET_STATE_ID = #{ticketStateId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketNumber != null" >
+                TICKET_NUMBER = #{ticketNumber,jdbcType=INTEGER},
+            </if>
+            <if test="ticketMoney != null" >
+                TICKET_MONEY = #{ticketMoney,jdbcType=REAL},
+            </if>
+            <if test="stockUpdateDate != null" >
+                STOCK_UPDATE_DATE = #{stockUpdateDate,jdbcType=DATE},
+            </if>
+        </set>
+        WHERE 
+            STOCK_ID = #{stockId,jdbcType=VARCHAR}
+    </update>
+</mapper>

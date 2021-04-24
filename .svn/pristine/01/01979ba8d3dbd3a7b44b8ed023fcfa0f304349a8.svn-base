@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.dict.dao.DictMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.dict.vo.Dict">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="DICT_CODE" jdbcType="VARCHAR" property="dictCode" />
+		<result column="DICT_NAME" jdbcType="OTHER" property="dictName" />
+		<result column="REMARK" jdbcType="OTHER" property="remark" />
+		<result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+		<result column="ORDER_NO" jdbcType="DECIMAL" property="orderNo" />
+		<result column="DICT_TYPE" jdbcType="VARCHAR" property="dictType" />
+		<result column="DELETED" jdbcType="VARCHAR" property="deleted" />
+	</resultMap>
+	<select id="getById" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from SYS_DICT where ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findDict" parameterType="com.solidextend.sys.dict.vo.Dict"
+		resultMap="BaseResultMap">
+		select * from SYS_DICT
+		<where>
+			<if test="id != null">
+				AND ID = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="dictCode != null">
+				AND DICT_CODE = #{dictCode,jdbcType=VARCHAR}
+			</if>
+			<if test="dictName != null">
+				AND DICT_NAME = #{dictName,jdbcType=OTHER}
+			</if>
+			<if test="parentId != null">
+				AND PARENT_ID = #{parentId,jdbcType=VARCHAR}
+			</if>
+			<if test="orderNo != null">
+				AND ORDER_NO = #{orderNo,jdbcType=DECIMAL}
+			</if>
+			<if test="dictType != null">
+				AND DICT_TYPE = #{dictType,jdbcType=VARCHAR}
+			</if>
+			<if test="deleted != null">
+				AND DELETED = #{deleted,jdbcType=VARCHAR}
+			</if>
+			AND DELETED = '0'
+		</where>
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from SYS_DICT where ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.solidextend.sys.dict.vo.Dict">
+		insert into SYS_DICT
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="dictCode != null">
+				DICT_CODE,
+			</if>
+			<if test="dictName != null">
+				DICT_NAME,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+			<if test="parentId != null">
+				PARENT_ID,
+			</if>
+			<if test="orderNo != null">
+				ORDER_NO,
+			</if>
+			<if test="dictType != null">
+				DICT_TYPE,
+			</if>
+			<if test="deleted != null">
+				DELETED,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="dictCode != null">
+				#{dictCode,jdbcType=VARCHAR},
+			</if>
+			<if test="dictName != null">
+				#{dictName,jdbcType=OTHER},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=OTHER},
+			</if>
+			<if test="parentId != null">
+				#{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null">
+				#{orderNo,jdbcType=DECIMAL},
+			</if>
+			<if test="dictType != null">
+				#{dictType,jdbcType=VARCHAR},
+			</if>
+			<if test="deleted != null">
+				#{deleted,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateById" parameterType="com.solidextend.sys.dict.vo.Dict">
+		update SYS_DICT
+		<set>
+			<if test="dictCode != null">
+				DICT_CODE = #{dictCode,jdbcType=VARCHAR},
+			</if>
+			<if test="dictName != null">
+				DICT_NAME = #{dictName,jdbcType=OTHER},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark,jdbcType=OTHER},
+			</if>
+			<if test="parentId != null">
+				PARENT_ID = #{parentId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderNo != null">
+				ORDER_NO = #{orderNo,jdbcType=DECIMAL},
+			</if>
+			<if test="dictType != null">
+				DICT_TYPE = #{dictType,jdbcType=VARCHAR},
+			</if>
+			<if test="deleted != null">
+				DELETED = #{deleted,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ID = #{id,jdbcType=VARCHAR}
+	</update>
+</mapper>

@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.ticket.dao.BizTicketDeployMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.ticket.vo.BizTicketDeploy">
+		<id column="DEPLOY_ID" jdbcType="VARCHAR" property="deployId" />
+		<result column="DEPLOY_CODE" jdbcType="VARCHAR" property="deployCode" />
+		<result column="APPLY_CODE" jdbcType="VARCHAR" property="applyCode" />
+		<result column="DEPOLY_STATE" jdbcType="INTEGER" property="depolyState" />
+		<result column="DEPOLY_ORG" jdbcType="VARCHAR" property="depolyOrg" />
+		<result column="DEPOLY_CONTACTS" jdbcType="VARCHAR" property="depolyContacts" />
+		<result column="DEPOLY_PHONE" jdbcType="VARCHAR" property="depolyPhone" />
+		<result column="FROM_ORG" jdbcType="VARCHAR" property="fromOrg" />
+		<result column="FROM_CONTACTS" jdbcType="VARCHAR" property="fromContacts" />
+		<result column="FROM_PHONE" jdbcType="VARCHAR" property="fromPhone" />
+		<result column="TO_ORG" jdbcType="VARCHAR" property="toOrg" />
+		<result column="TO_CONTACTS" jdbcType="VARCHAR" property="toContacts" />
+		<result column="TO_PHONE" jdbcType="VARCHAR" property="toPhone" />
+		<result column="DEPOLY_DATE" jdbcType="DATE" property="depolyDate" />
+		<result column="DESIGN_USER" jdbcType="VARCHAR" property="designUser" />
+		<result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+		<result column="CREATE_TIME" jdbcType="DATE" property="createTime" />
+		<result column="UPDATE_TIME" jdbcType="DATE" property="updateTime" />
+		<collection column="DEPOLY_DETAIL_ID" property="details"
+			javaType="ArrayList" ofType="com.solidextend.sys.ticket.vo.BizTicketDeployDetail">
+			<id column="DEPOLY_DETAIL_ID" jdbcType="VARCHAR" property="depolyDetailId" />
+			<result column="TICKET_TYPE_ID" jdbcType="VARCHAR" property="ticketTypeId" />
+			<result column="TICKET_STATE_ID" jdbcType="VARCHAR" property="ticketStateId" />
+			<result column="DEPLOY_ID" jdbcType="VARCHAR" property="deployId" />
+			<result column="TICKET_NUMBER" jdbcType="INTEGER" property="ticketNumber" />
+			<result column="TICKET_MONEY" jdbcType="REAL" property="ticketMoney" />
+		</collection>
+	</resultMap>
+
+	<!-- getMaxBizTicketDeployCode -->
+	<select id="findByAttrBizTicketDeployAndApply" resultMap="BaseResultMap">
+		SELECT
+			btd.DEPLOY_CODE,btd.FROM_ORG,btd.TO_ORG,btdd.TICKET_TYPE_ID,btdd.TICKET_STATE_ID,btdd.TICKET_NUMBER,btdd.TICKET_MONEY
+		FROM
+		biz_ticket_deploy btd
+		LEFT JOIN biz_ticket_depoly_detail btdd ON btd.DEPLOY_ID = btdd.DEPLOY_ID
+		WHERE 1=1
+		<if test="bizTicketDeploy.depolyState != null and bizTicketDeploy.depolyState != ''">
+			AND btd.DEPOLY_STATE = #{bizTicketDeploy.depolyState,jdbcType=INTEGER}
+		</if>
+		<if test="bizTicketDeploy.fromOrg != null and bizTicketDeploy.fromOrg != ''">
+			AND btd.FROM_ORG = #{bizTicketDeploy.fromOrg,jdbcType=VARCHAR}
+		</if>
+		<if test="bizTicketDeploy.deployCode != null and bizTicketDeploy.deployCode != ''">
+			AND btd.DEPOLY_CODE = #{bizTicketDeploy.deployCode ,jdbcType=VARCHAR}
+		</if>
+		UNION
+		SELECT
+			biz_ticket_apply.APPLY_CODE DEPLOY_CODE,
+			biz_ticket_apply.APPLY_ORG FROM_ORG,
+			biz_ticket_apply.TO_ORG TO_ORG,
+			biz_ticket_apply_detail.TICKET_TYPE_ID,
+			biz_ticket_apply_detail.TICKET_STATE_ID,
+			biz_ticket_apply_detail.TICKET_NUMBER,
+			biz_ticket_apply_detail.TICKET_MONEY
+		FROM
+		biz_ticket_apply,
+		biz_ticket_apply_detail
+		WHERE 1=1
+			and biz_ticket_apply.apply_id = biz_ticket_apply_detail.apply_id
+			AND biz_ticket_apply.APPLY_TYPE = 2
+		<if test="auditingState != null and auditingState != ''">
+			AND biz_ticket_apply.AUDITING_STATE = #{auditingState,jdbcType=INTEGER}
+		</if>
+		<if test="bizTicketDeploy.fromOrg != null and bizTicketDeploy.fromOrg != ''">
+			AND biz_ticket_apply.TO_ORG = #{bizTicketDeploy.fromOrg,jdbcType=VARCHAR}
+		</if>
+		<if test="bizTicketDeploy.deployCode != null and bizTicketDeploy.deployCode != ''">
+			AND biz_ticket_apply.apply_code = #{bizTicketDeploy.deployCode ,jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="getMaxBizTicketDeployCode" resultType="java.lang.String">
+		select max(DEPLOY_CODE)
+		from biz_ticket_deploy
+	</select>
+
+	<select id="getBizTicketDeployById" resultMap="BaseResultMap">
+		SELECT
+		*
+		FROM
+		biz_ticket_deploy btd left join biz_ticket_depoly_detail btdd on
+		btd.DEPLOY_ID=btdd.DEPLOY_ID
+		WHERE
+		DEPLOY_ID = #{deployId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAllBizTicketDeploy" resultMap="BaseResultMap">
+		SELECT * FROM biz_ticket_deploy btd left join biz_ticket_depoly_detail btdd
+		on btd.DEPLOY_ID=btdd.DEPLOY_ID
+	</select>
+
+	<select id="findByAttrBizTicketDeploy" resultMap="BaseResultMap"
+		parameterType="com.solidextend.sys.ticket.vo.BizTicketDeploy">
+		SELECT *
+		FROM
+		biz_ticket_deploy btd left join biz_ticket_depoly_detail btdd on
+		btd.DEPLOY_ID=btdd.DEPLOY_ID
+		WHERE 1=1
+		<if test="deployId != null and deployId != ''">
+			AND btd.DEPLOY_ID = #{deployId,jdbcType=VARCHAR}
+		</if>
+		<if test="deployCode != null and deployCode != ''">
+			AND btd.DEPLOY_CODE = #{deployCode,jdbcType=VARCHAR}
+		</if>
+		<if test="applyCode != null and applyCode != ''">
+			AND btd.APPLY_CODE = #{applyCode,jdbcType=VARCHAR}
+		</if>
+		<if test="depolyState != null and depolyState != ''">
+			AND btd.DEPOLY_STATE = #{depolyState,jdbcType=INTEGER}
+		</if>
+		<if test="depolyOrg != null and depolyOrg != ''">
+			AND btd.DEPOLY_ORG = #{depolyOrg,jdbcType=VARCHAR}
+		</if>
+		<if test="depolyContacts != null and depolyContacts != ''">
+			AND btd.DEPOLY_CONTACTS = #{depolyContacts,jdbcType=VARCHAR}
+		</if>
+		<if test="depolyPhone != null and depolyPhone != ''">
+			AND btd.DEPOLY_PHONE = #{depolyPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="fromOrg != null and fromOrg != ''">
+			AND btd.FROM_ORG = #{fromOrg,jdbcType=VARCHAR}
+		</if>
+		<if test="fromContacts != null and fromContacts != ''">
+			AND btd.FROM_CONTACTS = #{fromContacts,jdbcType=VARCHAR}
+		</if>
+		<if test="fromPhone != null and fromPhone != ''">
+			AND btd.FROM_PHONE = #{fromPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="toOrg != null and toOrg != ''">
+			AND btd.TO_ORG = #{toOrg,jdbcType=VARCHAR}
+		</if>
+		<if test="toContacts != null and toContacts != ''">
+			AND btd.TO_CONTACTS = #{toContacts,jdbcType=VARCHAR}
+		</if>
+		<if test="toPhone != null and toPhone != ''">
+			AND btd.TO_PHONE = #{toPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="depolyDate != null and depolyDate != ''">
+			AND btd.DEPOLY_DATE = #{depolyDate,jdbcType=DATE}
+		</if>
+		<if test="designUser != null and designUser != ''">
+			AND btd.DESIGN_USER = #{designUser,jdbcType=VARCHAR}
+		</if>
+		<if test="description != null and description != ''">
+			AND btd.DESCRIPTION = #{description,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND btd.CREATE_TIME = #{createTime,jdbcType=DATE}
+		</if>
+		<if test="updateTime != null and updateTime != ''">
+			AND btd.UPDATE_TIME = #{updateTime,jdbcType=DATE}
+		</if>
+	</select>
+	<select id="findByAboutBizTicketDeploy" resultMap="BaseResultMap"
+		parameterType="com.solidextend.sys.ticket.vo.BizTicketDeploy">
+		SELECT *
+		FROM
+		biz_ticket_deploy btd left join biz_ticket_depoly_detail btdd on
+		btd.DEPLOY_ID=btdd.DEPLOY_ID
+		WHERE 1=1
+		<if test="deployId != null and deployId != ''">
+			AND btd.DEPLOY_ID = #{deployId,jdbcType=VARCHAR}
+		</if>
+		<if test="deployCode != null and deployCode != ''">
+			AND btd.DEPLOY_CODE = #{deployCode,jdbcType=VARCHAR}
+		</if>
+		<if test="applyCode != null and applyCode != ''">
+			AND btd.APPLY_CODE = #{applyCode,jdbcType=VARCHAR}
+		</if>
+		<if test="depolyState != null and depolyState != ''">
+			AND btd.DEPOLY_STATE = #{depolyState,jdbcType=INTEGER}
+		</if>
+		<if test="depolyOrg != null and depolyOrg != ''">
+			AND (btd.DEPOLY_ORG = #{depolyOrg,jdbcType=VARCHAR}
+			or btd.TO_ORG = #{depolyOrg,jdbcType=VARCHAR}
+			or btd.FROM_ORG = #{depolyOrg,jdbcType=VARCHAR}
+			)
+		</if>
+		<if test="depolyContacts != null and depolyContacts != ''">
+			AND btd.DEPOLY_CONTACTS = #{depolyContacts,jdbcType=VARCHAR}
+		</if>
+		<if test="depolyPhone != null and depolyPhone != ''">
+			AND btd.DEPOLY_PHONE = #{depolyPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="fromOrg != null and fromOrg != ''">
+			AND btd.FROM_ORG = #{fromOrg,jdbcType=VARCHAR}
+		</if>
+		<if test="fromContacts != null and fromContacts != ''">
+			AND btd.FROM_CONTACTS = #{fromContacts,jdbcType=VARCHAR}
+		</if>
+		<if test="fromPhone != null and fromPhone != ''">
+			AND btd.FROM_PHONE = #{fromPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="toOrg != null and toOrg != ''">
+			AND btd.TO_ORG = #{toOrg,jdbcType=VARCHAR}
+		</if>
+		<if test="toContacts != null and toContacts != ''">
+			AND btd.TO_CONTACTS = #{toContacts,jdbcType=VARCHAR}
+		</if>
+		<if test="toPhone != null and toPhone != ''">
+			AND btd.TO_PHONE = #{toPhone,jdbcType=VARCHAR}
+		</if>
+		<if test="depolyDate != null and depolyDate != ''">
+			AND btd.DEPOLY_DATE = #{depolyDate,jdbcType=DATE}
+		</if>
+		<if test="designUser != null and designUser != ''">
+			AND btd.DESIGN_USER = #{designUser,jdbcType=VARCHAR}
+		</if>
+		<if test="description != null and description != ''">
+			AND btd.DESCRIPTION = #{description,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			AND btd.CREATE_TIME = #{createTime,jdbcType=DATE}
+		</if>
+		<if test="updateTime != null and updateTime != ''">
+			AND btd.UPDATE_TIME = #{updateTime,jdbcType=DATE}
+		</if>
+	</select>
+	<delete id="deleteBizTicketDeploy">
+		DELETE
+		FROM
+		biz_ticket_deploy
+		WHERE
+		DEPLOY_ID = #{deployId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="saveBizTicketDeploy" parameterType="com.solidextend.sys.ticket.vo.BizTicketDeploy">
+		INSERT INTO biz_ticket_deploy
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="deployId != null">
+				DEPLOY_ID,
+			</if>
+			<if test="deployCode != null">
+				DEPLOY_CODE,
+			</if>
+			<if test="applyCode != null">
+				APPLY_CODE,
+			</if>
+			<if test="depolyState != null">
+				DEPOLY_STATE,
+			</if>
+			<if test="depolyOrg != null">
+				DEPOLY_ORG,
+			</if>
+			<if test="depolyContacts != null">
+				DEPOLY_CONTACTS,
+			</if>
+			<if test="depolyPhone != null">
+				DEPOLY_PHONE,
+			</if>
+			<if test="fromOrg != null">
+				FROM_ORG,
+			</if>
+			<if test="fromContacts != null">
+				FROM_CONTACTS,
+			</if>
+			<if test="fromPhone != null">
+				FROM_PHONE,
+			</if>
+			<if test="toOrg != null">
+				TO_ORG,
+			</if>
+			<if test="toContacts != null">
+				TO_CONTACTS,
+			</if>
+			<if test="toPhone != null">
+				TO_PHONE,
+			</if>
+			<if test="depolyDate != null">
+				DEPOLY_DATE,
+			</if>
+			<if test="designUser != null">
+				DESIGN_USER,
+			</if>
+			<if test="description != null">
+				DESCRIPTION,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="deployId != null">
+				#{deployId,jdbcType=VARCHAR},
+			</if>
+			<if test="deployCode != null">
+				#{deployCode,jdbcType=VARCHAR},
+			</if>
+			<if test="applyCode != null">
+				#{applyCode,jdbcType=VARCHAR},
+			</if>
+			<if test="depolyState != null">
+				#{depolyState,jdbcType=INTEGER},
+			</if>
+			<if test="depolyOrg != null">
+				#{depolyOrg,jdbcType=VARCHAR},
+			</if>
+			<if test="depolyContacts != null">
+				#{depolyContacts,jdbcType=VARCHAR},
+			</if>
+			<if test="depolyPhone != null">
+				#{depolyPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="fromOrg != null">
+				#{fromOrg,jdbcType=VARCHAR},
+			</if>
+			<if test="fromContacts != null">
+				#{fromContacts,jdbcType=VARCHAR},
+			</if>
+			<if test="fromPhone != null">
+				#{fromPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="toOrg != null">
+				#{toOrg,jdbcType=VARCHAR},
+			</if>
+			<if test="toContacts != null">
+				#{toContacts,jdbcType=VARCHAR},
+			</if>
+			<if test="toPhone != null">
+				#{toPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="depolyDate != null">
+				#{depolyDate,jdbcType=DATE},
+			</if>
+			<if test="designUser != null">
+				#{designUser,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				#{description,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=DATE},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=DATE},
+			</if>
+		</trim>
+	</insert>
+
+	<!-- public int updateBizTicketStateDeployByCode(@Param("deployCode") String 
+		deployCode); -->
+	<update id="updateBizTicketStateDeployByCode">
+		UPDATE biz_ticket_deploy
+		set
+		DEPOLY_STATE = #{deployState}
+		WHERE
+		DEPLOY_CODE = #{deployCode}
+	</update>
+
+	<update id="updateBizTicketDeploy" parameterType="com.solidextend.sys.ticket.vo.BizTicketDeploy">
+		UPDATE biz_ticket_deploy
+		<set>
+			<if test="deployId != null">
+				DEPLOY_ID = #{deployId,jdbcType=VARCHAR},
+			</if>
+			<if test="deployCode != null">
+				DEPLOY_CODE = #{deployCode,jdbcType=VARCHAR},
+			</if>
+			<if test="applyCode != null">
+				APPLY_CODE = #{applyCode,jdbcType=VARCHAR},
+			</if>
+			<if test="depolyState != null">
+				DEPOLY_STATE = #{depolyState,jdbcType=INTEGER},
+			</if>
+			<if test="depolyOrg != null">
+				DEPOLY_ORG = #{depolyOrg,jdbcType=VARCHAR},
+			</if>
+			<if test="depolyContacts != null">
+				DEPOLY_CONTACTS = #{depolyContacts,jdbcType=VARCHAR},
+			</if>
+			<if test="depolyPhone != null">
+				DEPOLY_PHONE = #{depolyPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="fromOrg != null">
+				FROM_ORG = #{fromOrg,jdbcType=VARCHAR},
+			</if>
+			<if test="fromContacts != null">
+				FROM_CONTACTS = #{fromContacts,jdbcType=VARCHAR},
+			</if>
+			<if test="fromPhone != null">
+				FROM_PHONE = #{fromPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="toOrg != null">
+				TO_ORG = #{toOrg,jdbcType=VARCHAR},
+			</if>
+			<if test="toContacts != null">
+				TO_CONTACTS = #{toContacts,jdbcType=VARCHAR},
+			</if>
+			<if test="toPhone != null">
+				TO_PHONE = #{toPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="depolyDate != null">
+				DEPOLY_DATE = #{depolyDate,jdbcType=DATE},
+			</if>
+			<if test="designUser != null">
+				DESIGN_USER = #{designUser,jdbcType=VARCHAR},
+			</if>
+			<if test="description != null">
+				DESCRIPTION = #{description,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=DATE},
+			</if>
+			<if test="updateTime != null">
+				UPDATE_TIME = #{updateTime,jdbcType=DATE},
+			</if>
+		</set>
+		WHERE
+		DEPLOY_ID = #{deployId,jdbcType=VARCHAR}
+	</update>
+</mapper>

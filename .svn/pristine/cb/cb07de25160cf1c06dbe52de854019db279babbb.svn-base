@@ -1,0 +1,591 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<jsp:include page="../common.jsp" />
+<script type="text/javascript">
+
+function addRow(){
+var index=$("#dataTable").datagrid("appendRow",{}).datagrid('getRows').length-1;
+$("#dataTable").datagrid("beginEdit",index);
+}
+
+
+function deleteRows(){
+	var rows=$("#dataTable").datagrid("getChecked");
+	if(rows.length<1){
+		$.messager.alert("错误","至少选择一条记录删除!","error");
+	}else{
+		for(var i=0;i<rows.length;i++){
+			var index=$("#dataTable").datagrid("getRowIndex",rows[i]);
+			$("#dataTable").datagrid("deleteRow",index);
+			}
+	}
+	
+	
+}
+var ticketTypes;
+function getTicketTypes(){
+
+	if(ticketTypes==null){
+		$.ajax({ 
+
+        	type: "post", 
+
+       		url:'ticket/findByAttrBizTicketType.zb', 
+
+       		cache:false, 
+
+       		async:false, 
+
+        	dataType: 'json', 
+
+         	success: function(data){ 
+				ticketTypes=data.extData;
+				
+        	} 
+
+		});
+		return ticketTypes;
+	}else{
+		return ticketTypes;
+	}
+}
+var ticketStates; 
+function getTicketStates(){
+	if(ticketStates==null){
+		$.ajax({ 
+
+        	type: "post", 
+
+       		url:'ticket/findByAttrBizTicketState.zb', 
+
+       		cache:false, 
+
+       		async:false, 
+
+        	dataType: 'json', 
+
+         	success: function(data){ 
+				ticketStates=data.extData;
+				
+        	} 
+
+		});
+		return ticketStates;
+	}else{
+		return ticketStates;
+	}
+}
+$.fn.serializeObject = function()    
+{    
+   var o = {};    
+   var a = this.serializeArray();    
+   $.each(a, function() {    
+       if (o[this.name]) {    
+           if (!o[this.name].push) {    
+               o[this.name] = [o[this.name]];    
+           }    
+           o[this.name].push(this.value || '');    
+       } else {    
+           o[this.name] = this.value || '';    
+       }    
+   });    
+   return o;    
+};  
+function submitApply(){
+var isValid =$("#dataForm").form("validate");
+	if(!isValid){
+		$.messager.alert("错误","请填写合法的数据!","error");
+		return;
+	}
+var ticketApplydata=$("#dataForm").serializeObject();
+var rows=$("#dataTable").datagrid("getRows");
+	for(var i=0;i<rows.length;i++){
+		var index=$("#dataTable").datagrid("getRowIndex",rows[i]);
+		var isValid = $("#dataTable").datagrid("validateRow",index);
+		if(!isValid){
+			$.messager.alert("错误","请填写合法的数据!","error");
+			return;
+		}
+		$("#dataTable").datagrid("endEdit",index);
+	}
+ticketApplydata.details=	$("#dataTable").datagrid("getData").rows;
+var jsonStr=JSON.stringify(ticketApplydata);
+console.log(jsonStr);	
+$.post("ticket/saveBizTicketDeploy.zb",{jsonStr:jsonStr},function(data){
+			if(data.success){
+				$.messager.alert("信息","提交成功!","info");
+				$("#dataForm").form("clear");
+				$("#dataTable").datagrid("loadData",[]);
+			}else{
+				$.messager.alert("错误","提交时出现系统错误!","error");
+				var rows=$("#dataTable").datagrid("getRows");
+				for(var i=0;i<rows.length;i++){
+					var index=$("#dataTable").datagrid("getRowIndex",rows[i]);
+					$("#dataTable").datagrid("beginEdit",index);
+				}
+			}
+			$.messager.progress("close");
+		},"json");	
+
+}
+function typeFormatter(value, row, index) {
+	for(var i=0;i<ticketTypes.length;i++){
+		if(value==ticketTypes[i].ticketTypeId)return ticketTypes[i].ticketTypeName;
+	}
+}
+function stateFormatter(value, row, index) {
+	for(var i=0;i<ticketStates.length;i++){
+		if(value==ticketStates[i].ticketStateId)return ticketStates[i].ticketStateName;
+	}
+}
+function importData(){
+var applyCode=$("#applyCode").textbox("getValue");
+var auditingState = 3;
+if(applyCode==null||applyCode==""){
+	alert("请输入申请单号");
+}else{
+$.post("ticket/findByAttrBizTicketApply.zb",{"applyCode":applyCode,"auditingState":auditingState},function(data){
+			if(data.success){
+				var row=data.extData[0];
+				var formdata={};
+				formdata.depolyOrg=row.toOrg;
+				if(row.applyType==1){
+					formdata.toOrg=row.applyOrg;
+					formdata.toContacts=row.applyContacts;
+					formdata.toPhone=row.applyPhone;
+				}else{
+					formdata.fromOrg=row.applyOrg;
+					formdata.fromContacts=row.applyContacts;
+					formdata.fromPhone=row.applyPhone;
+				}
+				
+				
+				$("#dataForm").form("load",formdata);
+				//console.log(JSON.stringify(row));
+				var details=new Array();
+				for(var i=0;i<row.details.length;i++){
+					var detail={};
+					detail.ticketTypeId=row.details[i].ticketTypeId;
+					detail.ticketStateId=row.details[i].ticketStateId;
+					detail.ticketNumber=row.details[i].ticketNumber;
+					detail.ticketMoney=row.details[i].ticketMoney;
+					
+					details.push(detail);
+				}
+				$("#dataTable").datagrid("loadData",details);
+				var rows=$("#dataTable").datagrid("getRows");
+				for(var i=0;i<rows.length;i++){
+					var index=$("#dataTable").datagrid("getRowIndex",rows[i]);
+					$("#dataTable").datagrid("beginEdit",index);
+				}
+			}else{
+				$.messager.alert("错误","查询时出现系统错误!","error");
+			}
+			$.messager.progress("close");
+		},"json");
+	}
+}
+
+/* (function(){  
+    $.fn.combotree.defaults.editable = true;  
+    $.extend($.fn.combotree.defaults.keyHandler,{  
+        up:function(){  
+            console.log('up');  
+        },  
+        down:function(){  
+            console.log('down');  
+        },  
+        enter:function(){  
+            console.log('enter');  
+        },  
+        query:function(q){  
+            var t = $(this).combotree('tree');  
+            var nodes = t.tree('getChildren');  
+            for(var i=0; i<nodes.length; i++){  
+                var node = nodes[i];  
+                if (node.text.indexOf(q) >= 0){  
+                    $(node.target).show();  
+                } else {  
+                    $(node.target).hide();  
+                }  
+            }  
+            var opts = $(this).combotree('options');  
+            if (!opts.hasSetEvents){  
+                opts.hasSetEvents = true;  
+                var onShowPanel = opts.onShowPanel;  
+                opts.onShowPanel = function(){  
+                    var nodes = t.tree('getChildren');  
+                    for(var i=0; i<nodes.length; i++){  
+                        $(nodes[i].target).show();  
+                    }  
+                    onShowPanel.call(this);  
+                };  
+                $(this).combo('options').onShowPanel = opts.onShowPanel;  
+            }  
+        }  
+    });  
+})(jQuery); */
+(function ($) {
+	$.fn.combobox.defaults.editable = true;  
+    $.fn.combobox.defaults.filter = function(q, row){  
+        var opts = $(this).combobox('options');  
+        return row[opts.textField].indexOf(q) >= 0;  
+    };
+	 //combotree可编辑，自定义模糊查询 
+	 $.fn.combotree.defaults.editable = true;
+	 $.extend($.fn.combotree.defaults.keyHandler, {
+	 query: function (q) {
+	  var t = $(this).combotree('tree');
+	  t.tree("search", q);
+	 }
+	 });
+	 $.extend($.fn.tree.methods, {  /** 
+	  * 扩展easyui tree的搜索方法 
+	  * @param tree easyui tree的根DOM节点(UL节点)的jQuery对象  * @param searchText 检索的文本 
+	  * @param this-context easyui tree的tree对象  */
+	 search: function (jqTree, searchText) {
+	  //easyui tree的tree对象。可以通过tree.methodName(jqTree)方式调用easyui tree的方法 
+	  var tree = this;
+	  //获取所有的树节点 
+	  var nodeList = getAllNodes(jqTree, tree);
+	  //如果没有搜索条件，则展示所有树节点 
+	  searchText = $.trim(searchText);
+	  if (searchText == "") {
+	  for (var i = 0; i < nodeList.length; i++) {
+	   $(".tree-node-targeted",
+	  nodeList[i].target).removeClass("tree-node-targeted");
+	   $(nodeList[i].target).show();
+	  }
+	  //展开已选择的节点（如果之前选择了）  
+	  var selectedNode = tree.getSelected(jqTree);
+	  if (selectedNode) {
+	   tree.expandTo(jqTree, selectedNode.target);
+	  }
+	  return;
+	  }
+	  //搜索匹配的节点并高亮显示  
+	  var matchedNodeList = [];
+	  if (nodeList && nodeList.length > 0) {
+	  var node = null;
+	  for (var i = 0; i < nodeList.length; i++) {
+	   node = nodeList[i];
+	   if (isMatch(searchText, node.text)) {
+	   matchedNodeList.push(node);
+	   }
+	  }
+	  //隐藏所有节点 
+	  for (var i = 0; i < nodeList.length; i++) {
+	   $(".tree-node-targeted", nodeList[i].target).removeClass("tree-node-targeted");
+	   $(nodeList[i].target).hide();
+	  }
+	  //折叠所有节点 
+	  tree.collapseAll(jqTree);
+	  //展示所有匹配的节点以及父节点 
+	 
+	  for (var i = 0; i < matchedNodeList.length; i++) {
+	   showMatchedNode(jqTree, tree, matchedNodeList[i]);
+	  }
+	  }
+	 },
+	 /** 
+	 * 展示节点的子节点（子节点有可能在搜索的过程中被隐藏了） 
+	 * @param node easyui tree节点  
+	 */
+	 showChildren: function (jqTree, node) {
+	  //easyui tree的tree对象。可以通过tree.methodName(jqTree)方式调用easyui tree的方法 
+	  var tree = this;
+	  //展示子节点 
+	  if (!tree.isLeaf(jqTree, node.target)) {
+	  var children = tree.getChildren(jqTree, node.target);
+	  if (children && children.length > 0) {
+	   for (var i = 0; i < children.length; i++) {
+	   if ($(children[i].target).is(":hidden")) {
+	    $(children[i].target).show();
+	   }
+	   }
+	  }
+	  }
+	 },
+	 /** 
+	 * 将滚动条滚动到指定的节点位置，使该节点可见（如果有滚动条才滚动，没有滚动条就不滚动） 
+	 * @param param { 
+	 * treeContainer: easyui tree的容器（即存在滚动条的树容器）。如果为null，则取easyui tree的根UL节点的父节点。 
+	 * argetNode: 将要滚动到的easyui tree节点。如果targetNode为空，则默认滚动到当前已选中的节点，如果没有选中的节点，则不滚动  * }  */
+	 scrollTo: function (jqTree, param) {
+	  //easyui tree的tree对象。可以通过tree.methodName(jqTree)方式调用easyui tree的方法 
+	  var tree = this;
+	  //如果node为空，则获取当前选中的node 
+	  var targetNode = param && param.targetNode ? param.targetNode : tree.getSelected(jqTree);
+	  if (targetNode != null) {
+	  //判断节点是否在可视区域   var root = tree.getRoot(jqTree); 
+	  var $targetNode = $(targetNode.target);
+	  var Container = param && param.treeContainer ? param.treeContainer : jqTree.parent();
+	  var containerH = container.height();
+	  var nodeOffsetHeight = $targetNode.offset().top - container.offset().top;
+	  if (nodeOffsetHeight > (containerH - 30)) {
+	   var scrollHeight = container.scrollTop() + nodeOffsetHeight - containerH + 30;
+	   container.scrollTop(scrollHeight);
+	  }
+	  }
+	 }
+	 });
+	 /** 
+	  * 展示搜索匹配的节点 */
+	 function showMatchedNode(jqTree, tree, node) {
+	 //展示所有父节点 
+	 $(node.target).show();
+	 $(".tree-title", node.target).addClass("tree-node-targeted");
+	 var pNode = node;
+	 while ((pNode = tree.getParent(jqTree, pNode.target))) {
+	  $(pNode.target).show();
+	 }
+	 //展开到该节点 
+	 tree.expandTo(jqTree, node.target);
+	 //如果是非叶子节点，需折叠该节点的所有子节点 
+	 if (!tree.isLeaf(jqTree, node.target)) {
+	  tree.collapse(jqTree, node.target);
+	 }
+	 }
+	 /** 
+	 * 判断searchText是否与targetText匹配 
+	 * @param searchText 检索的文本 * @param targetText 目标文本 
+	 * @return true-检索的文本与目标文本匹配；否则为false. 
+	 */
+	 function isMatch(searchText, targetText) {
+	 return $.trim(targetText) != "" && targetText.indexOf(searchText) != -1;
+	 }
+	 /** 
+	 * 获取easyui tree的所有node节点 */
+	 function getAllNodes(jqTree, tree) {
+	 var allNodeList = jqTree.data("allNodeList");
+	 if (!allNodeList) {
+	  var roots = tree.getRoots(jqTree);
+	  allNodeList = getChildNodeList(jqTree, tree, roots);
+	  jqTree.data("allNodeList", allNodeList);
+	 }
+	 return allNodeList;
+	 }
+	 /** 
+	 * 定义获取easyui tree的子节点的递归算法 */
+	 function getChildNodeList(jqTree, tree, nodes) {
+	 var childNodeList = [];
+	 if (nodes && nodes.length > 0) {
+	  var node = null;
+	  for (var i = 0; i < nodes.length; i++) {
+	  node = nodes[i];
+	  childNodeList.push(node);
+	  if (!tree.isLeaf(jqTree, node.target)) {
+	   var children = tree.getChildren(jqTree, node.target);
+	   childNodeList = childNodeList.concat(getChildNodeList(jqTree, tree, children));
+	  }
+	  }
+	 }
+	 return childNodeList;
+	 }
+	})(jQuery);
+</script>
+</head>
+<body  class="easyui-layout" data-options="border:false">
+<div data-options="region:'center',title:'票卡申领'" style="padding:20px;background:#eee;">
+<form id="dataForm" >   
+    
+    <table>
+    	<input type="hidden" name="deployId" value=""/>
+    	
+    	<caption align="top" style="font-size:24px;color:#006600;">票卡调配单</caption> 
+		<tr><td>&nbsp</td>   </tr>
+		
+		<tr align="right"><td>   
+        <label for="deployCode">调配单号:</label>   
+        </td><td>
+			<input name="deployCode" class="easyui-textbox" style="width:100px"  value = "${newDeployCode }" data-options="required:true,readonly:true"> 
+       </td><td align="right" width=158px>   
+        <label for="applyCode">申请单号:</label>   
+        </td><td>
+			<input id="applyCode"  name="applyCode" class="easyui-combobox" 
+								style="width: 100px;"
+								data-options="
+							url:'ticket/findByAttrBizTicketApply.zb', 
+							required:true,
+							loadFilter: function (data) { 
+							var data1=[];
+                				for(var i=0;i<data.extData.length;i++){
+                					if(data.extData[i].auditingState==3){
+                					
+                					data1.push(data.extData[i]);
+                					}
+                				}
+                				
+                				return data1;
+            　　　　						　},
+            				valueField: 'applyCode',
+							textField: 'applyCode',
+								onSelect:function(){
+								importData();
+							}
+					        ">
+			
+		<!--	<a
+				class="easyui-linkbutton" onclick="importData()"
+				data-options="
+			iconCls:'icon-edit',
+			plain:true
+		">导入申请单</a> -->
+       </td>
+       </tr> 
+    	
+				
+    	<tr><td align="right">   
+        <label for="depolyOrg">调配部门:</label>   
+        </td><td  colspan=3>
+			<input id="depolyOrg" class="easyui-combotree" name="depolyOrg"
+								style="width: 200px;"
+								data-options="
+							url:'organ/getUserOrganTree.zb?orgType=1',
+							required:true,
+							customAttr: {
+								dataModel: 'simpleData',
+								textField: 'text',
+								parentField: 'parentId'
+					        },
+					        onLoadSuccess:function(){
+						    	var tree=$('#depolyOrg').combotree('tree');
+						    	tree.tree('collapseAll');
+						    	var node=tree.tree('getRoot');
+						    	tree.tree('expand',node.target);
+						    },
+					        idFiled: 'id'">
+       </td></tr> 
+    	
+				
+    	<tr><td>   
+        <label for="depolyContacts">调配部门联系人:</label>   
+        </td><td>
+			<input name="depolyContacts" class="easyui-textbox" style="width:100px"> 
+       </td><td align="right">   
+        <label for="depolyPhone">调配部门联系电话:</label>   
+        </td><td>
+			<input name="depolyPhone" class="easyui-textbox" style="width:100px"> 
+       </td></tr> 
+    	
+				
+    	<tr><td align="right">   
+        <label for="fromOrg">来源部门:</label>   
+        </td><td  colspan=3>
+			<input id="fromOrg" class="easyui-combotree" name="fromOrg"
+								style="width: 200px;"
+								data-options="
+							url:'organ/getUserOrganTree.zb?orgType=1',
+							required:true,
+							customAttr: {
+								dataModel: 'simpleData',
+								textField: 'text',
+								parentField: 'parentId'
+					        },
+					        onLoadSuccess:function(){
+						    	var tree=$('#fromOrg').combotree('tree');
+						    	tree.tree('collapseAll');
+						    	var node=tree.tree('getRoot');
+						    	tree.tree('expand',node.target);
+						    },idFiled: 'id'">
+       </td></tr> 
+    	
+    	<tr><td>   
+        <label for="fromContacts">来源部门联系人:</label>   
+        </td><td>
+			<input name="fromContacts" class="easyui-textbox" style="width:100px"> 
+       </td><td align="right">   
+        <label for="fromPhone">来源部门联系电话:</label>   
+        </td><td>
+			<input name="fromPhone" class="easyui-textbox" style="width:100px"> 
+       </td></tr> 
+    	
+				
+    	<tr><td align="right">   
+        <label for="toOrg">目标部门:</label>   
+        </td><td  colspan=3>
+			<input id="toOrg" class="easyui-combotree" name="toOrg"
+								style="width: 200px;"
+								data-options="
+							url:'organ/getUserOrganTree.zb?orgType=1',
+							required:true,
+							customAttr: {
+								dataModel: 'simpleData',
+								textField: 'text',
+								parentField: 'parentId'
+					        },
+					        onLoadSuccess:function(){
+						    	var tree=$('#toOrg').combotree('tree');
+						    	tree.tree('collapseAll');
+						    	var node=tree.tree('getRoot');
+						    	tree.tree('expand',node.target);
+						    },
+					        idFiled: 'id'
+					       
+							
+						">
+       </td></tr> 
+    	
+				
+    	<tr><td>   
+        <label for="toContacts">目标部门联系人:</label>   
+        </td><td>
+			<input name="toContacts" class="easyui-textbox" style="width:100px"> 
+       </td><td align="right">   
+        <label for="toPhone">目标部门联系电话:</label>   
+        </td><td>
+			<input name="toPhone" class="easyui-textbox" style="width:100px"> 
+       </td></tr> 
+    	
+				
+    	
+    	<tr><td align="right">   
+        <label for="description">备注:</label>   
+        </td><td  colspan=3>
+			<input name="description" class="easyui-textbox" style="width:360px;height:50px"> 
+       </td></tr> 
+    	<tr>
+    	<td colspan=8>
+    	<div id="dataTabelToolBar" style="height: auto">
+			<a class="easyui-linkbutton" onclick="addRow()"
+				data-options="
+			iconCls:'icon-add',
+			plain:true
+		">添加</a> 
+		 <a
+				class="easyui-linkbutton" onclick="deleteRows()"
+				data-options="
+			iconCls:'icon-del',
+			plain:true
+		">删除</a>
+		</div>
+	<table id="dataTable" class="easyui-datagrid" data-options="toolbar:'#dataTabelToolBar',rownumbers:true">   
+    <thead>   
+        <tr>
+      			<th data-options="field:'depolyDetailId',width:100,checkbox:true" ></th>
+      			<th data-options="field:'ticketTypeId',width:100,formatter:typeFormatter,editor:{type:'combobox',options:{data:getTicketTypes(),valueField:'ticketTypeId',textField:'ticketTypeName',editable:false,required:true}}" >票卡类型</th>  
+      			<th data-options="field:'ticketStateId',width:100,formatter:stateFormatter,editor:{type:'combobox',options:{data:getTicketStates(),valueField:'ticketStateId',textField:'ticketStateName',editable:false,required:true}}" >票卡状态</th>  
+      			 
+      			<th data-options="field:'ticketMoney',width:100,editor: { type: 'numberbox', options: { min:0,max:1000000,required: false} }" >金额</th>  
+        		<th data-options="field:'ticketNumber',width:100,editor: { type: 'numberbox', options: { min:0,max:1000000,required: true} }" >数量</th> 
+      			
+        </tr>   
+    </thead>   
+    <tbody>   
+        
+    </tbody>   
+</table>  
+    	
+    	</td>
+    	
+    	</tr>	
+    	<tr><td colspan=4 align="center"><a  class="easyui-linkbutton" data-options="onClick:submitApply,iconCls:'icon-ok'">提交</a>  </td></tr>
+    </table>   
+</form> 
+</body>
+</html>

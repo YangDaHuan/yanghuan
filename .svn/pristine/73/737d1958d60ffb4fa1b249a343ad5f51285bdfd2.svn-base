@@ -1,0 +1,1 @@
+require(["events/eventdatafactory"],function(a){describe("eventdata create",function(){it("should return an object with properties set to the passed values",function(){var b="",c=$("body"),d;d=a.createInstance(b,c),expect(d.id).toEqual(b),expect(d.ref).toEqual(c)})})})

@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.df.dao.DFMapper">
+	<!-- 表单信息 -->
+	<resultMap id="formResultMap" type="com.solidextend.sys.df.vo.FormInfo">
+		<id column="FORM_ID" jdbcType="VARCHAR" property="id" />
+		<result column="FORM_NO" jdbcType="VARCHAR" property="no" />
+		<result column="FORM_NAME" jdbcType="VARCHAR" property="name" />
+		<result column="TABLE_NAME" jdbcType="VARCHAR" property="table" />
+		<result column="TABLE_PRIMARY" jdbcType="VARCHAR" property="primary" />
+		<result column="TABLE_PRIMARY_FIELD" jdbcType="VARCHAR"
+			property="primaryField" />
+		<result column="TABLE_REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="FORM_PUBLISH" jdbcType="CHAR" property="publish" />
+		<result column="FORM_TEMPLATE" jdbcType="CHAR" property="tempType" />
+		<result column="MODULE_ID" jdbcType="VARCHAR" property="moduleId" />
+		<result column="FILE_UPLOAD" jdbcType="CHAR" property="fileUpload" />
+		<!-- 业务操作 -->
+		<result column="ACTION_ADD" jdbcType="CHAR" property="actionAdd" />
+		<result column="ACTION_UPDATE" jdbcType="CHAR" property="actionUpdate" />
+		<result column="ACTION_DELETE" jdbcType="CHAR" property="actionDel" />
+		<result column="ACTION_IMP" jdbcType="CHAR" property="actionImp" />
+		<result column="ACTION_EXP" jdbcType="CHAR" property="actionExp" />
+	</resultMap>
+	<!-- 字段信息 -->
+	<resultMap id="fieldResultMap" type="com.solidextend.sys.df.vo.FieldInfo">
+		<id column="FIELD_ID" jdbcType="VARCHAR" property="id" />
+		<result column="FIELD_NO" jdbcType="VARCHAR" property="no" />
+		<result column="FIELD_NAME" jdbcType="VARCHAR" property="name" />
+		<result column="FIELD_DESC" jdbcType="VARCHAR" property="desc" />
+		<result column="FIELD_PRIMARY" jdbcType="INTEGER" property="primary" />
+		<result column="FIELD_UNIQUE" jdbcType="INTEGER" property="unique" />
+		<result column="FIELD_NULL" jdbcType="INTEGER" property="fieldNull" />
+		<result column="FIELD_TYPE_ID" jdbcType="VARCHAR" property="type" />
+		<result column="DICT_TYPE_ID" jdbcType="VARCHAR" property="dictId" />
+		<result column="FIELD_LENGTH" jdbcType="VARCHAR" property="length" />
+		<result column="FIELD_DEFAULT" jdbcType="VARCHAR" property="defaultValue" />
+		<result column="FORM_ID" jdbcType="VARCHAR" property="formId" />
+		<result column="DS_TYPE" jdbcType="INTEGER" property="dsType" />
+		<result column="DS_VALUE" jdbcType="VARCHAR" property="dsValue" />
+		<result column="DS_URL_VAL" jdbcType="INTEGER" property="dsUrlId" />
+		<result column="DS_URL_TEXT" jdbcType="VARCHAR" property="dsUrlText" />
+		<result column="DB_ID" jdbcType="VARCHAR" property="dbId" />
+		<result column="DB_LENGTH" jdbcType="INTEGER" property="dbLength" />
+		<result column="DB_NULL" jdbcType="INTEGER" property="dbNull" />
+		<result column="ORDER_BY" jdbcType="INTEGER" property="orderBy" />
+		<!-- 校验属性 -->
+		<result column="VERIFY_EQUALS" jdbcType="VARCHAR" property="fieldEquals" />
+		<result column="VERIFY_MIN_LEN" jdbcType="INTEGER" property="minLen" />
+		<result column="VERIFY_MAX_LEN" jdbcType="INTEGER" property="maxLen" />
+		<!-- 列表属性 -->
+		<result column="GRID_QUERY" jdbcType="INTEGER" property="gridQuery" />
+		<result column="GRID_HIDE" jdbcType="INTEGER" property="gridHide" />
+		<result column="GRID_WIDTH" jdbcType="INTEGER" property="gridWidth" />
+		<!-- 操作设置 -->
+		<result column="ALLOW_ADD" jdbcType="INTEGER" property="allowAdd" />
+		<result column="ALLOW_UPDATE" jdbcType="INTEGER" property="allowUpdate" />
+		<result column="ALLOW_VALUE" jdbcType="VARCHAR" property="allowValue" />
+	</resultMap>
+	<!-- 模块信息 -->
+	<resultMap id="moduleResultMap" type="com.solidextend.sys.module.vo.Module">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="MODULE_CODE" property="moduleCode" jdbcType="VARCHAR" />
+		<result column="MODULE_NAME" property="moduleName" jdbcType="VARCHAR" />
+		<result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+	</resultMap>
+	<!-- 系统信息 -->
+	<resultMap type="com.solidextend.sys.df.vo.ConfigInfo" id="configResultMap">
+		<id column="F_ID" property="id" jdbcType="VARCHAR" />
+		<result column="F_NAME" property="name" jdbcType="VARCHAR" />
+		<result column="F_VERSION" property="version" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="getFormById" parameterType="java.lang.String"
+		resultMap="formResultMap">
+		select * from DF_FORM where FORM_ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="getFormList" parameterType="com.solidextend.sys.df.vo.FormInfo"
+		resultMap="formResultMap">
+		select * from DF_FORM WHERE FORM_ID != '0'
+		<where>
+			<if test="publish!=-1">
+				AND FORM_PUBLISH = #{publish, jdbcType=CHAR}
+			</if>
+			<if test="id!=null and id!='' ">
+				AND FORM_ID != #{id, jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+	<select id="getFormListForCopy" parameterType="com.solidextend.sys.df.vo.FormInfo"
+		resultMap="formResultMap">
+		select FORM_ID,FORM_NO,'【'||FORM_NO||'】'||FORM_NAME AS FORM_NAME from
+		DF_FORM
+		<where>
+			<if test="id!=null and id!='' ">
+				FORM_ID != #{id, jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+	<select id="verifyFormNo" parameterType="com.solidextend.sys.df.vo.FormInfo"
+		resultType="java.lang.Integer">
+		select count(1) from DF_FORM where UPPER(FORM_NO) = #{no,
+		jdbcType=VARCHAR}
+		<if test="id!=null and id!='' ">
+			and FORM_ID != #{id, jdbcType=VARCHAR}
+		</if>
+	</select>
+
+	<select id="getFieldList" parameterType="java.util.Map"
+		resultMap="fieldResultMap">
+		select * from DF_FIELD
+		<where>
+			<if test="formId!=null and formId!='' ">
+				FORM_ID = #{formId,jdbcType=VARCHAR}
+			</if>
+			<if test="dbNull!=null and dbNull!=-1">
+				AND DB_NULL = #{dbNull,jdbcType=INTEGER}
+			</if>
+		</where>
+		order by ORDER_BY asc
+	</select>
+
+	<select id="getFieldById" parameterType="java.lang.String"
+		resultMap="fieldResultMap">
+		select * from DF_FIELD where FIELD_ID=#{id,
+		jdbcType=VARCHAR}
+	</select>
+
+	<select id="getModules" parameterType="java.lang.String"
+		resultMap="moduleResultMap">
+		select ID, MODULE_CODE, MODULE_NAME, PARENT_ID from
+		SYS_MODULE where PARENT_ID=#{parentId, jdbcType=VARCHAR}
+	</select>
+
+	<insert id="saveForm" parameterType="com.solidextend.sys.df.vo.FormInfo">
+		insert into DF_FORM(FORM_ID,
+		FORM_NO, FORM_NAME, TABLE_NAME, TABLE_PRIMARY, TABLE_PRIMARY_FIELD
+		,
+		TABLE_REMARK,FORM_TEMPLATE, MODULE_ID,FILE_UPLOAD
+		, ACTION_ADD,
+		ACTION_UPDATE, ACTION_DELETE, ACTION_IMP, ACTION_EXP)
+		values(#{id,jdbcType=VARCHAR}, #{no,jdbcType=VARCHAR},
+		#{name,jdbcType=VARCHAR},#{table,jdbcType=VARCHAR}
+		,#{primary,jdbcType=VARCHAR},#{primaryField,jdbcType=VARCHAR},
+		#{remark,jdbcType=VARCHAR}, #{tempType,jdbcType=VARCHAR}
+		,#{moduleId,jdbcType=VARCHAR},#{fileUpload,jdbcType=CHAR},#{actionAdd,jdbcType=VARCHAR}
+		,#{actionUpdate,jdbcType=VARCHAR},#{actionDel,jdbcType=VARCHAR},#{actionImp,jdbcType=VARCHAR},#{actionExp,jdbcType=VARCHAR})
+	</insert>
+
+	<update id="updateForm" parameterType="com.solidextend.sys.df.vo.FormInfo">
+		update DF_FORM set
+		FORM_NO=#{no,jdbcType=VARCHAR},FORM_NAME=#{name,jdbcType=VARCHAR}
+		,TABLE_NAME=#{table,jdbcType=VARCHAR},TABLE_PRIMARY=#{primary,jdbcType=VARCHAR}
+		,TABLE_PRIMARY_FIELD=#{primaryField,jdbcType=VARCHAR},TABLE_REMARK=#{remark,jdbcType=VARCHAR}
+		,FORM_TEMPLATE=#{tempType,jdbcType=VARCHAR},
+		MODULE_ID=#{moduleId,jdbcType=VARCHAR}
+		,FILE_UPLOAD=#{fileUpload,jdbcType=CHAR},ACTION_ADD=#{actionAdd,jdbcType=VARCHAR},ACTION_UPDATE=#{actionUpdate,jdbcType=VARCHAR}
+		,ACTION_DELETE=#{actionDel,jdbcType=VARCHAR},ACTION_IMP=#{actionImp,jdbcType=VARCHAR},ACTION_EXP=#{actionExp,jdbcType=VARCHAR}
+		where FORM_ID=#{id,jdbcType=VARCHAR}
+	</update>
+
+	<update id="publishForm" parameterType="com.solidextend.sys.df.vo.FormInfo">
+		update DF_FORM set
+		FORM_PUBLISH=#{publish,jdbcType=CHAR} where
+		FORM_ID=#{id,jdbcType=VARCHAR}
+	</update>
+
+	<delete id="deleteForm" parameterType="java.lang.String">
+		delete from DF_FORM where
+		FORM_ID=#{id,jdbcType=VARCHAR}
+	</delete>
+
+	<delete id="deleteFields" parameterType="java.lang.String">
+		delete from DF_FIELD
+		where FORM_ID=#{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="saveField" parameterType="com.solidextend.sys.df.vo.FieldInfo">
+		insert into
+		DF_FIELD(FIELD_ID,FIELD_NO,FIELD_NAME,FIELD_DESC,FIELD_PRIMARY,FIELD_UNIQUE,FIELD_NULL
+		,FIELD_TYPE_ID,DICT_TYPE_ID,FIELD_LENGTH,FIELD_DEFAULT,FORM_ID,DS_TYPE,DS_VALUE,DS_URL_VAL,DS_URL_TEXT
+		,DB_ID,DB_LENGTH,
+		ORDER_BY,VERIFY_EQUALS,VERIFY_MIN_LEN,VERIFY_MAX_LEN,GRID_QUERY,GRID_HIDE,GRID_WIDTH,DB_NULL
+		,ALLOW_ADD, ALLOW_UPDATE, ALLOW_VALUE)
+		values
+		(
+		#{id,jdbcType=VARCHAR},#{no,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{desc,jdbcType=VARCHAR},#{primary,jdbcType=INTEGER}
+		,#{unique,jdbcType=INTEGER},#{fieldNull,jdbcType=INTEGER},#{type,jdbcType=VARCHAR},#{dictId,jdbcType=VARCHAR}
+		,#{length,jdbcType=VARCHAR},#{defaultValue,jdbcType=VARCHAR},#{formId,jdbcType=VARCHAR}
+		,#{dsType,jdbcType=VARCHAR},#{dsValue,jdbcType=VARCHAR},#{dsUrlId,jdbcType=VARCHAR},#{dsUrlText,jdbcType=VARCHAR}
+		,#{dbId,jdbcType=VARCHAR},#{dbLength,jdbcType=INTEGER},#{orderBy,jdbcType=INTEGER}
+		,#{fieldEquals,jdbcType=VARCHAR},#{minLen,jdbcType=INTEGER},#{maxLen,jdbcType=INTEGER}
+		,#{gridQuery,jdbcType=INTEGER},#{gridHide,jdbcType=INTEGER},#{gridWidth,jdbcType=INTEGER},#{dbNull,jdbcType=INTEGER}
+		,#{allowAdd,jdbcType=INTEGER},#{allowUpdate,jdbcType=INTEGER},#{allowValue,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<insert id="createTable" parameterType="java.lang.String">
+		${tableSql}
+	</insert>
+
+	<select id="existsTable" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		<!-- Oracle写法，其他数据库此处要修改 -->
+		select count(1) from user_tables where upper(table_name) = '${table}'
+	</select>
+
+	<select id="getConfigById" parameterType="java.lang.String"
+		resultMap="configResultMap">
+		select * from DF_CONFIG where F_ID=#{id,jdbcType=VARCHAR}
+	</select>
+
+	<update id="updateConfig" parameterType="com.solidextend.sys.df.vo.ConfigInfo">
+		update DF_CONFIG set
+		F_VERSION=#{version,jdbcType=VARCHAR} where F_ID=#{id,
+		jdbcType=VARCHAR}
+	</update>
+
+	<!-- **********************************华丽的分隔线******************************************* -->
+
+	<select id="select" parameterType="java.util.Map" resultType="hashmap">
+		select
+		<foreach item="field" index="index" collection="fields"
+			separator=",">
+			<choose>
+				<when test="field.dsType==3">
+					${field.dsValue}.${field.dsUrlText} as ${field.no}
+				</when>
+				<otherwise>
+					${field.dbId} as ${field.no}
+				</otherwise>
+			</choose>
+		</foreach>
+		from ${table}
+		<foreach item="field" index="index" collection="fields"
+			separator=",">
+			<if test="field.dsType==3">
+				inner join ${field.dsValue} on
+				${field.dsValue}.${field.dsUrlId} = ${field.dbId}
+			</if>
+		</foreach>
+		<where>
+			<foreach item="entryTemp" index="index" collection="querys.entrySet()"
+				open="" close="" separator="and">
+				${entryTemp.key} like
+				'%'||#{entryTemp.value}||'%'
+			</foreach>
+		</where>
+	</select>
+
+	<select id="selectAll" parameterType="java.util.Map" resultType="hashmap">
+		select
+		<foreach item="field" index="index" collection="fields"
+			separator=",">
+			<choose>
+				<when test="field.dsType==3">
+					${field.dsValue}.${field.dsUrlText} as ${field.no}
+				</when>
+				<otherwise>
+					${field.dbId} as ${field.no}
+				</otherwise>
+			</choose>
+		</foreach>
+		from ${table}
+		<foreach item="field" index="index" collection="fields"
+			separator=",">
+			<if test="field.dsType==3 and field.dsUrlId!='' ">
+				inner join ${field.dsValue} on
+				${field.dsValue}.${field.dsUrlId} = ${field.dbId}
+			</if>
+		</foreach>
+		<where>
+			<foreach item="entryTemp" index="index" collection="querys.entrySet()"
+				open="" close="" separator="and">
+				${entryTemp.key} like
+				'%'||#{entryTemp.value}||'%'
+			</foreach>
+		</where>
+	</select>
+
+	<select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from ${table}
+		<foreach item="field" index="index" collection="fields"
+			separator=",">
+			<if test="field.dsType==3">
+				inner join ${field.dsValue} on
+				${field.dsValue}.${field.dsUrlId} = ${field.dbId}
+			</if>
+		</foreach>
+		<where>
+			<foreach item="entryTemp" index="index" collection="querys.entrySet()"
+				open="" close="" separator="and">
+				${entryTemp.key} like
+				'%'||#{entryTemp.value}||'%'
+			</foreach>
+		</where>
+	</select>
+
+	<select id="get" parameterType="java.util.Map" resultType="hashmap">
+		select
+		<foreach item="field" index="index" collection="fields"
+			separator=",">
+			${field.dbId} as ${field.no}
+		</foreach>
+		from ${table} where ${primaryField} = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="check" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from ${table} where ${uniqueParam} = #{uniqueValue}
+	</select>
+
+	<select id="selectDs" parameterType="java.util.Map" resultType="hashmap">
+		select ${dsId} as ID, ${dsText} as TEXT from ${dsTable}
+	</select>
+
+	<delete id="delete" parameterType="java.util.Map">
+		delete from ${table} where ${primaryField} = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="java.util.Map">
+		insert into ${table}
+		<foreach item="entryTemp" index="index" collection="data.entrySet()"
+			open="(" separator="," close=")">
+			${entryTemp.key}
+		</foreach>
+		values
+		<foreach item="entryTemp" index="index" collection="data.entrySet()"
+			open="(" separator="," close=")">
+			#{entryTemp.value}
+		</foreach>
+	</insert>
+	<insert id="update" parameterType="java.util.Map">
+		update ${table} set
+		<foreach item="entryTemp" index="index" collection="data.entrySet()"
+			separator=",">
+			${entryTemp.key} = #{entryTemp.value}
+		</foreach>
+		<where>
+			${primaryField} = #{id,jdbcType=VARCHAR}
+		</where>
+	</insert>
+</mapper>

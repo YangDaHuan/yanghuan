@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.ticket.dao.BizTicketSaleMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.ticket.vo.BizTicketSale">
+        <result column="yunfen" jdbcType="VARCHAR" property="yunfen"/>
+        <result column="xianlu" jdbcType="VARCHAR" property="xianlu"/>
+        <result column="zhanqu" jdbcType="VARCHAR" property="zhanqu"/>
+        <result column="chezhan" jdbcType="VARCHAR" property="chezhan"/>
+        <result column="ticket_type_id" jdbcType="VARCHAR" property="ticketTypeId"/>
+        <result column="ticket_type_name" jdbcType="VARCHAR" property="ticketTypeName"/>
+        <result column="sale_number" jdbcType="INTEGER" property="saleNumber"/>
+        <result column="lost_number" jdbcType="INTEGER" property="lostNumber"/>
+        <result column="balance" jdbcType="INTEGER" property="balance"/>
+        <result column="date" jdbcType="TIMESTAMP" property="date"/>
+    </resultMap>
+    
+    <select id="findAllBizTicketSale" resultMap="BaseResultMap">
+          SELECT * FROM biz_ticket_sale 
+    </select>
+    
+    <select id="findByAttrBizTicketSale" resultMap="BaseResultMap" parameterType="com.solidextend.sys.ticket.vo.BizTicketSale">
+          SELECT * 
+          FROM 
+          biz_ticket_sale 
+          WHERE 1=1 
+            <if test="yunfen != null and yunfen != ''" >
+                AND yunfen = #{yunfen,jdbcType=VARCHAR}
+            </if>
+            <if test="xianlu != null and xianlu != ''" >
+                AND xianlu = #{xianlu,jdbcType=VARCHAR}
+            </if>
+            <if test="zhanqu != null and zhanqu != ''" >
+                AND zhanqu = #{zhanqu,jdbcType=VARCHAR}
+            </if>
+            <if test="chezhan != null and chezhan != ''" >
+                AND chezhan = #{chezhan,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketTypeId != null and ticketTypeId != ''" >
+                AND ticket_type_id = #{ticketTypeId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketTypeName != null and ticketTypeName != ''" >
+                AND ticket_type_name = #{ticketTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="saleNumber != null and saleNumber != ''" >
+                AND sale_number = #{saleNumber,jdbcType=INTEGER}
+            </if>
+            <if test="lostNumber != null and lostNumber != ''" >
+                AND lost_number = #{lostNumber,jdbcType=INTEGER}
+            </if>
+            <if test="balance != null and balance != ''" >
+                AND balance = #{balance,jdbcType=INTEGER}
+            </if>
+            <if test="date != null and date != ''" >
+                AND date = #{date,jdbcType=TIMESTAMP}
+            </if>
+    </select>
+
+
+    <insert id="saveBizTicketSale" parameterType="com.solidextend.sys.ticket.vo.BizTicketSale" >
+        INSERT INTO biz_ticket_sale
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="yunfen != null" >
+                yunfen,
+            </if>
+            <if test="xianlu != null" >
+                xianlu,
+            </if>
+            <if test="zhanqu != null" >
+                zhanqu,
+            </if>
+            <if test="chezhan != null" >
+                chezhan,
+            </if>
+            <if test="ticketTypeId != null" >
+                ticket_type_id,
+            </if>
+            <if test="ticketTypeName != null" >
+                ticket_type_name,
+            </if>
+            <if test="saleNumber != null" >
+                sale_number,
+            </if>
+            <if test="lostNumber != null" >
+                lost_number,
+            </if>
+            <if test="balance != null" >
+                balance,
+            </if>
+            <if test="date != null" >
+                date,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="yunfen != null" >
+                #{yunfen,jdbcType=VARCHAR},
+            </if> 
+            <if test="xianlu != null" >
+                #{xianlu,jdbcType=VARCHAR},
+            </if> 
+            <if test="zhanqu != null" >
+                #{zhanqu,jdbcType=VARCHAR},
+            </if> 
+            <if test="chezhan != null" >
+                #{chezhan,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketTypeId != null" >
+                #{ticketTypeId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketTypeName != null" >
+                #{ticketTypeName,jdbcType=VARCHAR},
+            </if> 
+            <if test="saleNumber != null" >
+                #{saleNumber,jdbcType=INTEGER},
+            </if> 
+            <if test="lostNumber != null" >
+                #{lostNumber,jdbcType=INTEGER},
+            </if> 
+            <if test="balance != null" >
+                #{balance,jdbcType=INTEGER},
+            </if> 
+            <if test="date != null" >
+                #{date,jdbcType=TIMESTAMP},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizTicketSale" parameterType="com.solidextend.sys.ticket.vo.BizTicketSale" >
+        UPDATE biz_ticket_sale
+        <set>
+            <if test="yunfen != null" >
+                yunfen = #{yunfen,jdbcType=VARCHAR},
+            </if>
+            <if test="xianlu != null" >
+                xianlu = #{xianlu,jdbcType=VARCHAR},
+            </if>
+            <if test="zhanqu != null" >
+                zhanqu = #{zhanqu,jdbcType=VARCHAR},
+            </if>
+            <if test="chezhan != null" >
+                chezhan = #{chezhan,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketTypeId != null" >
+                ticket_type_id = #{ticketTypeId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketTypeName != null" >
+                ticket_type_name = #{ticketTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="saleNumber != null" >
+                sale_number = #{saleNumber,jdbcType=INTEGER},
+            </if>
+            <if test="lostNumber != null" >
+                lost_number = #{lostNumber,jdbcType=INTEGER},
+            </if>
+            <if test="balance != null" >
+                balance = #{balance,jdbcType=INTEGER},
+            </if>
+            <if test="date != null" >
+                date = #{date,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE 
+    </update>
+</mapper>

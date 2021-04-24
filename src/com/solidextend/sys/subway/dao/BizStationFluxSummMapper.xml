@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.subway.dao.BizStationFluxSummMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.subway.vo.BizStationFluxSumm">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="settlement_date" jdbcType="DATE" property="settlementDate"/>
+        <result column="station_name" jdbcType="VARCHAR" property="stationName"/>
+        <result column="station_entry" jdbcType="INTEGER" property="stationEntry"/>
+        <result column="station_exit" jdbcType="INTEGER" property="stationExit"/>
+        <result column="station_passenger_flow" jdbcType="INTEGER" property="stationPassengerFlow"/>
+        <result column="section_begin" jdbcType="TIMESTAMP" property="sectionBegin"/>
+        <result column="section_end" jdbcType="TIMESTAMP" property="sectionEnd"/>
+    </resultMap>
+    <resultMap id="StationResultMap" type="java.util.Map">
+	
+		<id column="id" jdbcType="DATE" property="id" />
+		<result column="settlement_date" jdbcType="DATE" property="settlementDate" />
+		<result column="station_name" jdbcType="VARCHAR" property="stationName" />
+		<result column="section_begin" jdbcType="TIMESTAMP" property="sectionBegin" />
+		<result column="section_end" jdbcType="TIMESTAMP" property="sectionEnd" />
+		<result column="station_entry" jdbcType="INTEGER" property="stationEntry" />
+		<result column="station_entry_cardinal" jdbcType="INTEGER" property="stationEntryCardinal" />
+		<result column="station_exit" jdbcType="INTEGER" property="stationExit" />
+		<result column="station_exit_cardinal" jdbcType="INTEGER" property="stationExitCardinal" />
+		<result column="station_transfor_cardinal" jdbcType="INTEGER" property="stationTransforCardinal" />
+		<collection column="transfor_id" property="transfor" javaType="ArrayList" ofType="java.util.Map">
+			<id column="transfor_id" jdbcType="VARCHAR" property="transforId" />
+			<result column="transfor_num" jdbcType="INTEGER" property="transforNum" />
+			<result column="line_name_start" jdbcType="VARCHAR" property="lineNameStart" />
+			<result column="direction_begin" jdbcType="VARCHAR" property="directionBegin" />
+			<result column="line_name_end" jdbcType="VARCHAR" property="lineNameEnd" />
+			<result column="direction_end" jdbcType="VARCHAR" property="directionEnd" />
+		</collection>
+	</resultMap>
+	<select id="getStationInfo" resultMap="StationResultMap"
+		parameterType="com.solidextend.sys.subway.vo.BizStationFluxSumm">
+		select 
+fs.id,
+fs.settlement_date,
+fs.station_name,
+fs.section_begin,
+fs.section_end,
+fs.station_entry,
+(fc.station_entry_cardinal*6) as station_entry_cardinal,
+fs.station_exit,
+(fc.station_exit_cardinal*6) as station_exit_cardinal,
+(fc.station_transfor_cardinal*6) as station_transfor_cardinal,
+ft.id as transfor_id,
+ft.transfor_num,
+ft.line_name_start,
+ft.direction_begin,
+ft.line_name_end,
+ft.direction_end
+from biz_station_flux_summ fs 
+left join biz_station_flux_transfer ft on fs.station_name=ft.station_name_transfer 
+and fs.section_begin=DATE_SUB(ft.section_begin,INTERVAL -7 day)
+left JOIN biz_station_flux_cardinal_web fc on fs.station_name = fc.station_name
+where 1=1
+<if test="sectionTime != null and sectionTime != ''" >
+                AND fs.section_begin &lt;= #{sectionTime,jdbcType=TIMESTAMP}
+                AND fs.section_end &gt;= #{sectionTime,jdbcType=TIMESTAMP}
+            </if> 
+
+	</select>
+	
+    <select id="getBizStationFluxSummById" resultMap="BaseResultMap">
+       SELECT
+            s.id,
+s.settlement_date,
+s.station_name,
+s.station_entry,
+s.station_exit,
+s.section_begin,
+s.section_end,sum(t.transfor_num)+s.station_entry+s.station_exit as station_passenger_flow
+FROM
+             biz_station_flux_summ s join biz_station_flux_transfer t on s.station_name=t.station_name_transfer
+             and s.section_begin=t.section_begin
+        WHERE            
+            id = #{id,jdbcType=VARCHAR}
+            GROUP BY
+s.id,
+s.settlement_date,
+s.station_name,
+s.station_entry,
+s.station_exit,
+s.section_begin,
+s.section_end
+    </select>
+    
+    <select id="findAllBizStationFluxSumm" resultMap="BaseResultMap">
+          SELECT
+            s.id,
+s.settlement_date,
+s.station_name,
+s.station_entry,
+s.station_exit,
+s.section_begin,
+s.section_end,sum(t.transfor_num)+s.station_entry+s.station_exit as station_passenger_flow
+FROM
+             biz_station_flux_summ s join biz_station_flux_transfer t on s.station_name=t.station_name_transfer
+and s.section_begin=t.section_begin
+GROUP BY
+s.id,
+s.settlement_date,
+s.station_name,
+s.station_entry,
+s.station_exit,
+s.section_begin,
+s.section_end
+
+    </select>
+    
+    <select id="findByAttrBizStationFluxSumm" resultMap="BaseResultMap" parameterType="com.solidextend.sys.subway.vo.BizStationFluxSumm">
+          SELECT
+            s.id,
+s.settlement_date,
+s.station_name,
+s.station_entry,
+s.station_exit,
+s.section_begin,
+s.section_end,sum(t.transfor_num)+s.station_entry+s.station_exit as station_passenger_flow
+FROM
+             biz_station_flux_summ s join biz_station_flux_transfer t on s.station_name=t.station_name_transfer
+and s.section_begin=t.section_begin
+          WHERE 1=1 
+            <if test="id != null and id != ''" >
+                AND s.id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="settlementDate != null and settlementDate != ''" >
+                AND s.settlement_date = #{settlementDate,jdbcType=DATE}
+            </if>
+            <if test="stationName != null and stationName != ''" >
+                AND s.station_name = #{stationName,jdbcType=VARCHAR}
+            </if>
+            <if test="stationEntry != null and stationEntry != ''" >
+                AND s.station_entry = #{stationEntry,jdbcType=INTEGER}
+            </if>
+            <if test="stationExit != null and stationExit != ''" >
+                AND s.station_exit = #{stationExit,jdbcType=INTEGER}
+            </if>
+            <if test="sectionBegin != null and sectionBegin != ''" >
+                AND s.section_begin = #{sectionBegin,jdbcType=TIMESTAMP}
+            </if>
+            <if test="sectionEnd != null and sectionEnd != ''" >
+                AND s.section_end = #{sectionEnd,jdbcType=TIMESTAMP}
+            </if>
+            GROUP BY
+s.id,
+s.settlement_date,
+s.station_name,
+s.station_entry,
+s.station_exit,
+s.section_begin,
+s.section_end
+            
+    </select>
+
+    <delete id="deleteBizStationFluxSumm">
+        DELETE
+        FROM
+             biz_station_flux_summ
+        WHERE 
+            id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizStationFluxSumm" parameterType="com.solidextend.sys.subway.vo.BizStationFluxSumm" >
+        INSERT INTO biz_station_flux_summ
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="settlementDate != null" >
+                settlement_date,
+            </if>
+            <if test="stationName != null" >
+                station_name,
+            </if>
+            <if test="stationEntry != null" >
+                station_entry,
+            </if>
+            <if test="stationExit != null" >
+                station_exit,
+            </if>
+            <if test="sectionBegin != null" >
+                section_begin,
+            </if>
+            <if test="sectionEnd != null" >
+                section_end,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if> 
+            <if test="settlementDate != null" >
+                #{settlementDate,jdbcType=DATE},
+            </if> 
+            <if test="stationName != null" >
+                #{stationName,jdbcType=VARCHAR},
+            </if> 
+            <if test="stationEntry != null" >
+                #{stationEntry,jdbcType=INTEGER},
+            </if> 
+            <if test="stationExit != null" >
+                #{stationExit,jdbcType=INTEGER},
+            </if> 
+            <if test="sectionBegin != null" >
+                #{sectionBegin,jdbcType=TIMESTAMP},
+            </if> 
+            <if test="sectionEnd != null" >
+                #{sectionEnd,jdbcType=TIMESTAMP},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizStationFluxSumm" parameterType="com.solidextend.sys.subway.vo.BizStationFluxSumm" >
+        UPDATE biz_station_flux_summ
+        <set>
+            <if test="id != null" >
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="settlementDate != null" >
+                settlement_date = #{settlementDate,jdbcType=DATE},
+            </if>
+            <if test="stationName != null" >
+                station_name = #{stationName,jdbcType=VARCHAR},
+            </if>
+            <if test="stationEntry != null" >
+                station_entry = #{stationEntry,jdbcType=INTEGER},
+            </if>
+            <if test="stationExit != null" >
+                station_exit = #{stationExit,jdbcType=INTEGER},
+            </if>
+            <if test="sectionBegin != null" >
+                section_begin = #{sectionBegin,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sectionEnd != null" >
+                section_end = #{sectionEnd,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE 
+            id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

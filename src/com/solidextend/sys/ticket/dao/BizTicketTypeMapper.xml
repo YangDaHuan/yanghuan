@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.ticket.dao.BizTicketTypeMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.ticket.vo.BizTicketType">
+        <id column="TICKET_TYPE_ID" jdbcType="VARCHAR" property="ticketTypeId"/>
+        <result column="TICKET_TYPE_NAME" jdbcType="VARCHAR" property="ticketTypeName"/>
+        <result column="IS_HAVE_MONEY" jdbcType="INTEGER" property="isHaveMoney"/>
+        <result column="DESIGN_USER" jdbcType="VARCHAR" property="designUser"/>
+        <result column="SORTNO" jdbcType="INTEGER" property="sortno"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="ISENABLED" jdbcType="VARCHAR" property="isenabled"/>
+        <result column="CREATE_TIME" jdbcType="DATE" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime"/>
+       	<result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName"/>
+    </resultMap>
+    <select id="getBizTicketTypeById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_ticket_type
+        WHERE            
+            TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizTicketType" resultMap="BaseResultMap">
+          SELECT * FROM biz_ticket_type 
+    </select>
+    
+    <select id="findByAttrBizTicketType" resultMap="BaseResultMap" parameterType="com.solidextend.sys.ticket.vo.BizTicketType">
+          SELECT * 
+          FROM 
+          biz_ticket_type 
+          WHERE 1=1 
+            <if test="ticketTypeId != null and ticketTypeId != ''" >
+                AND TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR}
+            </if>
+            <if test="ticketTypeName != null and ticketTypeName != ''" >
+                AND TICKET_TYPE_NAME = #{ticketTypeName,jdbcType=VARCHAR}
+            </if>
+            <if test="isHaveMoney != null and isHaveMoney != ''" >
+                AND IS_HAVE_MONEY = #{isHaveMoney,jdbcType=INTEGER}
+            </if>
+            <if test="designUser != null and designUser != ''" >
+                AND DESIGN_USER = #{designUser,jdbcType=VARCHAR}
+            </if>
+            <if test="sortno != null and sortno != ''" >
+                AND SORTNO = #{sortno,jdbcType=INTEGER}
+            </if>
+            <if test="description != null and description != ''" >
+                AND DESCRIPTION = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="isenabled != null and isenabled != ''" >
+                AND ISENABLED = #{disabled,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''" >
+                AND CREATE_TIME = #{createTime,jdbcType=DATE}
+            </if>
+            <if test="updateTime != null and updateTime != ''" >
+                AND UPDATE_TIME = #{updateTime,jdbcType=DATE}
+            </if>
+            <if test="groupName != null and groupName != ''" >
+                AND GROUP_NAME = #{groupName,jdbcType=VARCHAR}
+            </if>
+    </select>
+
+    <delete id="deleteBizTicketType">
+        DELETE
+        FROM
+             biz_ticket_type
+        WHERE 
+            TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizTicketType" parameterType="com.solidextend.sys.ticket.vo.BizTicketType" >
+        INSERT INTO biz_ticket_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ticketTypeId != null" >
+                TICKET_TYPE_ID,
+            </if>
+            <if test="ticketTypeName != null" >
+                TICKET_TYPE_NAME,
+            </if>
+            <if test="isHaveMoney != null" >
+                IS_HAVE_MONEY,
+            </if>
+            <if test="designUser != null" >
+                DESIGN_USER,
+            </if>
+            <if test="sortno != null" >
+                SORTNO,
+            </if>
+            <if test="description != null" >
+                DESCRIPTION,
+            </if>
+            <if test="isenabled != null" >
+                ISENABLED,
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME,
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME,
+            </if>
+            <if test="groupName != null" >
+                GROUP_NAME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ticketTypeId != null" >
+                #{ticketTypeId,jdbcType=VARCHAR},
+            </if> 
+            <if test="ticketTypeName != null" >
+                #{ticketTypeName,jdbcType=VARCHAR},
+            </if> 
+            <if test="isHaveMoney != null" >
+                #{isHaveMoney,jdbcType=INTEGER},
+            </if> 
+            <if test="designUser != null" >
+                #{designUser,jdbcType=VARCHAR},
+            </if> 
+            <if test="sortno != null" >
+                #{sortno,jdbcType=INTEGER},
+            </if> 
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if> 
+            <if test="isenabled != null" >
+                #{isenabled,jdbcType=VARCHAR},
+            </if> 
+            <if test="createTime != null" >
+                #{createTime,jdbcType=DATE},
+            </if> 
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=DATE},
+            </if> 
+             <if test="groupName != null" >
+                #{groupName,jdbcType=VARCHAR},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizTicketType" parameterType="com.solidextend.sys.ticket.vo.BizTicketType" >
+        UPDATE biz_ticket_type
+        <set>
+            <if test="ticketTypeId != null" >
+                TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR},
+            </if>
+            <if test="ticketTypeName != null" >
+                TICKET_TYPE_NAME = #{ticketTypeName,jdbcType=VARCHAR},
+            </if>
+            <if test="isHaveMoney != null" >
+                IS_HAVE_MONEY = #{isHaveMoney,jdbcType=INTEGER},
+            </if>
+            <if test="designUser != null" >
+                DESIGN_USER = #{designUser,jdbcType=VARCHAR},
+            </if>
+            <if test="sortno != null" >
+                SORTNO = #{sortno,jdbcType=INTEGER},
+            </if>
+            <if test="description != null" >
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="isenabled != null" >
+                ISENABLED = #{isenabled,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime,jdbcType=DATE},
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME = #{updateTime,jdbcType=DATE},
+            </if>
+            <if test="groupName != null" >
+                GROUP_NAME = #{groupName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE 
+            TICKET_TYPE_ID = #{ticketTypeId,jdbcType=VARCHAR}
+    </update>
+</mapper>

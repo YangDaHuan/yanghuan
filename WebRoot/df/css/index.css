@@ -1,0 +1,34 @@
+@CHARSET "UTF-8";
+
+body, p, div, label {
+	font-size: 12px;
+}
+
+#formInfo {
+	width: 50%;
+	margin: auto;
+	padding: 0px;
+	float: left;
+}
+
+#formInfo label {
+	text-align: left;
+	text-indent: 5px;
+	font-weight: bold;
+}
+
+.ds-info {
+	display: none;
+}
+
+.icon-delete {
+	background: url("../images/delete.gif") no-repeat center;
+}
+
+#dsUrlForm {
+	margin: 5px;
+}
+
+#dsUrlForm table tr td {
+	height: 50px;
+}

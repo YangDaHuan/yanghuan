@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.dashboard.dao.WidgetMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.dashboard.vo.Widget">
+		<id column="ID" jdbcType="VARCHAR" property="id" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="DASHBOARD_ID" jdbcType="VARCHAR" property="dashboardId" />
+		<result column="GROUP_NAME" jdbcType="VARCHAR" property="groupName" />
+		<result column="SOURCE" jdbcType="VARCHAR" property="source" />
+		<result column="TYPE" jdbcType="VARCHAR" property="type" />
+		<result column="WIDTH" jdbcType="INTEGER" property="width" />
+		<result column="HEIGHT" jdbcType="INTEGER" property="height" />
+		<result column="SORT" jdbcType="INTEGER" property="sort" />
+	</resultMap>
+
+	<delete id="deleteWidget">
+		DELETE
+		FROM
+		SYS_WIDGET
+		WHERE
+		DASHBOARD_ID = #{dashboardId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="saveWidget" parameterType="com.solidextend.sys.dashboard.vo.Widget">
+		INSERT INTO SYS_WIDGET
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				ID,
+			</if>
+			<if test="name != null">
+				NAME,
+			</if>
+			<if test="dashboardId != null">
+				DASHBOARD_ID,
+			</if>
+			<if test="groupName != null">
+				GROUP_NAME,
+			</if>
+			<if test="source != null">
+				SOURCE,
+			</if>
+			<if test="type != null">
+				TYPE,
+			</if>
+			<if test="width != null">
+				WIDTH,
+			</if>
+			<if test="height != null">
+				HEIGHT,
+			</if>
+			<if test="sort != null">
+				SORT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=VARCHAR},
+			</if>
+			<if test="name != null">
+				#{name,jdbcType=VARCHAR},
+			</if>
+			<if test="dashboardId != null">
+				#{dashboardId,jdbcType=VARCHAR},
+			</if>
+			<if test="groupName != null">
+				#{groupName,jdbcType=VARCHAR},
+			</if>
+			<if test="source != null">
+				#{source,jdbcType=VARCHAR},
+			</if>
+			<if test="type != null">
+				#{type,jdbcType=VARCHAR},
+			</if>
+			<if test="width != null">
+				#{width,jdbcType=INTEGER},
+			</if>
+			<if test="height != null">
+				#{height,jdbcType=INTEGER},
+			</if>
+			<if test="sort != null">
+				#{sort,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+
+</mapper>

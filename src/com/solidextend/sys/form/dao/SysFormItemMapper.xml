@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.form.dao.SysFormItemMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.form.vo.SysFormItem">
+        <id column="INPUT_ID" jdbcType="VARCHAR" property="inputId"/>
+        <result column="FORM_ID" jdbcType="VARCHAR" property="formId"/>
+        <result column="INPUT_NAME" jdbcType="VARCHAR" property="inputName"/>
+        <result column="INPUT_DISPLAY" jdbcType="VARCHAR" property="inputDisplay"/>
+        <result column="INPUT_DISCRIPTION" jdbcType="VARCHAR" property="inputDiscription"/>
+        <result column="COLSPAN" jdbcType="INTEGER" property="colspan"/>
+        <result column="SORTNO" jdbcType="INTEGER" property="sortno"/>
+        <result column="DATA_TYPE" jdbcType="VARCHAR" property="dataType"/>
+        <result column="DEFAULT_VALUE" jdbcType="VARCHAR" property="defaultValue"/>
+        <result column="DICT_ID" jdbcType="VARCHAR" property="dictId"/>
+        <result column="INPUT_TYPE" jdbcType="VARCHAR" property="inputType"/>
+        <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId"/>
+        <result column="DISABLED" jdbcType="VARCHAR" property="disabled"/>
+        <result column="CREATE_TIME" jdbcType="DATE" property="createTime"/>
+        <result column="UPDATE_TIME" jdbcType="DATE" property="updateTime"/>
+    </resultMap>
+    <select id="getSysFormItemById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             sys_form_item
+        WHERE            
+            INPUT_ID = #{inputId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllSysFormItem" resultMap="BaseResultMap">
+          SELECT * FROM sys_form_item 
+    </select>
+    
+    <select id="findByAttrSysFormItem" resultMap="BaseResultMap" parameterType="com.solidextend.sys.form.vo.SysFormItem">
+          SELECT * 
+          FROM 
+          sys_form_item 
+          WHERE 1=1 
+            <if test="inputId != null" >
+                AND INPUT_ID = #{inputId,jdbcType=VARCHAR}
+            </if>
+            <if test="formId != null" >
+                AND FORM_ID = #{formId,jdbcType=VARCHAR}
+            </if>
+            <if test="inputName != null" >
+                AND INPUT_NAME = #{inputName,jdbcType=VARCHAR}
+            </if>
+            <if test="inputDisplay != null" >
+                AND INPUT_DISPLAY = #{inputDisplay,jdbcType=VARCHAR}
+            </if>
+            <if test="inputDiscription != null" >
+                AND INPUT_DISCRIPTION = #{inputDiscription,jdbcType=VARCHAR}
+            </if>
+            <if test="colspan != null" >
+                AND COLSPAN = #{colspan,jdbcType=INTEGER}
+            </if>
+            <if test="sortno != null" >
+                AND SORTNO = #{sortno,jdbcType=INTEGER}
+            </if>
+            <if test="dataType != null" >
+                AND DATA_TYPE = #{dataType,jdbcType=VARCHAR}
+            </if>
+            <if test="defaultValue != null" >
+                AND DEFAULT_VALUE = #{defaultValue,jdbcType=VARCHAR}
+            </if>
+            <if test="dictId != null" >
+                AND DICT_ID = #{dictId,jdbcType=VARCHAR}
+            </if>
+            <if test="inputType != null" >
+                AND INPUT_TYPE = #{inputType,jdbcType=VARCHAR}
+            </if>
+            <if test="parentId != null" >
+                AND PARENT_ID = #{parentId,jdbcType=VARCHAR}
+            </if>
+            <if test="disabled != null" >
+                AND DISABLED = #{disabled,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null" >
+                AND CREATE_TIME = #{createTime,jdbcType=DATE}
+            </if>
+            <if test="updateTime != null" >
+                AND UPDATE_TIME = #{updateTime,jdbcType=DATE}
+            </if>
+            ORDER BY SORTNO
+    </select>
+
+    <delete id="deleteSysFormItem">
+        DELETE
+        FROM
+             sys_form_item
+        WHERE            
+            INPUT_ID = #{inputId,jdbcType=VARCHAR}
+    </delete>
+     <delete id="deleteSysFormItemByFormId">
+        DELETE
+        FROM
+             sys_form_item
+        WHERE            
+            FORM_ID = #{formId,jdbcType=VARCHAR}
+    </delete>
+   
+    <insert id="saveSysFormItem" parameterType="com.solidextend.sys.form.vo.SysFormItem" >
+        INSERT INTO sys_form_item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inputId != null" >
+                INPUT_ID,
+            </if>
+            <if test="formId != null" >
+                FORM_ID,
+            </if>
+            <if test="inputName != null" >
+                INPUT_NAME,
+            </if>
+            <if test="inputDisplay != null" >
+                INPUT_DISPLAY,
+            </if>
+            <if test="inputDiscription != null" >
+                INPUT_DISCRIPTION,
+            </if>
+            <if test="colspan != null" >
+                COLSPAN,
+            </if>
+            <if test="sortno != null" >
+                SORTNO,
+            </if>
+            <if test="dataType != null" >
+                DATA_TYPE,
+            </if>
+            <if test="defaultValue != null" >
+                DEFAULT_VALUE,
+            </if>
+            <if test="dictId != null" >
+                DICT_ID,
+            </if>
+            <if test="inputType != null" >
+                INPUT_TYPE,
+            </if>
+            <if test="parentId != null" >
+                PARENT_ID,
+            </if>
+            <if test="disabled != null" >
+                DISABLED,
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME,
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="inputId != null" >
+                #{inputId,jdbcType=VARCHAR},
+            </if> 
+            <if test="formId != null" >
+                #{formId,jdbcType=VARCHAR},
+            </if> 
+            <if test="inputName != null" >
+                #{inputName,jdbcType=VARCHAR},
+            </if> 
+            <if test="inputDisplay != null" >
+                #{inputDisplay,jdbcType=VARCHAR},
+            </if> 
+            <if test="inputDiscription != null" >
+                #{inputDiscription,jdbcType=VARCHAR},
+            </if> 
+            <if test="colspan != null" >
+                #{colspan,jdbcType=INTEGER},
+            </if> 
+            <if test="sortno != null" >
+                #{sortno,jdbcType=INTEGER},
+            </if> 
+            <if test="dataType != null" >
+                #{dataType,jdbcType=VARCHAR},
+            </if> 
+            <if test="defaultValue != null" >
+                #{defaultValue,jdbcType=VARCHAR},
+            </if> 
+            <if test="dictId != null" >
+                #{dictId,jdbcType=VARCHAR},
+            </if> 
+            <if test="inputType != null" >
+                #{inputType,jdbcType=VARCHAR},
+            </if> 
+            <if test="parentId != null" >
+                #{parentId,jdbcType=VARCHAR},
+            </if> 
+            <if test="disabled != null" >
+                #{disabled,jdbcType=VARCHAR},
+            </if> 
+            <if test="createTime != null" >
+                #{createTime,jdbcType=DATE},
+            </if> 
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=DATE},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateSysFormItem" parameterType="com.solidextend.sys.form.vo.SysFormItem" >
+        UPDATE sys_form_item
+        <set>
+            <if test="inputId != null" >
+                INPUT_ID = #{inputId,jdbcType=VARCHAR},
+            </if>
+            <if test="formId != null" >
+                FORM_ID = #{formId,jdbcType=VARCHAR},
+            </if>
+            <if test="inputName != null" >
+                INPUT_NAME = #{inputName,jdbcType=VARCHAR},
+            </if>
+            <if test="inputDisplay != null" >
+                INPUT_DISPLAY = #{inputDisplay,jdbcType=VARCHAR},
+            </if>
+            <if test="inputDiscription != null" >
+                INPUT_DISCRIPTION = #{inputDiscription,jdbcType=VARCHAR},
+            </if>
+            <if test="colspan != null" >
+                COLSPAN = #{colspan,jdbcType=INTEGER},
+            </if>
+            <if test="sortno != null" >
+                SORTNO = #{sortno,jdbcType=INTEGER},
+            </if>
+            <if test="dataType != null" >
+                DATA_TYPE = #{dataType,jdbcType=VARCHAR},
+            </if>
+            <if test="defaultValue != null" >
+                DEFAULT_VALUE = #{defaultValue,jdbcType=VARCHAR},
+            </if>
+            <if test="dictId != null" >
+                DICT_ID = #{dictId,jdbcType=VARCHAR},
+            </if>
+            <if test="inputType != null" >
+                INPUT_TYPE = #{inputType,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null" >
+                PARENT_ID = #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="disabled != null" >
+                DISABLED = #{disabled,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime,jdbcType=DATE},
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME = #{updateTime,jdbcType=DATE},
+            </if>
+        </set>
+        WHERE 
+            INPUT_ID = #{inputId,jdbcType=VARCHAR}
+    </update>
+</mapper>

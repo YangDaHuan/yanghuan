@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.quartz.dao.JobMapper">
+	<resultMap id="BaseResultMap" type="com.solidextend.sys.quartz.vo.Job">
+		<id column="JOB_ID" jdbcType="VARCHAR" property="jobId" />
+		<result column="JOB_GROUP_ID" jdbcType="VARCHAR" property="jobGroupId" />
+		<result column="JOB_TYPE_ID" jdbcType="VARCHAR" property="jobTypeId" />
+		<result column="JOB_NAME" jdbcType="VARCHAR" property="jobName" />
+		<result column="DISCRIPTION" jdbcType="VARCHAR" property="discription" />
+		<result column="CronExp" jdbcType="VARCHAR" property="cronexp" />
+		<result column="NEXT_FIRE_TIME" jdbcType="TIMESTAMP" property="nextFireTime" />
+		<result column="TIMEOUT" jdbcType="INTEGER" property="timeout" />
+		<result column="RETRY_COUNT" jdbcType="INTEGER" property="retryCount" />
+		<result column="LOG_DAYS" jdbcType="INTEGER" property="logDays" />
+		<result column="STATE" jdbcType="INTEGER" property="state" />
+		<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+		<result column="LAST_UP_TIME" jdbcType="TIMESTAMP" property="lastUpTime" />
+		<result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+		<result column="SORT_NO" jdbcType="INTEGER" property="sortNo" />
+		<collection column="PARAM_ID" property="params" javaType="ArrayList"
+			ofType="com.solidextend.sys.quartz.vo.JobParam">
+			<id column="PARAM_ID" jdbcType="VARCHAR" property="paramId" />
+			<result column="PARAM_NAME" jdbcType="VARCHAR" property="paramName" />
+			<result column="PARAM_VALUE" jdbcType="VARCHAR" property="paramValue" />
+		</collection>
+	</resultMap>
+	<select id="getJobById" resultMap="BaseResultMap">
+		SELECT
+		*
+		FROM
+		sys_job j left join sys_job_param p on j.JOB_ID = p.JOB_ID
+		WHERE
+		j.JOB_ID = #{jobId,jdbcType=VARCHAR}
+
+	</select>
+
+	<select id="findAllJob" resultMap="BaseResultMap">
+		SELECT * FROM sys_job
+
+		<if test="state != null">
+			WHERE STATE=#{state,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="findJobByGroupId" resultMap="BaseResultMap">
+		SELECT * FROM sys_job
+		WHERE JOB_GROUP_ID = #{jobGroupId,jdbcType=VARCHAR}
+		<if test="state != null">
+			AND STATE=#{state,jdbcType=INTEGER}
+		</if>
+	</select>
+	<select id="findAllJobByTypeId" resultMap="BaseResultMap">
+		SELECT * FROM sys_job j ,sys_job_param p
+		WHERE JOB_TYPE_ID = #{jobTypeId,jdbcType=VARCHAR}
+		and j.JOB_ID = p.JOB_ID
+		<if test="state != null">
+			AND STATE=#{state,jdbcType=INTEGER}
+		</if>
+	</select>
+	<delete id="deleteJob">
+		DELETE
+		FROM
+		sys_job
+		WHERE
+		JOB_ID = #{jobId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="saveJob" parameterType="com.solidextend.sys.quartz.vo.Job">
+		INSERT INTO sys_job
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="jobId != null">
+				JOB_ID,
+			</if>
+			<if test="jobGroupId != null">
+				JOB_GROUP_ID,
+			</if>
+			<if test="jobTypeId != null">
+				JOB_TYPE_ID,
+			</if>
+			<if test="jobName != null">
+				JOB_NAME,
+			</if>
+			<if test="discription != null">
+				DISCRIPTION,
+			</if>
+			<if test="cronexp != null">
+				CronExp,
+			</if>
+			<if test="timeout != null">
+				TIMEOUT,
+			</if>
+			<if test="retryCount != null">
+				RETRY_COUNT,
+			</if>
+			<if test="logDays != null">
+				LOG_DAYS,
+			</if>
+			<if test="state != null">
+				STATE,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+			<if test="lastUpTime != null">
+				LAST_UP_TIME,
+			</if>
+			<if test="userId != null">
+				USER_ID,
+			</if>
+			<if test="sortNo != null">
+				SORT_NO,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="jobId != null">
+				#{jobId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobGroupId != null">
+				#{jobGroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobTypeId != null">
+				#{jobTypeId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobName != null">
+				#{jobName,jdbcType=VARCHAR},
+			</if>
+			<if test="discription != null">
+				#{discription,jdbcType=VARCHAR},
+			</if>
+			<if test="cronexp != null">
+				#{cronexp,jdbcType=VARCHAR},
+			</if>
+			<if test="timeout != null">
+				#{timeout,jdbcType=INTEGER},
+			</if>
+			<if test="retryCount != null">
+				#{retryCount,jdbcType=INTEGER},
+			</if>
+			<if test="logDays != null">
+				#{logDays,jdbcType=INTEGER},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpTime != null">
+				#{lastUpTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNo != null">
+				#{sortNo,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateJob" parameterType="com.solidextend.sys.quartz.vo.Job">
+		UPDATE sys_job
+		<set>
+			<if test="jobId != null">
+				JOB_ID = #{jobId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobGroupId != null">
+				JOB_GROUP_ID = #{jobGroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobTypeId != null">
+				JOB_TYPE_ID = #{jobTypeId,jdbcType=VARCHAR},
+			</if>
+			<if test="jobName != null">
+				JOB_NAME = #{jobName,jdbcType=VARCHAR},
+			</if>
+			<if test="discription != null">
+				DISCRIPTION = #{discription,jdbcType=VARCHAR},
+			</if>
+			<if test="cronexp != null">
+				CronExp = #{cronexp,jdbcType=VARCHAR},
+			</if>
+			<if test="timeout != null">
+				TIMEOUT = #{timeout,jdbcType=INTEGER},
+			</if>
+			<if test="retryCount != null">
+				RETRY_COUNT = #{retryCount,jdbcType=INTEGER},
+			</if>
+			<if test="logDays != null">
+				LOG_DAYS = #{logDays,jdbcType=INTEGER},
+			</if>
+			<if test="state != null">
+				STATE = #{state,jdbcType=INTEGER},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastUpTime != null">
+				LAST_UP_TIME = #{lastUpTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userId != null">
+				USER_ID = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="sortNo != null">
+				SORT_NO = #{sortNo,jdbcType=INTEGER},
+			</if>
+		</set>
+		WHERE
+		JOB_ID = #{jobId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateNextFireTime">
+		UPDATE sys_job
+		<set>
+			<if test="nextFireTime != null">
+				NEXT_FIRE_TIME = #{nextFireTime,jdbcType=TIMESTAMP},
+			</if>
+
+		</set>
+		WHERE
+		JOB_ID = #{jobId,jdbcType=VARCHAR}
+	</update>
+</mapper>

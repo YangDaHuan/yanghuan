@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.solidextend.sys.ticket.dao.BizTicketInMapper">
+    <resultMap id="BaseResultMap" type="com.solidextend.sys.ticket.vo.BizTicketIn">
+        <id column="IN_ID" jdbcType="VARCHAR" property="inId"/>
+        <result column="DEPLOY_CODE" jdbcType="VARCHAR" property="deployCode"/>
+        <result column="IN_TYPE" jdbcType="INTEGER" property="inType"/>
+        <result column="IN_ORG" jdbcType="VARCHAR" property="inOrg"/>
+        <result column="FROM_ORG" jdbcType="VARCHAR" property="fromOrg"/>
+        <result column="IN_DATE" jdbcType="DATE" property="inDate"/>
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description"/>
+        <result column="OPERATOR" jdbcType="VARCHAR" property="operator"/>
+    </resultMap>
+    
+    <select id="getCountByCode" resultType="Long">
+        SELECT
+            count(*)
+        FROM
+             biz_ticket_in
+        WHERE            
+            IN_Code = #{inCode,jdbcType=VARCHAR}
+    </select>
+    <select id="getBizTicketInById" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+             biz_ticket_in
+        WHERE            
+            IN_ID = #{inId,jdbcType=VARCHAR}
+    </select>
+    
+    <select id="findAllBizTicketIn" resultMap="BaseResultMap">
+          SELECT * FROM biz_ticket_in 
+    </select>
+    
+    <select id="findByAttrBizTicketIn" resultMap="BaseResultMap" parameterType="com.solidextend.sys.ticket.vo.BizTicketIn">
+          SELECT * 
+          FROM 
+          biz_ticket_in 
+          WHERE 1=1 
+            <if test="inId != null and inId != ''" >
+                AND IN_ID = #{inId,jdbcType=VARCHAR}
+            </if>
+            <if test="deployCode != null and deployCode != ''" >
+                AND DEPLOY_CODE = #{deployCode,jdbcType=VARCHAR}
+            </if>
+            <if test="inType != null and inType != ''" >
+                AND IN_TYPE = #{inType,jdbcType=INTEGER}
+            </if>
+            <if test="inOrg != null and inOrg != ''" >
+                AND IN_ORG = #{inOrg,jdbcType=VARCHAR}
+            </if>
+            <if test="fromOrg != null and fromOrg != ''" >
+                AND FROM_ORG = #{fromOrg,jdbcType=VARCHAR}
+            </if>
+            <if test="inDate != null and inDate != ''" >
+                AND IN_DATE = #{inDate,jdbcType=DATE}
+            </if>
+            <if test="description != null and description != ''" >
+                AND DESCRIPTION = #{description,jdbcType=VARCHAR}
+            </if>
+            <if test="operator != null and operator != ''" >
+                AND OPERATOR = #{operator,jdbcType=VARCHAR}
+            </if>
+    </select>
+
+    <delete id="deleteBizTicketIn">
+        DELETE
+        FROM
+             biz_ticket_in
+        WHERE 
+            IN_ID = #{inId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="saveBizTicketIn" parameterType="com.solidextend.sys.ticket.vo.BizTicketIn" >
+        INSERT INTO biz_ticket_in
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="inCode != null" >
+                IN_CODE,
+            </if>
+            
+            <if test="inId != null" >
+                IN_ID,
+            </if>
+            <if test="deployCode != null" >
+                DEPLOY_CODE,
+            </if>
+            <if test="inType != null" >
+                IN_TYPE,
+            </if>
+            <if test="inOrg != null" >
+                IN_ORG,
+            </if>
+            <if test="fromOrg != null" >
+                FROM_ORG,
+            </if>
+            <if test="inDate != null" >
+                IN_DATE,
+            </if>
+            <if test="description != null" >
+                DESCRIPTION,
+            </if>
+            <if test="operator != null" >
+                OPERATOR,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+           <if test="inCode != null" >
+                #{inCode,jdbcType=VARCHAR},
+            </if>
+            <if test="inId != null" >
+                #{inId,jdbcType=VARCHAR},
+            </if> 
+            <if test="deployCode != null" >
+                #{deployCode,jdbcType=VARCHAR},
+            </if> 
+            <if test="inType != null" >
+                #{inType,jdbcType=INTEGER},
+            </if> 
+            <if test="inOrg != null" >
+                #{inOrg,jdbcType=VARCHAR},
+            </if> 
+            <if test="fromOrg != null" >
+                #{fromOrg,jdbcType=VARCHAR},
+            </if> 
+            <if test="inDate != null" >
+                #{inDate,jdbcType=DATE},
+            </if> 
+            <if test="description != null" >
+                #{description,jdbcType=VARCHAR},
+            </if> 
+            <if test="operator != null" >
+                #{operator,jdbcType=VARCHAR},
+            </if> 
+        </trim>
+    </insert>
+
+    <update id="updateBizTicketIn" parameterType="com.solidextend.sys.ticket.vo.BizTicketIn" >
+        UPDATE biz_ticket_in
+        <set>
+            <if test="inId != null" >
+                IN_ID = #{inId,jdbcType=VARCHAR},
+            </if>
+            <if test="deployCode != null" >
+                DEPLOY_CODE = #{deployCode,jdbcType=VARCHAR},
+            </if>
+            <if test="inType != null" >
+                IN_TYPE = #{inType,jdbcType=INTEGER},
+            </if>
+            <if test="inOrg != null" >
+                IN_ORG = #{inOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="fromOrg != null" >
+                FROM_ORG = #{fromOrg,jdbcType=VARCHAR},
+            </if>
+            <if test="inDate != null" >
+                IN_DATE = #{inDate,jdbcType=DATE},
+            </if>
+            <if test="description != null" >
+                DESCRIPTION = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="operator != null" >
+                OPERATOR = #{operator,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE 
+            IN_ID = #{inId,jdbcType=VARCHAR}
+    </update>
+</mapper>

@@ -115,7 +115,7 @@ var loginAjax=function(){
 		}
 	});
 }
-
+   
 function doSubmit() {
 	debugger;
 	var username = document.getElementById("username").value.trim();
